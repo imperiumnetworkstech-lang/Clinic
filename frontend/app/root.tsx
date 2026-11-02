@@ -1,6 +1,6 @@
 import '@fontsource-variable/inter';
 import '@fontsource-variable/plus-jakarta-sans';
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import {
   isRouteErrorResponse,
   Links,
@@ -13,14 +13,18 @@ import type { Route } from './+types/root';
 import './app.css';
 import { BookingProvider } from './components/BookingSheet';
 import { BottomTabBar } from './components/BottomTabBar';
+import { ConsentBanner } from './components/ConsentBanner';
+import { InstallPrompt } from './components/InstallPrompt';
 import { SiteFooter } from './components/SiteFooter';
 import { SiteHeader } from './components/SiteHeader';
+import { ACCESSIBILITY_BOOT_SCRIPT } from './lib/accessibility';
 import { primaryPhone } from './lib/clinic';
+import { registerServiceWorker } from './lib/pwa';
 import { button, container } from './lib/ui';
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en-IN">
+    <html lang="en-IN" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -29,6 +33,12 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta name="robots" content="noindex, nofollow" />
         <link rel="icon" href="/images/brand/favicon-48.png" sizes="48x48" />
         <link rel="apple-touch-icon" href="/images/brand/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="Expressions" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        {/* Applies saved text-size / contrast before first paint (no flash). */}
+        <script dangerouslySetInnerHTML={{ __html: ACCESSIBILITY_BOOT_SCRIPT }} />
         <Meta />
         <Links />
       </head>
@@ -42,6 +52,8 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
+  useEffect(registerServiceWorker, []);
+
   return (
     <BookingProvider>
       <a
@@ -56,6 +68,8 @@ export default function App() {
       </main>
       <SiteFooter />
       <BottomTabBar />
+      <InstallPrompt />
+      <ConsentBanner />
     </BookingProvider>
   );
 }

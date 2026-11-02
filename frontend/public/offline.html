@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>You're offline | Expressions Dental Clinic</title>
+    <link rel="icon" href="/images/brand/mark-192.png" />
+    <style>
+      :root {
+        color-scheme: light;
+        --brand: #d2027f;
+        --text: #1f242b;
+        --muted: #576170;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 24px 16px;
+        font:
+          17px/1.6 system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(40rem 30rem at 90% -10%, #fff3f7, transparent 60%),
+          radial-gradient(40rem 30rem at -10% 110%, #ecfaff, transparent 60%), #fff;
+      }
+      main {
+        width: 100%;
+        max-width: 26rem;
+        text-align: center;
+      }
+      img {
+        height: 56px;
+        width: auto;
+      }
+      h1 {
+        margin: 28px 0 8px;
+        font-size: 1.75rem;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+      }
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .actions {
+        display: grid;
+        gap: 12px;
+        margin-top: 28px;
+      }
+      a,
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        border-radius: 999px;
+        font: inherit;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .primary {
+        background: var(--brand);
+        color: #fff;
+        border: 0;
+      }
+      .secondary {
+        background: #fff;
+        color: var(--text);
+        border: 1px solid #d5dbe5;
+      }
+      :focus-visible {
+        outline: 3px solid #059dc0;
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/images/brand/logo.png" alt="Expressions Dental Clinic" width="458" height="152" />
+      <h1>You’re offline</h1>
+      <p>Check your internet connection. You can still call us — phone calls don’t need data.</p>
+      <div class="actions">
+        <a class="primary" href="tel:+919657061122">Call +91 96570 61122</a>
+        <a class="secondary" href="tel:+919657041122">Call +91 96570 41122</a>
+        <button class="secondary" type="button" onclick="location.reload()">Try again</button>
+      </div>
+    </main>
+  </body>
+</html>

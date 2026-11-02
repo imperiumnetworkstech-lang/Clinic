@@ -1,0 +1,46 @@
+{
+  "name": "Expressions Dental Clinic",
+  "short_name": "Expressions",
+  "description": "Book appointments and reach Expressions Dental Clinic in Duler (Mapusa) and Candolim, Goa.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "en-IN",
+  "categories": ["health", "medical"],
+  "icons": [
+    {
+      "src": "/images/brand/mark-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/brand/mark-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/brand/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book on WhatsApp",
+      "url": "https://wa.me/919657061122?text=Hello%20Expressions%20Dental%20Clinic%2C%20I%20would%20like%20to%20book%20an%20appointment.",
+      "icons": [{ "src": "/images/brand/mark-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Our clinics",
+      "url": "/#locations",
+      "icons": [{ "src": "/images/brand/mark-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
