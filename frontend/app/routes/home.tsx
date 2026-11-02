@@ -13,10 +13,11 @@ import {
   Star,
   Stethoscope,
 } from 'lucide-react';
-import type { ComponentType } from 'react';
+import { useEffect, type ComponentType } from 'react';
 import { useBooking } from '../components/BookingSheet';
 import { ToothIcon, WhatsAppIcon } from '../components/icons';
 import { Picture, type ImageName } from '../components/Picture';
+import { SectionHeading } from '../components/ui/primitives';
 import {
   branches,
   CLINIC_NAME,
@@ -51,33 +52,6 @@ function Stars({ className = '' }: { className?: string }) {
         <Star key={i} size={16} fill="currentColor" strokeWidth={0} />
       ))}
     </span>
-  );
-}
-
-function SectionHeading({
-  kicker,
-  title,
-  intro,
-  id,
-  align = 'left',
-}: {
-  kicker: string;
-  title: string;
-  intro?: string;
-  id: string;
-  align?: 'left' | 'center';
-}) {
-  return (
-    <div className={align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}>
-      <p className="text-sm font-bold tracking-[0.14em] text-primary-600 uppercase">{kicker}</p>
-      <h2
-        id={id}
-        className="mt-3 text-[clamp(1.75rem,1.3rem+1.6vw,2.6rem)] leading-tight font-bold"
-      >
-        {title}
-      </h2>
-      {intro && <p className="mt-4 text-lg text-muted">{intro}</p>}
-    </div>
   );
 }
 
@@ -265,7 +239,27 @@ const CATEGORY_STYLE: Record<
   },
 };
 
+/** Opens the treatment row named in the URL hash (links from the Treatments menu). */
+function useOpenTreatmentFromHash() {
+  useEffect(() => {
+    const open = () => {
+      const target = window.location.hash.startsWith('#t-')
+        ? document.getElementById(window.location.hash.slice(1))
+        : null;
+      const details = target?.querySelector('details');
+      if (details) {
+        details.open = true;
+        target?.scrollIntoView({ block: 'center' });
+      }
+    };
+    open();
+    window.addEventListener('hashchange', open);
+    return () => window.removeEventListener('hashchange', open);
+  }, []);
+}
+
 function Treatments() {
+  useOpenTreatmentFromHash();
   return (
     <section id="treatments" aria-labelledby="treatments-title" className="py-20 md:py-28">
       <div className={container}>
@@ -280,7 +274,7 @@ function Treatments() {
             href={whatsappLink('Hello, I am not sure which treatment I need. Can you help?')}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-semibold text-link hover:underline"
+            className="inline-flex min-h-11 items-center gap-2 font-semibold text-link hover:underline"
           >
             Not sure what you need? Ask us
             <ArrowRight size={18} />
@@ -303,9 +297,9 @@ function Treatments() {
                 <p className="mt-2 text-muted">{category.blurb}</p>
                 <ul className="mt-6 divide-y divide-neutral-200/80 border-t border-neutral-200/80">
                   {category.treatments.map((treatment) => (
-                    <li key={treatment.slug} className="py-3.5">
+                    <li key={treatment.slug} id={`t-${treatment.slug}`} className="py-1.5">
                       <details className="group">
-                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold [&::-webkit-details-marker]:hidden">
+                        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold [&::-webkit-details-marker]:hidden">
                           <span className="flex items-center gap-2.5">
                             <CheckCircle2 size={18} className="shrink-0 text-primary-500" />
                             {treatment.name}
