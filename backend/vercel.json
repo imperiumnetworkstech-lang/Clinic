@@ -1,5 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "regions": ["bom1"],
+  "buildCommand": "pnpm --filter @edc/shared build",
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.ts": { "maxDuration": 15 }
+  },
   "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }

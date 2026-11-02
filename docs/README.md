@@ -67,6 +67,6 @@ API docs (Swagger UI) are at http://localhost:4000/api/docs in development only.
 
 All backend variables are documented in [`backend/.env.example`](../backend/.env.example) and validated at startup by `backend/src/config/env.ts`. The app refuses to boot with a missing or unsafe value, e.g. `OTP_DELIVERY=log` or 2FA disabled in production.
 
-## Deployment (Vercel), summary
+## Deployment
 
-Two Vercel projects from this repo: root directory `frontend` and root directory `backend`. Postgres is Neon (Mumbai), with `DATABASE_SSL=true` and `TRUST_PROXY=true`. Migrations run from CI or locally against Neon (`pnpm db:migrate` with the Neon URL), never at request time. The full guide comes in Phase 9.
+Step-by-step GitHub → Neon → Vercel instructions are in [DEPLOYMENT.md](DEPLOYMENT.md).
