@@ -2,30 +2,25 @@
 
 Repository: https://github.com/imperiumnetworkstech-lang/Clinic
 
-The repo deploys as **two Vercel projects**: the website (`frontend/`) and the API (`backend/`). The database is **Neon Postgres** in Mumbai. Deploy in this order: database → website → API, because the API needs the website's URL.
+The repo deploys as **two Vercel projects**: the website (`frontend/`) and the API (`backend/`). The database is **Neon Postgres** (project `expressions-dental`, id `muddy-bread-85559899`, org Imperium Networks, AWS Singapore, Postgres 18). Deploy in this order: database → website → API, because the API needs the website's URL.
 
 ---
 
-## 1. Database (Neon), about 5 minutes
+## 1. Database (Neon): done 2026-11-03
 
-1. Sign in at https://console.neon.tech and create a project:
-   - Name: `expressions-dental`
-   - Postgres version: **17**
-   - Region: **AWS Asia Pacific 1 (Mumbai)**
-2. Open **Connection Details** and switch on **Pooled connection**. Copy the connection string. It looks like:
-   `postgresql://USER:PASSWORD@ep-xxxx-pooler.ap-south-1.aws.neon.tech/neondb?sslmode=require`
-3. Make sure `backend/.env` is complete (every secret filled in; see `backend/.env.example`). The scripts load it for everything except the database URL you pass below.
-4. Create the tables and reference data from your computer, in PowerShell from the project folder. Paste your Neon string where it says `<NEON_URL>`:
+Created with `neon init` in AWS Asia Pacific (Singapore), the closest Neon region to India. Migrations and the required seed (roles, permissions, both branches, settings) are applied. There is no demo data.
 
-```powershell
-$env:DATABASE_URL = "<NEON_URL>"; $env:DATABASE_SSL = "true"; pnpm db:migrate; pnpm db:seed
-```
+- This folder is linked through `.neon` (gitignored).
+- The pooled connection string is in `backend/.env.neon` (gitignored). Copy its `DATABASE_URL` into the Vercel API project.
+- Console: https://console.neon.tech/app/projects/muddy-bread-85559899/
 
-5. Create the clinic owner's login. It prints a one-time password; keep it safe:
+Still to do: create the clinic owner's login (it prints a one-time password):
 
 ```powershell
-$env:DATABASE_URL = "<NEON_URL>"; $env:DATABASE_SSL = "true"; pnpm --filter @edc/backend admin:create --name "Owner Name" --email owner@example.com
+cd backend; Get-Content .env.neon | ForEach-Object { $k,$v = $_ -split '=',2; Set-Item "env:$k" $v }; pnpm admin:create --name "Owner Name" --email owner@example.com
 ```
+
+To apply future migrations, load `backend/.env.neon` the same way and run `pnpm db:migrate`.
 
 > Never run `db:seed -- --demo` against Neon. Demo data is for local development only.
 
