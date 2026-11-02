@@ -16,6 +16,7 @@ expressions-dental/                plain pnpm workspaces (no Turborepo, no Docke
 
 **Runtime (production, Vercel — decided 2026-11-03):**
 
+- The API Function runs in Vercel's Singapore region (`sin1`), next to the database, because each request makes several database round trips. The website stays in Mumbai (`bom1`), close to patients.
 - Two Vercel projects from this repo: `frontend` (React Router v7 with the Vercel preset; SSR functions + CDN) and `backend` (the Express app exported as a Vercel Function). The frontend rewrites `/api/*` to the backend, so everything is served from one origin and cookies stay first-party.
 - **Postgres: Neon**, project `expressions-dental` in AWS Singapore (`aws-ap-southeast-1`; Neon has no Mumbai region), Postgres 18, pooled connection string.
 - **No Redis/BullMQ.** Scheduled work runs as **Vercel Cron**, which calls `/api/v1/cron/*` protected by `CRON_SECRET`. Rate limiting uses a Postgres-backed store (`rate-limiter-flexible`).
