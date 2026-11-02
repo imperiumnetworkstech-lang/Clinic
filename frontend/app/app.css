@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens (docs/DESIGN_SYSTEM.md). Raw scales live in @theme so Tailwind generates
+ * utilities (bg-primary-600, text-neutral-700…); semantic tokens below switch for dark mode.
+ */
+@theme {
+  --color-primary-50: #fff3f7;
+  --color-primary-100: #fee5ee;
+  --color-primary-200: #ffcade;
+  --color-primary-300: #ff9fc6;
+  --color-primary-400: #fe65ad;
+  --color-primary-500: #f61e98;
+  --color-primary-600: #d2027f;
+  --color-primary-700: #ad0068;
+  --color-primary-800: #8a0352;
+  --color-primary-900: #6d0140;
+  --color-primary-950: #470027;
+
+  --color-secondary-50: #ecfaff;
+  --color-secondary-100: #d3f3ff;
+  --color-secondary-200: #afe5f8;
+  --color-secondary-300: #7acfeb;
+  --color-secondary-400: #3ab5d8;
+  --color-secondary-500: #059dc0;
+  --color-secondary-600: #0083a1;
+  --color-secondary-700: #076b84;
+  --color-secondary-800: #025469;
+  --color-secondary-900: #024252;
+  --color-secondary-950: #012934;
+
+  --color-neutral-50: #f4f7fa;
+  --color-neutral-100: #e9edf3;
+  --color-neutral-200: #d5dbe5;
+  --color-neutral-300: #b8c2d0;
+  --color-neutral-400: #9aa6b7;
+  --color-neutral-500: #828fa0;
+  --color-neutral-600: #6b7788;
+  --color-neutral-700: #576170;
+  --color-neutral-800: #444c59;
+  --color-neutral-900: #343b45;
+  --color-neutral-950: #1f242b;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-contrast: var(--brand-contrast);
+  --color-link: var(--link);
+
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: var(--color-neutral-50);
+  --text: var(--color-neutral-950);
+  --text-muted: var(--color-neutral-700);
+  --border: var(--color-neutral-200);
+  --brand: var(--color-primary-600);
+  --brand-contrast: #ffffff;
+  --link: var(--color-primary-700);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: var(--color-neutral-950);
+    --surface: #262c34;
+    --text: var(--color-neutral-50);
+    --text-muted: var(--color-neutral-300);
+    --border: var(--color-neutral-800);
+    --brand: var(--color-primary-400);
+    --brand-contrast: var(--color-neutral-950);
+    --link: var(--color-primary-300);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: var(--color-neutral-950);
+  --surface: #262c34;
+  --text: var(--color-neutral-50);
+  --text-muted: var(--color-neutral-300);
+  --border: var(--color-neutral-800);
+  --brand: var(--color-primary-400);
+  --brand-contrast: var(--color-neutral-950);
+  --link: var(--color-primary-300);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-secondary-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
