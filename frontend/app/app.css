@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 /*
+ * Light is the default for the public site; dark applies only when chosen (data-theme="dark").
  * Design tokens (docs/DESIGN_SYSTEM.md). Raw scales live in @theme so Tailwind generates
  * utilities (bg-primary-600, text-neutral-700…); semantic tokens below switch for dark mode.
  */
@@ -50,6 +51,9 @@
   --color-brand-contrast: var(--brand-contrast);
   --color-link: var(--link);
 
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, sans-serif;
+
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-2xl: 32px;
@@ -68,20 +72,6 @@
   --link: var(--color-primary-700);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    color-scheme: dark;
-    --bg: var(--color-neutral-950);
-    --surface: #262c34;
-    --text: var(--color-neutral-50);
-    --text-muted: var(--color-neutral-300);
-    --border: var(--color-neutral-800);
-    --brand: var(--color-primary-400);
-    --brand-contrast: var(--color-neutral-950);
-    --link: var(--color-primary-300);
-  }
-}
-
 :root[data-theme='dark'] {
   color-scheme: dark;
   --bg: var(--color-neutral-950);
@@ -94,7 +84,13 @@
   --link: var(--color-primary-300);
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
 body {
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
   font-size: 1.0625rem;
@@ -114,5 +110,53 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* Native <dialog> used as a bottom sheet on phones and a centred modal on larger screens. */
+dialog.sheet {
+  margin: auto auto 0;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 28px 28px 0 0;
+  padding: 0;
+  border: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+dialog.sheet[open] {
+  animation: sheet-up 280ms var(--ease-out-soft);
+}
+dialog.sheet::backdrop {
+  background: rgb(31 36 43 / 0.55);
+  backdrop-filter: blur(2px);
+}
+@media (min-width: 768px) {
+  dialog.sheet {
+    margin: auto;
+    max-width: 30rem;
+    border-radius: 28px;
+  }
+  dialog.sheet[open] {
+    animation: sheet-fade 220ms var(--ease-out-soft);
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
   }
 }

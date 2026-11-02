@@ -21,6 +21,25 @@ def clean(s):
     return re.sub(r"[ \t]+", " ", s).strip()
 
 
+# Obvious typos on the legacy site, corrected wherever the text is reused. Meaning is unchanged.
+TYPO_FIXES = {
+    "theesthetics(shape, spacing, color)": "the aesthetics (shape, spacing, colour)",
+    "Assissted": "Assisted",
+    "apperance": "appearance",
+    "size,shape,color": "size, shape, colour",
+    "Peridontal": "Periodontal",
+    "patient’s feel": "patients feel",
+    " we provide solutions": " We provide solutions",
+    "deskulates": "stimulates",
+}
+
+
+def copyedit(s):
+    for wrong, right in TYPO_FIXES.items():
+        s = s.replace(wrong, right)
+    return s
+
+
 def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
@@ -36,7 +55,7 @@ for m in re.finditer(
     lis = [clean(li) for li in re.findall(r"<li>(.*?)</li>", body, re.S)]
     faqs.append({
         "question": clean(m.group(1)),
-        "answerParagraphs": [p for p in paras if p],
+        "answerParagraphs": [copyedit(p) for p in paras if p],
         "answerList": lis,
         "sourceUrl": "https://expressionsdentalclinic.com/faq",
         "flags": ["generic-boilerplate-likely-duplicate", "needs-doctor-review"],
@@ -63,7 +82,7 @@ for cat_slug, page, old in categories:
     treatment_categories.append({
         "slug": cat_slug,
         "name": title,
-        "intro": cat_intros.get(title, ""),
+        "intro": copyedit(cat_intros.get(title, "")),
         "legacyUrl": f"https://expressionsdentalclinic.com{old}",
     })
     for name, desc in items:
@@ -72,7 +91,7 @@ for cat_slug, page, old in categories:
             "slug": slug(name),
             "name": name,
             "category": cat_slug,
-            "shortDescription": clean(desc),
+            "shortDescription": copyedit(clean(desc)),
             "benefits": CLIENT.format(f"benefits of {name}"),
             "procedureSteps": CLIENT.format(f"procedure steps for {name}"),
             "duration": CLIENT.format(f"typical duration / number of sittings for {name}"),
