@@ -1,0 +1,896 @@
+{
+  "$comment": "Hand-entered facts for clinic.json. clinic.json is generated from this file plus content/raw/*.html by the extraction script; edit this file, not clinic.json. Anything marked [[CLIENT TO PROVIDE: ...]] or [[CLIENT TO CONFIRM: ...]] must not be published until answered.",
+  "meta": {
+    "extractedAt": "2026-11-03",
+    "sourceSite": "https://www.expressionsdentalclinic.com/",
+    "sourceNotes": "Legacy site is a CodeIgniter template ('template-five'). 13 pages crawled; copyright line reads 2021. Google Business Profile for the Mapusa branch was read on 2026-11-03 for hours and rating only."
+  },
+  "clinic": {
+    "name": "Expressions Dental Clinic",
+    "legalName": "[[CLIENT TO PROVIDE: registered legal name of the practice]]",
+    "tagline": null,
+    "taglineCandidates": [
+      "We care your life",
+      "We respect your time",
+      "100% Satisfaction"
+    ],
+    "taglineNote": "The legacy site has no real tagline, only slider/section headings. 'We care your life' is grammatically wrong and should not be reused. Ask the client for one.",
+    "legacyIntro": "At Expressions Dental Clinic, it is our goal to help you maintain your optimal oral health. We provide you with the information; advice and care that you need to make decisions about your dental health.",
+    "legacyAbout": [
+      "Welcome to Expressions Dental Clinic.",
+      "At Expressions Dental Clinic, it is our goal to help you maintain your optimal oral health. We provide you with the information; advice and care that you need to make decisions about your dental health.",
+      "Come open your eyes to the ultimate in international quality or close your eyes and trust us. Either way, you are in good hands, because the word compromise does not exist in our lexicon.",
+      "We understand the importance of making our patient’s feel welcome and relaxed. Step into our dental office, and enjoy our modern, yet comfortable décor as you are greeted by a team of professionals who know how to make people feel at ease.",
+      "Your treatment needs and your smile designing are skillfully fashioned in a state of the art dental office, that uses the latest technology and latest materials."
+    ],
+    "foundedYear": "[[CLIENT TO PROVIDE: year founded]]",
+    "logo": {
+      "primary": "/images/original/logo.png",
+      "primaryNote": "500x176 PNG, white wordmark + tooth on magenta (#F51B97). No SVG, no dark/mono variant found.",
+      "svg": "[[CLIENT TO PROVIDE: vector logo (SVG/AI/PDF)]]",
+      "favicon": "/images/original/favicon.png",
+      "faviconNote": "100x100 PNG; grey-green tooth on magenta, low quality. Will be regenerated from the vector logo."
+    },
+    "brand": {
+      "logoMagenta": "#F51B97",
+      "legacyTemplateColors": {
+        "accentCyan": "#00A3C8",
+        "accentYellow": "#FDD01A",
+        "navy": "#34406C",
+        "charcoal": "#2E3337",
+        "bodyGrey": "#7E7E7E"
+      },
+      "note": "Magenta comes from the logo and the physical shop signage, so it is the true brand anchor. The cyan/yellow/navy are defaults of the purchased template, not brand decisions.",
+      "legacyFonts": [
+        "Poppins",
+        "Nunito"
+      ]
+    },
+    "contact": {
+      "phones": [
+        {
+          "display": "+91 96570 41122",
+          "e164": "+919657041122",
+          "label": "Helpdesk"
+        },
+        {
+          "display": "+91 96570 61122",
+          "e164": "+919657061122",
+          "label": "Helpdesk",
+          "note": "Used for click-to-call and WhatsApp on the legacy site, and listed on the Google Business Profile."
+        }
+      ],
+      "whatsapp": "+919657061122",
+      "email": "info@expressionsdentalclinic.com",
+      "emailIssue": "Homepage footer also links mailto:info@youwebsite.com (template leftover)."
+    },
+    "social": {
+      "facebook": "https://www.facebook.com/expressionsdentalclinicgoa/",
+      "twitter": "https://twitter.com/expressdentist",
+      "youtube": "https://www.youtube.com/channel/UCNlJLOVQlNq1pAbKTTY6GAQ",
+      "instagram": "[[CLIENT TO PROVIDE: Instagram handle, if any]]",
+      "googleBusinessProfile": "https://www.google.com/maps/place/?q=place_id:ChIJmYZR3xjrvzsRqAmnoJfHNzA"
+    },
+    "googleRating": {
+      "branch": "mapusa",
+      "rating": 4.6,
+      "reviewCount": 59,
+      "readOn": "2026-11-03",
+      "usage": "May be shown as a linked 'Google rating' badge refreshed from the Places API. Must NOT be emitted as self-serving AggregateRating schema."
+    }
+  },
+  "locations": [
+    {
+      "id": "mapusa",
+      "name": "Expressions Dental Clinic, Duler (Mapusa)",
+      "addressOnWebsite": "Shop No.4, Ground floor, Vitara towers, Duler, Mapusa, Goa.",
+      "addressOnGoogle": "Shop no.4, ground floor, MFA Tower, Duler petrol station, near Duler Ground Road, next to Yamaha show room, Dangui Colony, Mapusa, Goa 403507",
+      "addressConflict": "[[CLIENT TO CONFIRM: 'Vitara Towers' (website) vs 'MFA Tower' (Google). A 2025 Google review mentions a 'new spacious clinic' – has the clinic moved?]]",
+      "postalCode": "403507",
+      "locality": "Mapusa",
+      "region": "Goa",
+      "country": "IN",
+      "geo": {
+        "lat": 15.601039,
+        "lng": 73.8156292,
+        "source": "Google Maps place"
+      },
+      "plusCode": "JR28+C7 Mapusa, Goa",
+      "googlePlaceId": "ChIJmYZR3xjrvzsRqAmnoJfHNzA",
+      "phone": "+919657061122",
+      "openingHours": {
+        "source": "Google Business Profile (partial read, 2026-11-03)",
+        "known": {
+          "tuesday": "10:00-20:00",
+          "wednesday": "10:00-20:00",
+          "thursday": "10:00-20:00"
+        },
+        "monday": "[[CLIENT TO CONFIRM]]",
+        "friday": "[[CLIENT TO CONFIRM]]",
+        "saturday": "[[CLIENT TO CONFIRM]]",
+        "sunday": "[[CLIENT TO CONFIRM]]",
+        "breaks": "[[CLIENT TO CONFIRM: lunch break?]]"
+      }
+    },
+    {
+      "id": "candolim",
+      "name": "Expressions Dental Clinic, Candolim",
+      "addressOnWebsite": "Holiday beach resort, Opposite Teama bar and car parking area, Candolim Beach road, Murrod vaddo, Candolim, Bardez, Goa.",
+      "status": "[[CLIENT TO CONFIRM: is the Candolim branch still operating? Its Google listing showed no details when checked.]]",
+      "postalCode": "[[CLIENT TO PROVIDE]]",
+      "locality": "Candolim",
+      "region": "Goa",
+      "country": "IN",
+      "geo": {
+        "lat": 15.5183639,
+        "lng": 73.7648465,
+        "source": "Google Maps place"
+      },
+      "googlePlaceId": "ChIJoVQsLpTBvzsRfnzH8QEw1sA",
+      "phone": "[[CLIENT TO CONFIRM: same numbers as Mapusa?]]",
+      "openingHours": "[[CLIENT TO PROVIDE]]"
+    }
+  ],
+  "doctors": [
+    {
+      "slug": "dr-sandeep",
+      "name": "Dr. Sandeep",
+      "fullName": "[[CLIENT TO PROVIDE: full name]]",
+      "qualifications": "M.D.S.",
+      "specialisation": "Root Canal & Cosmetic Specialist",
+      "evidence": "Named in website testimonials; listed on the 'Our Specialists' board visible in gallery photo photo-42.jpg; appears to be the doctor in most gallery photos (to confirm).",
+      "registrationNumber": "[[CLIENT TO PROVIDE: Goa Dental Council registration no.]]",
+      "experienceYears": "[[CLIENT TO PROVIDE]]",
+      "bio": "[[CLIENT TO PROVIDE]]",
+      "photo": "[[CLIENT TO CONFIRM: is photo-38.jpg / photo-47.jpg Dr. Sandeep?]]",
+      "publish": false
+    },
+    {
+      "slug": "dr-santosh",
+      "name": "Dr. Santosh",
+      "qualifications": "M.D.S.",
+      "specialisation": "Prosthodontist and Implantologist",
+      "evidence": "Signage photo only",
+      "publish": false
+    },
+    {
+      "slug": "dr-deepa",
+      "name": "Dr. Deepa",
+      "qualifications": "M.D.S.",
+      "specialisation": "Oral Pathologist",
+      "evidence": "Signage photo only",
+      "publish": false
+    },
+    {
+      "slug": "dr-sravani",
+      "name": "Dr. Sravani",
+      "qualifications": "[[partly obscured on signage]]",
+      "specialisation": "Dental Surgeon",
+      "evidence": "Signage photo only",
+      "publish": false
+    },
+    {
+      "slug": "dr-shraddha-nagvekar",
+      "name": "Dr. Shraddha Nagve[...]",
+      "qualifications": "[[obscured]]",
+      "specialisation": "Dental Surgeon",
+      "evidence": "Signage photo only; surname partly obscured",
+      "publish": false
+    },
+    {
+      "slug": "dr-neil",
+      "name": "Dr. Neil",
+      "qualifications": "M.D.S.",
+      "specialisation": "Pedodontist (Kids Specialist)",
+      "evidence": "Signage photo only",
+      "publish": false
+    }
+  ],
+  "doctorsNote": "The legacy site has NO doctors page. These names were read from the specialists board in a shop-front photo of unknown date. None will be published until the client confirms the current team, full names, registration numbers, photos and bios.",
+  "stats": {
+    "note": "The legacy site shows no numeric stats. '100% Satisfaction' is a slider headline, not a measured stat, and will not be used.",
+    "happyPatients": "[[CLIENT TO PROVIDE]]",
+    "yearsOfExperience": "[[CLIENT TO PROVIDE]]"
+  },
+  "images": {
+    "directory": "/frontend/public/images/original/",
+    "items": [
+      {
+        "file": "logo.png",
+        "size": "500x176",
+        "subject": "Logo"
+      },
+      {
+        "file": "favicon.png",
+        "size": "100x100",
+        "subject": "Favicon"
+      },
+      {
+        "file": "slider-1.jpg",
+        "size": "1200x800",
+        "subject": "Hero slider"
+      },
+      {
+        "file": "slider-2.jpg",
+        "size": "1200x800",
+        "subject": "Hero slider"
+      },
+      {
+        "file": "slider-3.jpg",
+        "size": "1200x800",
+        "subject": "Hero slider (doctor at desk)"
+      },
+      {
+        "file": "about-img.jpg",
+        "size": "800x810",
+        "subject": "Doctor portrait, arms crossed"
+      },
+      {
+        "file": "photo-38.jpg",
+        "size": "1013x1350",
+        "subject": "Doctor portrait at desk"
+      },
+      {
+        "file": "photo-39.jpg",
+        "size": "1013x1350",
+        "subject": "Doctor treating patient with dental microscope"
+      },
+      {
+        "file": "photo-41.jpg",
+        "size": "900x1200",
+        "subject": "Doctor pointing at clinic signage"
+      },
+      {
+        "file": "photo-42.jpg",
+        "size": "900x1200",
+        "subject": "Shop front (Duler, Mapusa) with specialists board"
+      },
+      {
+        "file": "photo-47.jpg",
+        "size": "800x1200",
+        "subject": "Doctor standing in operatory"
+      },
+      {
+        "file": "photo-49.jpg",
+        "size": "800x1200",
+        "subject": "Microscope-assisted treatment"
+      },
+      {
+        "file": "photo-51.jpg",
+        "size": "800x1200",
+        "subject": "Microscope-assisted treatment with assistant"
+      },
+      {
+        "file": "photo-52.jpg",
+        "size": "800x1200",
+        "subject": "Consultation in chair, patient visible"
+      },
+      {
+        "file": "photo-53.jpg",
+        "size": "800x1200",
+        "subject": "Consultation in chair, patient visible"
+      },
+      {
+        "file": "photo-55.jpg",
+        "size": "800x1200",
+        "subject": "Treatment, patient visible"
+      },
+      {
+        "file": "photo-56.jpg",
+        "size": "1200x800",
+        "subject": "Consultation at desk, patients visible"
+      },
+      {
+        "file": "photo-57.jpg",
+        "size": "1200x800",
+        "subject": "Consultation at desk, patients visible"
+      },
+      {
+        "file": "photo-60.jpg",
+        "size": "1200x800",
+        "subject": "Doctor at desk with X-ray on screen"
+      },
+      {
+        "file": "photo-62.jpg",
+        "size": "1200x800",
+        "subject": "Doctor at desk with model"
+      },
+      {
+        "file": "news-2.png",
+        "size": "320x226",
+        "subject": "Blog: cartoon man brushing"
+      },
+      {
+        "file": "news-4.jpg",
+        "size": "320x216",
+        "subject": "Blog: clinical photo of oral cancer lesion on tongue"
+      },
+      {
+        "file": "news-6.png",
+        "size": "320x160",
+        "subject": "Blog: toothbrush clipart"
+      }
+    ],
+    "notes": "All alt text on the legacy site is 'portfolio', 'logo' or empty. Gallery contains clinic/doctor photos, not before/after cases. Photos with identifiable patients need written consent before reuse."
+  },
+  "legacyUrls": [
+    "/",
+    "/about",
+    "/service",
+    "/service/view/1",
+    "/service/view/2",
+    "/service/view/19",
+    "/photo-gallery",
+    "/news",
+    "/news/view/2",
+    "/news/view/4",
+    "/news/view/6",
+    "/category/1",
+    "/faq",
+    "/contact",
+    "/single-blog.html"
+  ],
+  "treatmentCategories": [
+    {
+      "slug": "general-treatments",
+      "name": "General Treatments",
+      "intro": "General dentists serve as your first line of defense against oral health problems. Although general dentists provide primarily preventative care and minor restorative therapy, they often are able to perform a wide array of dental procedures.",
+      "legacyUrl": "https://expressionsdentalclinic.com/service/view/1"
+    },
+    {
+      "slug": "advanced-treatments",
+      "name": "Advance Treatments",
+      "intro": "As Expressions Dental Clinic, Advance Treatments such as Dental Implants, Gum Surgery, Orthodontic Treatment and Dental Impaction is done through advance technologies and equipments by highly experienced doctors.",
+      "legacyUrl": "https://expressionsdentalclinic.com/service/view/2"
+    },
+    {
+      "slug": "cosmetic-treatments",
+      "name": "Cosmetic Treatments",
+      "intro": "A beautiful smile is not just about teeth, but the harmony created by the teeth, gums & lips. A Smile Makeover is a treatment plan that combines any number of treatments that will be suited to helping you realize your cosmetic and oral health goals.",
+      "legacyUrl": "https://expressionsdentalclinic.com/service/view/19"
+    }
+  ],
+  "treatments": [
+    {
+      "slug": "root-canal-treatment",
+      "name": "Root Canal Treatment",
+      "category": "general-treatments",
+      "shortDescription": "Root Canal Treatment is done to preserve the infected tooth. This involves removing the damaged or infected pulp, treating any infection and filling the empty canals.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Root Canal Treatment]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Root Canal Treatment]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Root Canal Treatment]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Root Canal Treatment]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/1",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "dental-fillings",
+      "name": "Dental Fillings",
+      "category": "general-treatments",
+      "shortDescription": "Dental fillings are used to restore teeth and treat tooth decay. Fillings are also used to repair cracked or broken teeth and teeth that have been worn down from misuse.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Dental Fillings]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Dental Fillings]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Dental Fillings]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Dental Fillings]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/1",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "tooth-scaling",
+      "name": "Tooth Scaling",
+      "category": "general-treatments",
+      "shortDescription": "Tooth scaling involves the mechanical use of a dental instrument that scrapes away bacterial plaque and calculus from the tooth.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Tooth Scaling]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Tooth Scaling]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Tooth Scaling]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Tooth Scaling]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/1",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "dentures",
+      "name": "Dentures",
+      "category": "general-treatments",
+      "shortDescription": "A denture is a removable replacement for missing teeth and surrounding tissues.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Dentures]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Dentures]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Dentures]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Dentures]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/1",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "dental-crown",
+      "name": "Dental Crown",
+      "category": "general-treatments",
+      "shortDescription": "A dental crown is a tooth-shaped “cap” that is placed over a tooth. Crowns restore a tooth’s shape and size, strength, and/or improve its appearance and function.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Dental Crown]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Dental Crown]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Dental Crown]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Dental Crown]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/1",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "tooth-extraction",
+      "name": "Tooth Extraction",
+      "category": "general-treatments",
+      "shortDescription": "A dental extraction is the removal of teeth from the dental alveolus (socket) in the alveolar bone.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Tooth Extraction]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Tooth Extraction]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Tooth Extraction]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Tooth Extraction]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/1",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "child-dental-care",
+      "name": "Child Dental Care",
+      "category": "general-treatments",
+      "shortDescription": "Many children are found to have abnormal oral habits like thumb sucking, which may impair the normal growth. we provide solutions specially designed to treat such conditions.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Child Dental Care]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Child Dental Care]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Child Dental Care]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Child Dental Care]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/1",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "dental-implants",
+      "name": "Dental Implants",
+      "category": "advanced-treatments",
+      "shortDescription": "A dental implant is a “root” device, usually made of titanium, used in dentistry to replace either single or multiple missing teeth.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Dental Implants]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Dental Implants]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Dental Implants]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Dental Implants]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/2",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "gum-surgery",
+      "name": "Gum Surgery",
+      "category": "advanced-treatments",
+      "shortDescription": "Peridontal or gum surgery is the treatment and removal of bacteria in the mouth and under the gums.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Gum Surgery]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Gum Surgery]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Gum Surgery]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Gum Surgery]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/2",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "orthodontic-treatment",
+      "name": "Orthodontic Treatment",
+      "category": "advanced-treatments",
+      "shortDescription": "Orthodontic treatment is a way of straightening or moving teeth, to improve the appearance of the teeth and how they work.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Orthodontic Treatment]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Orthodontic Treatment]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Orthodontic Treatment]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Orthodontic Treatment]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/2",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "dental-impaction",
+      "name": "Dental Impaction",
+      "category": "advanced-treatments",
+      "shortDescription": "An impacted tooth is a common dental condition occurring when a tooth fails to fully “emerge” from the gums.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Dental Impaction]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Dental Impaction]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Dental Impaction]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Dental Impaction]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/2",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "smile-designing",
+      "name": "Smile Designing",
+      "category": "cosmetic-treatments",
+      "shortDescription": "It is a SYSTEM of changing size,shape,color and alignment of teeth and altering associated tissues in order to enhance one’s apperance.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Smile Designing]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Smile Designing]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Smile Designing]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Smile Designing]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/19",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "laminate-veneers",
+      "name": "Laminate Veneers",
+      "category": "cosmetic-treatments",
+      "shortDescription": "These are translucent, thin laminates made to improve theesthetics(shape, spacing, color)of natural teeth, to correct crowding or to replace composite bonding.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Laminate Veneers]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Laminate Veneers]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Laminate Veneers]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Laminate Veneers]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/19",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "ceramic-crowns",
+      "name": "Ceramic Crowns",
+      "category": "cosmetic-treatments",
+      "shortDescription": "Cosmetic crowns are made from translucent ceramic materials which is attractive to look at and blends in well with the rest of your teeth.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Ceramic Crowns]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Ceramic Crowns]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Ceramic Crowns]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Ceramic Crowns]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/19",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "cad-cam-dental-crowns",
+      "name": "Cad Cam Dental Crowns",
+      "category": "cosmetic-treatments",
+      "shortDescription": "Computer Aided Design & Computer Assissted Milling helps to design & manufacture different types of crowns and dental restoration.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Cad Cam Dental Crowns]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Cad Cam Dental Crowns]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Cad Cam Dental Crowns]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Cad Cam Dental Crowns]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/19",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "gum-shaping",
+      "name": "Gum Shaping",
+      "category": "cosmetic-treatments",
+      "shortDescription": "Gum depigmentation/Shaping (aka gum bleaching) is a procedure used in cosmetic dentistry to remove black spots or patches on the gums caused by excessive melanin.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Gum Shaping]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Gum Shaping]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Gum Shaping]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Gum Shaping]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/19",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "dental-bleaching",
+      "name": "Dental Bleaching",
+      "category": "cosmetic-treatments",
+      "shortDescription": "Dental Bleaching/Tooth Whitening is a very effective way of lightening natural colour of your tooth without removing any of the tooth surface.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Dental Bleaching]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Dental Bleaching]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Dental Bleaching]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Dental Bleaching]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/19",
+      "status": "published-on-legacy-site"
+    },
+    {
+      "slug": "tooth-jewellery",
+      "name": "Tooth Jewellery",
+      "category": "cosmetic-treatments",
+      "shortDescription": "We use Tooth jewellery that is accredited & specifically designed to be bonded to teeth. It can be easily removed/changed without damaging the tooth.",
+      "benefits": "[[CLIENT TO PROVIDE: benefits of Tooth Jewellery]]",
+      "procedureSteps": "[[CLIENT TO PROVIDE: procedure steps for Tooth Jewellery]]",
+      "duration": "[[CLIENT TO PROVIDE: typical duration / number of sittings for Tooth Jewellery]]",
+      "recovery": "[[CLIENT TO PROVIDE: recovery / aftercare for Tooth Jewellery]]",
+      "price": null,
+      "faqs": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/service/view/19",
+      "status": "published-on-legacy-site"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Why should I go to the dentist regularly?",
+      "answerParagraphs": [
+        "Many people do not see a dentist on a regular basis. They only go when they have a problem. This is known as \"crisis treatment\" versus \"preventive treatment.\" While these patients may feel they are saving money, it often ends up costing much more in dollars and time. This is because many dental problems do not have symptoms until they reach the advanced stages of the disease process. An example is tooth decay. It is typical to hear, \"Nothing hurts... I don't have any problems.\"",
+        "Tooth decay often does not hurt until it gets close to the nerve of the tooth. It is not uncommon to see a patient with a huge cavity who has never felt a thing. The dentist can usually detect a cavity 3-4 years before it develops any symptoms. This early detection can help you prevent root canal treatment."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "Why should I floss, isn't brushing enough?",
+      "answerParagraphs": [
+        "Flossing reduces the number of bacteria in your mouth. There are millions of these microscopic creatures feeding on food particles left on your teeth. These bacteria live in plaque which can be removed by flossing. Brushing your teeth gets rid of some of the bacteria in your mouth. Flossing gets rid of the bacteria the toothbrush can't get to. That's the bacteria hiding in the tiny spaces between your teeth. If you do not floss, you allow plaque to remain between your teeth. Eventually it hardens into tartar. Plaque can be removed by brushing. Only the dentist can remove tartar.",
+        "Ask your dentist to show you the proper way to floss. You will both notice the difference at the next cleaning appointment."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "How can I get my kids to brush their teeth?",
+      "answerParagraphs": [
+        "Make it fun! If you are enthusiastic about brushing your teeth, your children will also be enthusiastic. Children want to do the things their parents do. If your children see you brushing your teeth and displaying good dental habits, they will follow. Ask the dentist for other creative ways to get children to brush their teeth.",
+        "Getting your children to brush starts with taking them to the dentist at an early age. All children should be seen by their first birthday or 6 months after the eruption of the first tooth."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "How can I prevent cavities?",
+      "answerParagraphs": [
+        "Always spend two to three minutes brushing your teeth. It takes that long to get rid of the bacteria that destroy tooth enamel. Do not brush too hard. It takes very little pressure to remove bacteria and plaque. Floss at least once a day. Flossing is the only way to get bacteria from between your teeth.",
+        "Watch the sugar you eat. There is sugar in candy, fruits, crackers and chips. These are the foods that the bacteria in your mouth like best. Be mindful of foods like raisins and peanut butter that stick to your teeth. They can provide a constant supply for the bacteria eating into your teeth. Try to minimize the times during the day when sweet items are eaten and brush your teeth afterwards.",
+        "If you cannot brush after a meal, rinse your mouth with water - which can help to remove food from your teeth. Chewing sugarless gum after a meal can also help. Chewing deskulates the flow of your saliva which acts as a natural plaque-fighting substance. And do not forget your regular dental visits. Good dental habits will go a long way toward a no-cavity visit."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "Why does the dentist take X-rays?",
+      "answerParagraphs": [
+        "Many diseases of the teeth and surrounding tissues cannot be seen when the dentist examines the mouth. An X-ray examination may reveal:",
+        "small areas of decay between the teeth or below existing restorations (fillings)",
+        "infections in the bone",
+        "periodontal (gum) disease",
+        "abscesses or cysts",
+        "developmental abnormalities",
+        "some types of tumors",
+        "Finding and treating dental problems at an early stage can save time, money and often unnecessary discomfort. X-rays can detect damage to oral structures not visible during a regular exam. If you have a hidden tumor, X-rays may even help save your life. Dentist will evaluate your need for X-rays based on the conditions present in development. There are many benefits to having X-rays taken. Any additional questions or concerns should be discussed with your dentist."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "What is fluoride and why is it important to dental health?",
+      "answerParagraphs": [
+        "Fluoride is a mineral that occurs naturally in many foods and in water. Some natural sources of fluoride are brewed tea, canned fish, cooked kale and spinach, apples, and skim milk. Some city water contains fluoride, so by drinking tap water you will acquire fluoride. If drinking water does not have fluoride, supplements are available.",
+        "The lack of exposure to fluoride places individuals of any age at risk for dental decay. Fluoride is important to dental health because it helps prevent tooth decay by making your tooth enamel more resistant to acid attacks from plaque bacteria in your mouth.",
+        "Studies have shown that children who consumed fluoridated water from birth had less dental decay. Fluoride can reverse early decay and help prevent osteoporosis, a disease that causes degenerative bone loss. Talk to your dentist or dental hygienist about whether you're getting the daily amount of fluoride you need."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "What are cavity-fighting sealants?",
+      "answerParagraphs": [
+        "The American Dental Association cites sealants as an effective weapon in the arsenal against tooth decay. Sealants are a thin coating painted on chewing surfaces of molars and premolars. Dental sealants act as a barrier, protecting your teeth against decay-causing bacteria.",
+        "Sealants have proven effective with both adults and children, but are most commonly used with children. Despite the fact that sealants are about half the cost of fillings, only a small percentage of school-aged children have sealants on their permanent teeth. Ask your dentist whether sealants are a good choice for you or your children."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "What are the dangers of oral piercings?",
+      "answerParagraphs": [
+        "piercing is a widely accepted form of self-expression, and that includes piercings in the mouth. However, the potential problems from piercings are numerous. Some symptoms after a piercing include pain, swelling, infection, drooling, taste loss, scarring, chipped teeth, tooth loss, and an increased flow of saliva, none of which are particularly pleasant. Tongue piercing can also cause excessive bleeding. If you're thinking of placing a piercing in or around your mouth, talk to your dentist first. If you already have piercings and are having problems, see your dentist right away."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "I knocked out a tooth, can it be saved?",
+      "answerParagraphs": [
+        "Oral injuries are often painful, and should be treated by a dentist as soon as possible. If you have knocked out a tooth, these tips may be able to save it:",
+        "Rinse, do not scrub, the tooth to remove dirt or debris",
+        "Place the clean tooth in your mouth between your cheek and gum or under your tongue",
+        "Do not attempt to replace the tooth into the socket as this could cause further damage",
+        "Get to the dentist. Successful re-implantation is possible only when treatment is performed promptly",
+        "If it is not possible to store the tooth in the mouth of the injured person, wrap the tooth in a clean cloth or gauze and immerse it in milk."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "What can I do about sensitive teeth?",
+      "answerParagraphs": [
+        "Sensitivity toothpaste, which contains strontium chloride or potassium nitrate are very effective in treating sensitive teeth. After a few weeks of use, you may notice a decrease in sensitivity. Highly acidic foods such as oranges, grapefruits and lemons, as well as tea and soda can increase tooth sensitivity, and work against sensitivity toothpaste. If you do not get relief by brushing gently and using desensitizing toothpaste, see your dentist. There are special compounds that can be applied in-office to the roots of your tooth to reduce - if not eliminate - the sensitivity. High-fluoride containing home care products can also be recommended to help reduce tooth sensitivity."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "How long will the results of teeth whitening last?",
+      "answerParagraphs": [
+        "Like other investments, if you whiten your teeth, the length of time you can expect it to last will vary. If you smoke, drink red wine or coffee, or consume other acid-containing foods, your bright smile may begin to yellow more quickly than you expect. In general, a teeth whitening procedure can last up to a few years. And even though the results can fade, occasional touch-ups can be done to regain luster."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "Do whitening toothpastes work?",
+      "answerParagraphs": [
+        "Commercial whitening toothpastes vary greatly in their ability to whiten teeth. They work by removing surface stains from the teeth with the use of mild abrasives. However, unlike professional whitening, some whitening toothpastes do not alter the intrinsic color of the teeth. Toothpastes that are effective in removing stains can also destroy tooth enamel in the process. These toothpastes use harsh abrasives. With repeated use, harsh abrasives begin to damage tooth enamel and can contribute to increased tooth sensitivity. If you would like to try a whitening toothpaste, consult with your dentist first."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "What should I do about bleeding gums?",
+      "answerParagraphs": [
+        "People often respond to bleeding gums with the wrong method of treatment. Usually, gums that bleed are a symptom of the onset of periodontal disease or gingivitis. But often, people stop brushing as frequently and effectively because it may be painful or it may cause the gums to bleed again. However, when gums are inflamed, brushing could help reduce the inflammation. More importantly, you should see your dentist to have a periodontal screening and recording performed in order to determine the level of disease present and the best treatment course to pursue.",
+        "It is also worth noting that chronic dental pain and discomfort are obvious signs of a problem. Over-the-counter drugs may provide some temporary relief. These medications usually only mask the existence of a problem and should be taken on a temporary basis.",
+        "It is important to see your dentist as soon as possible if your gums begin to bleed."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "Why do my teeth darken?",
+      "answerParagraphs": [
+        "Many factors work to destroy the naturally white smile you were born with. Tobacco, certain foods, and certain drinks actually stain teeth. These substances continually work on our teeth causing our white smile to gradually fade. Hot coffee and tea are especially hazardous to your smile because they change the temperature of teeth. This temperature change - hot and cold cycling - causes the teeth to expand and contract allowing stains to penetrate the teeth. Cutting down on coffee and tea can go a long way to creating a great smile. Foods that are slightly acidic are also dangerous to your white smile. These foods open up the pores of the tooth enamel allowing stains to move more easily into the tooth.",
+        "Your dentist can help you with more tips on keeping a white smile."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    },
+    {
+      "question": "I have diabetes. Why is my dentist concerned?",
+      "answerParagraphs": [
+        "Research today suggests a link between gum disease and diabetes. Research has established that people with diabetes are more prone to gum disease. If blood glucose levels are poorly controlled you may be more likely to develop gum disease and could potentially lose teeth. Like all infections, gum disease can be a factor in causing blood sugar levels to rise and make diabetes harder to control. Be sure to see your dentist regularly for check-ups and follow home care recommendations. If you notice other conditions such as dry mouth or bleeding gums, be sure to talk with your dentist. And don't forget to mention any changes in medications."
+      ],
+      "answerList": [],
+      "sourceUrl": "https://expressionsdentalclinic.com/faq",
+      "flags": [
+        "generic-boilerplate-likely-duplicate",
+        "needs-doctor-review"
+      ]
+    }
+  ],
+  "blogPosts": [
+    {
+      "slug": "selecting-a-toothbrush",
+      "title": "Selecting A Toothbrush",
+      "publishedDate": "February 26, 2021",
+      "category": "Knowledge Base",
+      "author": "[[CLIENT TO PROVIDE: author / reviewing doctor]]",
+      "excerpt": "A toothbrush is an important tool to keep your mouth clean. It's important that you pick a toothbrush that's safe and easy to use. Pick one that's the right size for your mouth and that you can comfortably handle and make sure the bristles are not hard",
+      "image": "/images/original/news-6.png",
+      "bodyHtml": "<p>A toothbrush is an important tool to keep your mouth clean. It's important that you pick a toothbrush that's safe and easy to use. Pick one that's the right size for your mouth and that you can comfortably handle and make sure the bristles are not hard. Think about adding special features, like a tongue cleaner or particular type of handle, if this will make you more likely to use it. You should also make sure your toothbrush is safe. Make sure it has a safety label on it prior to purchase.</p><p><b>Here are some guidelines for choosing a toothbrush.</b></p><p><b>Make sure your toothbrush works for the shape of your mouth.</b></p><p>Based on past toothbrushes, you should have some idea of the general shape of your mouth. Some mouths are more narrow or wide than others, and you need a toothbrush that works for your mouth and teeth. You want a brush that can comfortably reach the back of your molars. The shape of your mouth, and whether it's wider or narrower, will affect how easily a given brush can reach your molars.</p><p><b>Look at the angle of the toothbrush.</b></p><p>Some toothbrushes are designed to be held at a particular angle. Some consumers find a slightly tilted toothbrush allows them to more easily hit certain areas of the mouth. However, you should not purchase a toothbrush you do not know how to use. Unless you have a strong preference for an angled brush and have used one before, opt for a standard toothbrush. The ideal toothbrush is always one you can easily use.</p><p><b>Select a handle you like. </b></p><p>You're less likely to brush your teeth effectively if you dislike your toothbrush's handle. Go for a toothbrush with a soft handle that's easy to hold. If you struggle to hold your toothbrush, you're likely to stop brushing your teeth prematurely and also to use bad brushing technique, which can damage your teeth.</p><p><b>Opt for softer bristles. </b></p><p>While toothbrushes come in a variety of bristle strengths, you should usually opt for softer bristles. This is less taxing on your gums and tooth enamel. Hard bristles may cause gum tissue to pull back from teeth, which can expose the tooth root and lead to increased sensitivity to heat, cold or certain foods and drinks.</p><p><b>Pick out the extras you want. </b><br></p><p>Is there a special feature you feel you'll use? If you're, say, preoccupied with bad breath, you may want a toothbrush with a tongue cleaner. If you're environmentally conscious, you may want a toothbrush that's easily recyclable and made from organic materials.</p><p><b>A manual versus an electronic toothbrush. </b><br></p><p>Manual toothbrushes are operated just with your hands. Electronic toothbrushes have a motor that moves the bristles for you as you move the toothbrush over your mouth. The main benefit of an electronic toothbrush is it can give you a deeper clean. It's also great if you have a condition like arthritis, as electronic toothbrushes do much of the work for you. Electronic toothbrushes are usually expensive. Another major disadvantage of having an electronic toothbrush is that you might forget how to brush properly. The most effective brushing technique is still the manual one where you can brush your teeth and gums using vertical strokes.</p> <div class=\"share-news mt_50\"> <h4>Share This News</h4> <div class=\"a2a_kit a2a_kit_size_32 a2a_default_style\"> <a class=\"a2a_dd\" href=\"https://www.addtoany.com/share\"></a> <a class=\"a2a_button_facebook\"></a> <a class=\"a2a_button_twitter\"></a> <a class=\"a2a_button_google_plus\"></a> <a class=\"a2a_button_pinterest\"></a> <a class=\"a2a_button_linkedin\"></a> <a class=\"a2a_button_digg\"></a> <a class=\"a2a_button_tumblr\"></a> <a class=\"a2a_button_reddit\"></a> <a class=\"a2a_button_stumbleupon\"></a>",
+      "legacyUrl": "https://expressionsdentalclinic.com/news/view/6",
+      "flags": [
+        "likely-duplicate-of-third-party-content",
+        "needs-doctor-review",
+        "image-low-res"
+      ]
+    },
+    {
+      "slug": "oral-cancer",
+      "title": "Oral Cancer",
+      "publishedDate": "December 03, 2018",
+      "category": "Knowledge Base",
+      "author": "[[CLIENT TO PROVIDE: author / reviewing doctor]]",
+      "excerpt": "Oral cancer on the side of the tongue, a common site along with the floor of the mouth.",
+      "image": "/images/original/news-4.jpg",
+      "bodyHtml": "<p>Mouth cancer, or oral cancer, can occur anywhere in the mouth, on the surface of the tongue, the lips, inside the cheek, in the gums, in the roof and floor of the mouth, in the tonsils, and in the salivary glands. It is a type of head and neck cancer and is often treated similarly to other head and neck cancers. Oral cancer can be life-threatening if not diagnosed and treated early. Mouth cancer mostly happens after the age of 40, and the risk is more than twice as high in men as it is in women.</p><p><br></p><p><b>Symptoms</b></p><p>The most common symptoms of oral cancer include:</p><p>A sore that doesn't heal</p><p>A sore that bleeds</p><p>A growth, lump or thickening of the skin or lining of your mouth</p><p>Loose teeth</p><p>Poorly fitting dentures</p><p>Tongue pain</p><p>Jaw pain or stiffness</p><p>Difficult or painful chewing</p><p>Difficult or painful swallowing</p><p>A sore throat</p><p>Make an appointment with your doctor or dentist if you have any persistent signs and symptoms that bother you and last more than two weeks. Your doctor will likely investigate other more common causes for your signs and symptoms first, such as an infection.</p><p><b>Causes</b></p><p>Cancer results when a genetic mutation instructs cells to grow without control. Untreated, oral cancer will start in one part of the mouth, then spread to other parts of the mouth, to the head and neck, and the rest of the body. Mouth cancers typically start in the squamous cells that line the lips and the inside of the mouth. This is called squamous cell carcinoma.</p><p><b>Risk Factors</b></p><p>Factors that can increase your risk of mouth cancer include:</p><p>Smoking. Cigarette, cigar, or pipe smokers are six times more likely than non-smokers to develop oral cancers.</p><p>Smokeless tobacco users. Users of dip, snuff, or chewing tobacco products are 50 times more likely to develop cancers of the cheek, gums, and lining of the lips.</p><p>Excessive consumption of alcohol. Oral cancers are about six times more common in drinkers than in non-drinkers.</p><p>Family history of cancer.</p><p>Excessive sun exposure, especially at a young age.</p><p>Human papillomavirus (HPV). Certain HPV strains are etiologic risk factors for Oropharyngeal Squamous Cell Carcinoma (OSCC)</p><p><b>Diagnosis</b></p><p>A biopsy may be carried out, where a small sample of tissue is taken to check for cancerous cells. Sometimes a \"brush biopsy\" is used initially; this where cells are painlessly collected by brushing them to one side.</p><p>If mouth cancer is diagnosed, the next task is to determine the stage of the cancer.</p><p>Tests include:</p><p>Endoscopy, where a lighted scope is passed down the patient's throat to see how far the cancer has spread</p><p>Imaging tests, such as X-ray, Computed Tomography (CT) scans, and Magnetic Resonance Imaging (MRI) Staging cancer will inform treatment options and help predict prognosis</p><p><b>Outlook</b></p><p>A person who is diagnosed with stage 1 oral or pharyngeal cancer has an 83 percent chance of surviving for longer than 5 years. Around 31 percent of cases are diagnosed at this stage.</p><p>For those whose cancer spreads to other parts of the body, the chance of surviving more than 5 years is 38 percent.</p><p><b>Treatment</b></p><p>Treatment depends on the location and stage of the cancer, and the patient's general health and personal preferences. A combination of treatments may be necessary.</p><p>· Surgery: Surgical removal of the tumour involves taking out the tumour and a margin of healthy tissue around it. A small tumour will require minor surgery, but for larger tumours, surgery may involve removing some of the tongue or the jawbone.</p><p>· Radiation Therapy: Oral cancers are especially sensitive to radiation therapy, which uses beams of high-energy X-rays or radiation particles to damage the DNA inside the tumour cells, destroying their ability to reproduce.A person with early-stage mouth cancer may only need radiation therapy, but it can also be combined with surgery, chemotherapy, or both, to prevent the cancer from returning.</p><p>· Chemotherapy: Widespread cancer may be treated with chemotherapy as well as radiation therapy, especially if there is a significant chance of the cancer returning.Chemotherapy involves using powerful medicines that damage the DNA of the cancer cells, undermining their ability to reproduce.</p><p>· Targeted Drug Therapy: Targeted drug therapy uses drugs known as monoclonal antibodies to change aspects of cancer cells that help them grow.Cetuximab, or Erbitux, is used for some head and neck cancers. Targeted drugs may be combined with radiotherapy or chemotherapy. </p><p><b>Prevention</b></p><p>A number of lifestyle changes can reduce the risk of mouth cancer.</p><p>Stop using tobacco or don't start. If you use tobacco, stop. If you don't use tobacco, don't start. Using tobacco, whether smoked or chewed, exposes the cells in your mouth to dangerous cancer-causing chemicals.<br></p><p>Drink alcohol only in moderation, if at all. Chronic excessive alcohol use can irritate the cells in your mouth, making them vulnerable to mouth cancer. If you choose to drink alcohol, limit yourself to one drink a day if you're a woman or two drinks a day if you're a man.</p><p>Eat a variety of fruits and vegetables. Choose a diet rich in fruits and vegetables. The vitamins and antioxidants found in fruits and vegetables may help reduce your risk of mouth cancer.</p><p>Avoid excessive sun exposure to your lips. Protect the skin on your lips from the sun by staying in the shade when possible. Wear a broad-brimmed hat that effectively shades your entire face, including your mouth. Apply a sunscreen lip product as part of your routine sun protection regimen.</p><p>See your dentist regularly. As part of a routine dental exam, ask your dentist to inspect your entire mouth for abnormal areas that may indicate mouth cancer or precancerous changes.</p> <div class=\"share-news mt_50\"> <h4>Share This News</h4> <div class=\"a2a_kit a2a_kit_size_32 a2a_default_style\"> <a class=\"a2a_dd\" href=\"https://www.addtoany.com/share\"></a> <a class=\"a2a_button_facebook\"></a> <a class=\"a2a_button_twitter\"></a> <a class=\"a2a_button_google_plus\"></a> <a class=\"a2a_button_pinterest\"></a> <a class=\"a2a_button_linkedin\"></a> <a class=\"a2a_button_digg\"></a> <a class=\"a2a_button_tumblr\"></a> <a class=\"a2a_button_reddit\"></a> <a class=\"a2a_button_stumbleupon\"></a>",
+      "legacyUrl": "https://expressionsdentalclinic.com/news/view/4",
+      "flags": [
+        "likely-duplicate-of-third-party-content",
+        "needs-doctor-review",
+        "image-low-res"
+      ]
+    },
+    {
+      "slug": "brushing-your-teeth",
+      "title": "Brushing Your Teeth",
+      "publishedDate": "December 03, 2018",
+      "category": "Knowledge Base",
+      "author": "[[CLIENT TO PROVIDE: author / reviewing doctor]]",
+      "excerpt": "Brushing your teeth is not just for a whiter smile and fresher breath, it's critical for your overall health. Brushing teeth properly helps prevent cavities, and periodontal, or gum disease, which causes at least one-third of adult tooth loss.",
+      "image": "/images/original/news-2.png",
+      "bodyHtml": "<p>Brushing your teeth is not just for a whiter smile and fresher breath, it's critical for your overall health. Brushing teeth properly helps prevent cavities, and periodontal, or gum disease, which causes at least one-third of adult tooth loss. If teeth are not brushed correctly and frequently, it could lead to the calcification of saliva minerals, forming tartar. Tartar hardens if not removed every 24 hours. Poor dental health has been associated with heart disease and shortened life expectancy.</p><p>You know why to brush, but if you would like to learn how to brush your teeth efficiently, these suggestions will help.</p><p><b>Use a good toothbrush</b>. Choose a toothbrush with soft nylon bristles. This must effectively remove plaque and debris from your teeth, without irritating the gums or eroding tooth enamel like hard-bristled brushes can do when used with sideways action. The toothbrush should also fit comfortably in your hand, and have a head small enough to easily reach all of your teeth, especially the ones at the back. If you have difficulty fitting the toothbrush into your mouth, it is probably too big.</p><p><b>Replace your toothbrush regularly</b>. The bristles will wear out over time, losing their flexibility and effectiveness. You should purchase a new toothbrush every three to four months, or as soon as the bristles start to splay out and lose their shape. Visual inspection of the toothbrush is more important than the actual timeline. You can also buy toothbrushes whose handles will change colour when it's time to purchase a new toothbrush.</p><p><b>Use a fluoride toothpaste</b>. It not only helps remove plaque, but it also helps strengthen tooth enamel. It is important to note that fluoride toothpaste is not to be swallowed, as ingesting too much can have serious health consequences. You can get toothpaste to target a wide variety of dental and gum problems, including cavities, tartar, sensitive teeth and gums, gingivitis and stained teeth. Opt for the one that suits your best or ask your dentist or hygienist for advice.</p><p><b>Remember to brush at least twice a day</b>. Most dentists recommend that you brush at least twice a day - once in the morning and once before bed. If you can fit in a third time somewhere in the middle, even better!</p><p><b>Proper brushing technique</b></p><p>Use a small amount of toothpaste. Squeeze only a pea-sized amount of toothpaste onto your toothbrush. Applying too much toothpaste can cause over-sudsing, tempting you to spit and finish too early. Plus, it increases the risk of you ingesting more fluoride-filled toothpaste, which is very unhealthy.</p><p>Set your bristles at the gum line at a 45-degree angle. Gently brush with a short, vertical or circular motion. Don't brush across your teeth. Ask your dentist or hygienist to present you the correct brushing technique.</p><p>Spend at least three minutes brushing. Brushing just a few teeth at a time, work your way around your mouth in a circle so that you get every tooth, spending about 12 to 15 seconds in each spot. If it helps, you can divide your mouth into quadrants: top left, top right, bottom left, and bottom right. If you spend 30 seconds on each quadrant, you'll get a full two minutes of brushing time in.</p><p>Brush your molars. Position the toothbrush so that it's perpendicular to your lips, or so that the bristles are resting on top of your bottom molars. Work the toothbrush in an in-and-out motion, and move from the back of your mouth to the front. Then complete this motion doing s rotational movement of the brush in order to eliminate bacteria which have been dislocated from the surface. Repeat on the other side of your mouth. When the bottom teeth are clean, flip the toothbrush over and work on the top molars.</p><p>Brush the inner surfaces of your teeth. Tip the toothbrush so that the head of the toothbrush is pointing towards your gum line, and brush each tooth. Dentists report that the most commonly skipped area is the inside of the lower front teeth, so be sure not to forget those! Check that your mouth is opening wide enough by holding teeth apart with two or three fingers of your other hand. This will allow thecorrect vertical angle to reach theedge of gum.</p><p>Gently brush your tongue. After you've cleaned your teeth, use the bristles of your toothbrush to gently clean your tongue. (Don't press too hard, or you'll damage the tissue.) This helps keep bad breath away and gets rid of bacteria on your tongue.</p> <div class=\"share-news mt_50\"> <h4>Share This News</h4> <div class=\"a2a_kit a2a_kit_size_32 a2a_default_style\"> <a class=\"a2a_dd\" href=\"https://www.addtoany.com/share\"></a> <a class=\"a2a_button_facebook\"></a> <a class=\"a2a_button_twitter\"></a> <a class=\"a2a_button_google_plus\"></a> <a class=\"a2a_button_pinterest\"></a> <a class=\"a2a_button_linkedin\"></a> <a class=\"a2a_button_digg\"></a> <a class=\"a2a_button_tumblr\"></a> <a class=\"a2a_button_reddit\"></a> <a class=\"a2a_button_stumbleupon\"></a>",
+      "legacyUrl": "https://expressionsdentalclinic.com/news/view/2",
+      "flags": [
+        "likely-duplicate-of-third-party-content",
+        "needs-doctor-review",
+        "image-low-res"
+      ]
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "You are truly a master! I am so appreciative of your astounding abilities, care and attention to details. You all are truly a special group of people very caring and compassionate a true credit to your profession. I always felt very confident that I was in good hands and appreciated all that you did. You and your office staff impart a sense of calm, confidence and true caring that makes the entire experience a pleasant one.Thanks once again!! For the entire pleasant experience!!",
+      "name": "Denise Maynard",
+      "location": "Wickford Essex",
+      "rating": null,
+      "source": "legacy website (date and consent unknown)",
+      "sourceUrl": "https://expressionsdentalclinic.com/"
+    },
+    {
+      "quote": "I feel the service at this Dental Clinic is excellent, and at a very reasonable price. To me expressions dental clinic has one of the most efficient Dentists I have found during my travel and stay in many countries.",
+      "name": "Alexendra Faraday",
+      "location": "Dromley Kent, London",
+      "rating": null,
+      "source": "legacy website (date and consent unknown)",
+      "sourceUrl": "https://expressionsdentalclinic.com/"
+    },
+    {
+      "quote": "Dear Dr. Sandeep! You have been more of a friend than a Doctor to me. I was a typical patient who used to have a problem with dentists. Thank you for changing my perception and making me feel so comfortable throughout all my dental sessions. Thank you again, such a GREAT DOCTOR!!!!",
+      "name": "Audrey Patricia",
+      "location": "Wickford Essex",
+      "rating": null,
+      "source": "legacy website (date and consent unknown)",
+      "sourceUrl": "https://expressionsdentalclinic.com/"
+    },
+    {
+      "quote": "Dr.Sandeep has been taking care of my and my familys dental health for number of years now and we are 100% satisfied by his treatment as well as general guidance. More than a Doctor he is now a friend. He has pretty efficient staff who are courteous and well behaved. I wish him all the success in professional and personal life.",
+      "name": "Joe",
+      "location": "London",
+      "rating": null,
+      "source": "legacy website (date and consent unknown)",
+      "sourceUrl": "https://expressionsdentalclinic.com/"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "$comment": "Hand-entered facts for clinic.json. clinic.json is generated from this file plus content/raw/*.html by the extraction script; edit this file, not clinic.json. Anything marked [[CLIENT TO PROVIDE: ...]] or [[CLIENT TO CONFIRM: ...]] must not be published until answered.",
+  "meta": {
+    "extractedAt": "2026-11-03",
+    "sourceSite": "https://www.expressionsdentalclinic.com/",
+    "sourceNotes": "Legacy site is a CodeIgniter template ('template-five'). 13 pages crawled; copyright line reads 2021. Google Business Profile for the Mapusa branch was read on 2026-11-03 for hours and rating only."
+  },
+  "clinic": {
+    "name": "Expressions Dental Clinic",
+    "legalName": "[[CLIENT TO PROVIDE: registered legal name of the practice]]",
+    "tagline": null,
+    "taglineCandidates": ["We care your life", "We respect your time", "100% Satisfaction"],
+    "taglineNote": "The legacy site has no real tagline, only slider/section headings. 'We care your life' is grammatically wrong and should not be reused. Ask the client for one.",
+    "legacyIntro": "At Expressions Dental Clinic, it is our goal to help you maintain your optimal oral health. We provide you with the information; advice and care that you need to make decisions about your dental health.",
+    "legacyAbout": [
+      "Welcome to Expressions Dental Clinic.",
+      "At Expressions Dental Clinic, it is our goal to help you maintain your optimal oral health. We provide you with the information; advice and care that you need to make decisions about your dental health.",
+      "Come open your eyes to the ultimate in international quality or close your eyes and trust us. Either way, you are in good hands, because the word compromise does not exist in our lexicon.",
+      "We understand the importance of making our patient’s feel welcome and relaxed. Step into our dental office, and enjoy our modern, yet comfortable décor as you are greeted by a team of professionals who know how to make people feel at ease.",
+      "Your treatment needs and your smile designing are skillfully fashioned in a state of the art dental office, that uses the latest technology and latest materials."
+    ],
+    "foundedYear": "[[CLIENT TO PROVIDE: year founded]]",
+    "logo": {
+      "primary": "/images/original/logo.png",
+      "primaryNote": "500x176 PNG, white wordmark + tooth on magenta (#F51B97). No SVG, no dark/mono variant found.",
+      "svg": "[[CLIENT TO PROVIDE: vector logo (SVG/AI/PDF)]]",
+      "favicon": "/images/original/favicon.png",
+      "faviconNote": "100x100 PNG; grey-green tooth on magenta, low quality. Will be regenerated from the vector logo."
+    },
+    "brand": {
+      "logoMagenta": "#F51B97",
+      "legacyTemplateColors": {
+        "accentCyan": "#00A3C8",
+        "accentYellow": "#FDD01A",
+        "navy": "#34406C",
+        "charcoal": "#2E3337",
+        "bodyGrey": "#7E7E7E"
+      },
+      "note": "Magenta comes from the logo and the physical shop signage, so it is the true brand anchor. The cyan/yellow/navy are defaults of the purchased template, not brand decisions.",
+      "legacyFonts": ["Poppins", "Nunito"]
+    },
+    "contact": {
+      "phones": [
+        { "display": "+91 96570 41122", "e164": "+919657041122", "label": "Helpdesk" },
+        { "display": "+91 96570 61122", "e164": "+919657061122", "label": "Helpdesk", "note": "Used for click-to-call and WhatsApp on the legacy site, and listed on the Google Business Profile." }
+      ],
+      "whatsapp": "+919657061122",
+      "email": "info@expressionsdentalclinic.com",
+      "emailIssue": "Homepage footer also links mailto:info@youwebsite.com (template leftover)."
+    },
+    "social": {
+      "facebook": "https://www.facebook.com/expressionsdentalclinicgoa/",
+      "twitter": "https://twitter.com/expressdentist",
+      "youtube": "https://www.youtube.com/channel/UCNlJLOVQlNq1pAbKTTY6GAQ",
+      "instagram": "[[CLIENT TO PROVIDE: Instagram handle, if any]]",
+      "googleBusinessProfile": "https://www.google.com/maps/place/?q=place_id:ChIJmYZR3xjrvzsRqAmnoJfHNzA"
+    },
+    "googleRating": {
+      "branch": "mapusa",
+      "rating": 4.6,
+      "reviewCount": 59,
+      "readOn": "2026-11-03",
+      "usage": "May be shown as a linked 'Google rating' badge refreshed from the Places API. Must NOT be emitted as self-serving AggregateRating schema."
+    }
+  },
+  "locations": [
+    {
+      "id": "mapusa",
+      "name": "Expressions Dental Clinic, Duler (Mapusa)",
+      "addressOnWebsite": "Shop No.4, Ground floor, Vitara towers, Duler, Mapusa, Goa.",
+      "addressOnGoogle": "Shop no.4, ground floor, MFA Tower, Duler petrol station, near Duler Ground Road, next to Yamaha show room, Dangui Colony, Mapusa, Goa 403507",
+      "addressConflict": "[[CLIENT TO CONFIRM: 'Vitara Towers' (website) vs 'MFA Tower' (Google). A 2025 Google review mentions a 'new spacious clinic' – has the clinic moved?]]",
+      "postalCode": "403507",
+      "locality": "Mapusa",
+      "region": "Goa",
+      "country": "IN",
+      "geo": { "lat": 15.601039, "lng": 73.8156292, "source": "Google Maps place" },
+      "plusCode": "JR28+C7 Mapusa, Goa",
+      "googlePlaceId": "ChIJmYZR3xjrvzsRqAmnoJfHNzA",
+      "phone": "+919657061122",
+      "openingHours": {
+        "source": "Google Business Profile (partial read, 2026-11-03)",
+        "known": { "tuesday": "10:00-20:00", "wednesday": "10:00-20:00", "thursday": "10:00-20:00" },
+        "monday": "[[CLIENT TO CONFIRM]]",
+        "friday": "[[CLIENT TO CONFIRM]]",
+        "saturday": "[[CLIENT TO CONFIRM]]",
+        "sunday": "[[CLIENT TO CONFIRM]]",
+        "breaks": "[[CLIENT TO CONFIRM: lunch break?]]"
+      }
+    },
+    {
+      "id": "candolim",
+      "name": "Expressions Dental Clinic, Candolim",
+      "addressOnWebsite": "Holiday beach resort, Opposite Teama bar and car parking area, Candolim Beach road, Murrod vaddo, Candolim, Bardez, Goa.",
+      "status": "[[CLIENT TO CONFIRM: is the Candolim branch still operating? Its Google listing showed no details when checked.]]",
+      "postalCode": "[[CLIENT TO PROVIDE]]",
+      "locality": "Candolim",
+      "region": "Goa",
+      "country": "IN",
+      "geo": { "lat": 15.5183639, "lng": 73.7648465, "source": "Google Maps place" },
+      "googlePlaceId": "ChIJoVQsLpTBvzsRfnzH8QEw1sA",
+      "phone": "[[CLIENT TO CONFIRM: same numbers as Mapusa?]]",
+      "openingHours": "[[CLIENT TO PROVIDE]]"
+    }
+  ],
+  "doctors": [
+    {
+      "slug": "dr-sandeep",
+      "name": "Dr. Sandeep",
+      "fullName": "[[CLIENT TO PROVIDE: full name]]",
+      "qualifications": "M.D.S.",
+      "specialisation": "Root Canal & Cosmetic Specialist",
+      "evidence": "Named in website testimonials; listed on the 'Our Specialists' board visible in gallery photo photo-42.jpg; appears to be the doctor in most gallery photos (to confirm).",
+      "registrationNumber": "[[CLIENT TO PROVIDE: Goa Dental Council registration no.]]",
+      "experienceYears": "[[CLIENT TO PROVIDE]]",
+      "bio": "[[CLIENT TO PROVIDE]]",
+      "photo": "[[CLIENT TO CONFIRM: is photo-38.jpg / photo-47.jpg Dr. Sandeep?]]",
+      "publish": false
+    },
+    { "slug": "dr-santosh", "name": "Dr. Santosh", "qualifications": "M.D.S.", "specialisation": "Prosthodontist and Implantologist", "evidence": "Signage photo only", "publish": false },
+    { "slug": "dr-deepa", "name": "Dr. Deepa", "qualifications": "M.D.S.", "specialisation": "Oral Pathologist", "evidence": "Signage photo only", "publish": false },
+    { "slug": "dr-sravani", "name": "Dr. Sravani", "qualifications": "[[partly obscured on signage]]", "specialisation": "Dental Surgeon", "evidence": "Signage photo only", "publish": false },
+    { "slug": "dr-shraddha-nagvekar", "name": "Dr. Shraddha Nagve[...]", "qualifications": "[[obscured]]", "specialisation": "Dental Surgeon", "evidence": "Signage photo only; surname partly obscured", "publish": false },
+    { "slug": "dr-neil", "name": "Dr. Neil", "qualifications": "M.D.S.", "specialisation": "Pedodontist (Kids Specialist)", "evidence": "Signage photo only", "publish": false }
+  ],
+  "doctorsNote": "The legacy site has NO doctors page. These names were read from the specialists board in a shop-front photo of unknown date. None will be published until the client confirms the current team, full names, registration numbers, photos and bios.",
+  "stats": {
+    "note": "The legacy site shows no numeric stats. '100% Satisfaction' is a slider headline, not a measured stat, and will not be used.",
+    "happyPatients": "[[CLIENT TO PROVIDE]]",
+    "yearsOfExperience": "[[CLIENT TO PROVIDE]]"
+  },
+  "images": {
+    "directory": "/frontend/public/images/original/",
+    "items": [
+      { "file": "logo.png", "size": "500x176", "subject": "Logo" },
+      { "file": "favicon.png", "size": "100x100", "subject": "Favicon" },
+      { "file": "slider-1.jpg", "size": "1200x800", "subject": "Hero slider" },
+      { "file": "slider-2.jpg", "size": "1200x800", "subject": "Hero slider" },
+      { "file": "slider-3.jpg", "size": "1200x800", "subject": "Hero slider (doctor at desk)" },
+      { "file": "about-img.jpg", "size": "800x810", "subject": "Doctor portrait, arms crossed" },
+      { "file": "photo-38.jpg", "size": "1013x1350", "subject": "Doctor portrait at desk" },
+      { "file": "photo-39.jpg", "size": "1013x1350", "subject": "Doctor treating patient with dental microscope" },
+      { "file": "photo-41.jpg", "size": "900x1200", "subject": "Doctor pointing at clinic signage" },
+      { "file": "photo-42.jpg", "size": "900x1200", "subject": "Shop front (Duler, Mapusa) with specialists board" },
+      { "file": "photo-47.jpg", "size": "800x1200", "subject": "Doctor standing in operatory" },
+      { "file": "photo-49.jpg", "size": "800x1200", "subject": "Microscope-assisted treatment" },
+      { "file": "photo-51.jpg", "size": "800x1200", "subject": "Microscope-assisted treatment with assistant" },
+      { "file": "photo-52.jpg", "size": "800x1200", "subject": "Consultation in chair, patient visible" },
+      { "file": "photo-53.jpg", "size": "800x1200", "subject": "Consultation in chair, patient visible" },
+      { "file": "photo-55.jpg", "size": "800x1200", "subject": "Treatment, patient visible" },
+      { "file": "photo-56.jpg", "size": "1200x800", "subject": "Consultation at desk, patients visible" },
+      { "file": "photo-57.jpg", "size": "1200x800", "subject": "Consultation at desk, patients visible" },
+      { "file": "photo-60.jpg", "size": "1200x800", "subject": "Doctor at desk with X-ray on screen" },
+      { "file": "photo-62.jpg", "size": "1200x800", "subject": "Doctor at desk with model" },
+      { "file": "news-2.png", "size": "320x226", "subject": "Blog: cartoon man brushing" },
+      { "file": "news-4.jpg", "size": "320x216", "subject": "Blog: clinical photo of oral cancer lesion on tongue" },
+      { "file": "news-6.png", "size": "320x160", "subject": "Blog: toothbrush clipart" }
+    ],
+    "notes": "All alt text on the legacy site is 'portfolio', 'logo' or empty. Gallery contains clinic/doctor photos, not before/after cases. Photos with identifiable patients need written consent before reuse."
+  },
+  "legacyUrls": [
+    "/", "/about", "/service", "/service/view/1", "/service/view/2", "/service/view/19",
+    "/photo-gallery", "/news", "/news/view/2", "/news/view/4", "/news/view/6", "/category/1",
+    "/faq", "/contact", "/single-blog.html"
+  ]
+}
