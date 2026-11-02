@@ -5,7 +5,7 @@
  * Design tokens (docs/DESIGN_SYSTEM.md). Raw scales live in @theme so Tailwind generates
  * utilities (bg-primary-600, text-neutral-700…); semantic tokens below switch for dark mode.
  */
-@theme {
+@theme static {
   --color-primary-50: #fff3f7;
   --color-primary-100: #fee5ee;
   --color-primary-200: #ffcade;
@@ -121,32 +121,35 @@ h3,
   letter-spacing: -0.02em;
 }
 
-/* Native <dialog> used as a bottom sheet on phones and a centred modal on larger screens. */
-dialog.sheet {
-  margin: auto auto 0;
-  width: 100%;
-  max-width: 100%;
-  border-radius: 28px 28px 0 0;
-  padding: 0;
-  border: 0;
-  background: var(--bg);
-  color: var(--text);
+/* Radix Sheet: slides up from the bottom on phones, fades in centred from 768px. */
+.sheet-overlay[data-state='open'] {
+  animation: fade-in 200ms var(--ease-out-soft);
 }
-dialog.sheet[open] {
-  animation: sheet-up 280ms var(--ease-out-soft);
+.sheet-overlay[data-state='closed'] {
+  animation: fade-out 160ms ease-in;
 }
-dialog.sheet::backdrop {
-  background: rgb(31 36 43 / 0.55);
-  backdrop-filter: blur(2px);
+.sheet-content[data-state='open'] {
+  animation: sheet-up 300ms var(--ease-out-soft);
+}
+.sheet-content[data-state='closed'] {
+  animation: sheet-down 200ms ease-in;
 }
 @media (min-width: 768px) {
-  dialog.sheet {
-    margin: auto;
-    max-width: 30rem;
-    border-radius: 28px;
+  .sheet-content[data-state='open'] {
+    animation: sheet-pop 220ms var(--ease-out-soft);
   }
-  dialog.sheet[open] {
-    animation: sheet-fade 220ms var(--ease-out-soft);
+  .sheet-content[data-state='closed'] {
+    animation: fade-out 150ms ease-in;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
   }
 }
 @keyframes sheet-up {
@@ -154,9 +157,53 @@ dialog.sheet::backdrop {
     transform: translateY(100%);
   }
 }
-@keyframes sheet-fade {
+@keyframes sheet-down {
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes sheet-pop {
   from {
     opacity: 0;
     transform: translateY(12px) scale(0.98);
   }
+}
+
+/* Treatments mega menu (Radix NavigationMenu). */
+.mega-content[data-state='open'] {
+  animation: sheet-pop 180ms var(--ease-out-soft);
+}
+
+/* Accessibility settings, applied to <html> before first paint (see root.tsx). */
+html[data-text-size='large'] {
+  font-size: 112.5%;
+}
+html[data-text-size='larger'] {
+  font-size: 125%;
+}
+html[data-contrast='high'] {
+  --text: #000000;
+  --text-muted: #1f242b;
+  --border: #576170;
+  --brand: #8a0352;
+  --link: #6d0140;
+  --color-neutral-200: #8a94a3;
+  --color-neutral-300: #6b7788;
+  --color-neutral-400: #444c59;
+  --color-neutral-500: #343b45;
+  --color-neutral-600: #1f242b;
+  --color-neutral-700: #11151a;
+  --color-neutral-800: #000000;
+  --color-primary-500: #ad0068;
+  --color-primary-600: #8a0352;
+  --color-primary-700: #6d0140;
+}
+html[data-contrast='high'] main a:not([class*='bg-']):not([class*='ring-']) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* The footer is dark, so high contrast pushes its text to pure white instead. */
+html[data-contrast='high'] footer {
+  --color-neutral-300: #ffffff;
+  --color-neutral-400: #ffffff;
 }
