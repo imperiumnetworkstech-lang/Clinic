@@ -5,5 +5,8 @@ node_modules/
 dist/
 build/
 .react-router/
+.vercel/
 coverage/
 __pycache__/
+backend/.data/
+*.log

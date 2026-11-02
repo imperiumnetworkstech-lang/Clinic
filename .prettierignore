@@ -1,0 +1,8 @@
+pnpm-lock.yaml
+content/raw/
+content/clinic.json
+**/dist/
+**/build/
+**/.react-router/
+**/.vercel/
+backend/.data/

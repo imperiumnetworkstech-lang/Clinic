@@ -1,0 +1,44 @@
+{
+  "name": "expressions-dental",
+  "private": true,
+  "type": "module",
+  "description": "Expressions Dental Clinic: public website, patient portal and clinic admin/CRM",
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build:shared": "pnpm --filter @edc/shared build",
+    "dev": "pnpm build:shared && pnpm --parallel --filter @edc/backend --filter @edc/frontend dev",
+    "dev:api": "pnpm build:shared && pnpm --filter @edc/backend dev",
+    "dev:web": "pnpm build:shared && pnpm --filter @edc/frontend dev",
+    "db:start": "pnpm --filter @edc/backend db:start",
+    "db:migrate": "pnpm --filter @edc/backend db:migrate",
+    "db:seed": "pnpm --filter @edc/backend db:seed",
+    "build": "pnpm -r build",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm build:shared && pnpm -r typecheck",
+    "test": "pnpm build:shared && pnpm -r test",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "eslint": "9.39.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "globals": "16.5.0",
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "prettier": "3.9.10",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs}": [
+      "prettier --write",
+      "eslint --max-warnings 0"
+    ],
+    "*.{json,md,yml,yaml,css}": "prettier --write"
+  }
+}
