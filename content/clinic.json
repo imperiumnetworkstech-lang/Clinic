@@ -116,7 +116,7 @@
       "id": "candolim",
       "name": "Expressions Dental Clinic, Candolim",
       "addressOnWebsite": "Holiday beach resort, Opposite Teama bar and car parking area, Candolim Beach road, Murrod vaddo, Candolim, Bardez, Goa.",
-      "status": "[[CLIENT TO CONFIRM: is the Candolim branch still operating? Its Google listing showed no details when checked.]]",
+      "status": "open (confirmed by client 2026-11-03)",
       "postalCode": "[[CLIENT TO PROVIDE]]",
       "locality": "Candolim",
       "region": "Goa",
@@ -127,8 +127,9 @@
         "source": "Google Maps place"
       },
       "googlePlaceId": "ChIJoVQsLpTBvzsRfnzH8QEw1sA",
-      "phone": "[[CLIENT TO CONFIRM: same numbers as Mapusa?]]",
-      "openingHours": "[[CLIENT TO PROVIDE]]"
+      "phone": "+919657061122",
+      "phoneNote": "Client: use the numbers from the website (both helpdesk numbers apply to both branches).",
+      "openingHours": "Client: same as Google Business Profile. To be read from the Candolim GBP listing in Phase 3."
     }
   ],
   "doctors": [

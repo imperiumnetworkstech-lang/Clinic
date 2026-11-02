@@ -30,15 +30,17 @@
 **Flat treatment URLs.** Treatment URLs are flat (`/treatments/dental-implants`), as the brief specifies. The category is a filter and a breadcrumb, not a URL segment. That keeps URLs stable if a treatment moves category.
 
 ### Treatment slugs (from legacy content)
-| Category | Treatments |
-|---|---|
-| general | root-canal-treatment, dental-fillings, tooth-scaling (→ display "Teeth Cleaning & Scaling"), dentures, dental-crowns, tooth-extraction, child-dental-care (→ "Kids Dentistry") |
-| advanced | dental-implants, gum-surgery, orthodontic-treatment (braces & aligners), impacted-wisdom-tooth-removal |
-| cosmetic | smile-designing, laminate-veneers, ceramic-crowns, cad-cam-crowns, gum-depigmentation, teeth-whitening, tooth-jewellery |
+
+| Category | Treatments                                                                                                                                                                     |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| general  | root-canal-treatment, dental-fillings, tooth-scaling (→ display "Teeth Cleaning & Scaling"), dentures, dental-crowns, tooth-extraction, child-dental-care (→ "Kids Dentistry") |
+| advanced | dental-implants, gum-surgery, orthodontic-treatment (braces & aligners), impacted-wisdom-tooth-removal                                                                         |
+| cosmetic | smile-designing, laminate-veneers, ceramic-crowns, cad-cam-crowns, gum-depigmentation, teeth-whitening, tooth-jewellery                                                        |
 
 The slugs are chosen for search intent, not legacy wording: "teeth-whitening" over "dental-bleaching", "impacted-wisdom-tooth-removal" over "dental-impaction", "gum-depigmentation" over "gum-shaping". The page `<h1>` can still use the clinic's preferred name.
 
 ## 2. Private areas (`noindex, nofollow`, disallowed in robots.txt, excluded from sitemap)
+
 ```
 /portal              Patient portal (phone OTP): home, appointments, plan, reports, family, profile
 /portal/login
@@ -58,6 +60,7 @@ The slugs are chosen for search intent, not legacy wording: "teeth-whitening" ov
 **Footer:** NAP per branch with hours, quick links, top treatments, social links, legal links, and "Designed & developed by Imperium Networks".
 
 ## 4. Internal linking model
+
 - Treatment ↔ 2–3 related treatments, 1–3 blog guides, and the doctors who perform it.
 - Blog post → its primary treatment page (contextual CTA) and the reviewing doctor's profile.
 - Doctor → treatments they perform and posts they reviewed.
@@ -65,27 +68,28 @@ The slugs are chosen for search intent, not legacy wording: "teeth-whitening" ov
 
 ## 5. 301 redirect map (legacy → new)
 
-| Legacy | New |
-|---|---|
-| `/about` | `/about` |
-| `/service` | `/treatments` |
-| `/service/view/1` | `/treatments/general` |
-| `/service/view/2` | `/treatments/advanced` |
-| `/service/view/19` | `/treatments/cosmetic` |
-| `/service/view/:id` (any other) | `/treatments` |
-| `/photo-gallery` | `/smile-gallery` |
-| `/news` | `/blog` |
-| `/news/view/2` | `/blog/how-to-brush-your-teeth-properly` |
-| `/news/view/4` | `/blog/oral-cancer-signs-symptoms-risk-factors` |
-| `/news/view/6` | `/blog/how-to-choose-the-right-toothbrush` |
-| `/news/view/:id` (any other) | `/blog` |
-| `/category/:id` | `/blog` |
-| `/faq` | `/faq` |
-| `/contact` | `/contact` |
-| `/single-blog.html` | `/blog` |
-| `/index.php/*` | strip prefix, then re-apply map (CodeIgniter fallback) |
-| `www.` host | apex (or the reverse; one canonical host, HTTPS only) |
+| Legacy                          | New                                                    |
+| ------------------------------- | ------------------------------------------------------ |
+| `/about`                        | `/about`                                               |
+| `/service`                      | `/treatments`                                          |
+| `/service/view/1`               | `/treatments/general`                                  |
+| `/service/view/2`               | `/treatments/advanced`                                 |
+| `/service/view/19`              | `/treatments/cosmetic`                                 |
+| `/service/view/:id` (any other) | `/treatments`                                          |
+| `/photo-gallery`                | `/smile-gallery`                                       |
+| `/news`                         | `/blog`                                                |
+| `/news/view/2`                  | `/blog/how-to-brush-your-teeth-properly`               |
+| `/news/view/4`                  | `/blog/oral-cancer-signs-symptoms-risk-factors`        |
+| `/news/view/6`                  | `/blog/how-to-choose-the-right-toothbrush`             |
+| `/news/view/:id` (any other)    | `/blog`                                                |
+| `/category/:id`                 | `/blog`                                                |
+| `/faq`                          | `/faq`                                                 |
+| `/contact`                      | `/contact`                                             |
+| `/single-blog.html`             | `/blog`                                                |
+| `/index.php/*`                  | strip prefix, then re-apply map (CodeIgniter fallback) |
+| `www.` host                     | apex (or the reverse; one canonical host, HTTPS only)  |
 
 ## 6. Pagination & facets
+
 - `/blog?page=n` is self-canonical, with `rel=prev/next` omitted (Google ignores it) and paginated pages kept indexable.
 - Gallery/treatment filters are client-side state, or `?filter=` with the canonical pointing to the unfiltered page.

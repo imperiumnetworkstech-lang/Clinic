@@ -42,7 +42,12 @@
     "contact": {
       "phones": [
         { "display": "+91 96570 41122", "e164": "+919657041122", "label": "Helpdesk" },
-        { "display": "+91 96570 61122", "e164": "+919657061122", "label": "Helpdesk", "note": "Used for click-to-call and WhatsApp on the legacy site, and listed on the Google Business Profile." }
+        {
+          "display": "+91 96570 61122",
+          "e164": "+919657061122",
+          "label": "Helpdesk",
+          "note": "Used for click-to-call and WhatsApp on the legacy site, and listed on the Google Business Profile."
+        }
       ],
       "whatsapp": "+919657061122",
       "email": "info@expressionsdentalclinic.com",
@@ -80,7 +85,11 @@
       "phone": "+919657061122",
       "openingHours": {
         "source": "Google Business Profile (partial read, 2026-11-03)",
-        "known": { "tuesday": "10:00-20:00", "wednesday": "10:00-20:00", "thursday": "10:00-20:00" },
+        "known": {
+          "tuesday": "10:00-20:00",
+          "wednesday": "10:00-20:00",
+          "thursday": "10:00-20:00"
+        },
         "monday": "[[CLIENT TO CONFIRM]]",
         "friday": "[[CLIENT TO CONFIRM]]",
         "saturday": "[[CLIENT TO CONFIRM]]",
@@ -92,15 +101,16 @@
       "id": "candolim",
       "name": "Expressions Dental Clinic, Candolim",
       "addressOnWebsite": "Holiday beach resort, Opposite Teama bar and car parking area, Candolim Beach road, Murrod vaddo, Candolim, Bardez, Goa.",
-      "status": "[[CLIENT TO CONFIRM: is the Candolim branch still operating? Its Google listing showed no details when checked.]]",
+      "status": "open (confirmed by client 2026-11-03)",
       "postalCode": "[[CLIENT TO PROVIDE]]",
       "locality": "Candolim",
       "region": "Goa",
       "country": "IN",
       "geo": { "lat": 15.5183639, "lng": 73.7648465, "source": "Google Maps place" },
       "googlePlaceId": "ChIJoVQsLpTBvzsRfnzH8QEw1sA",
-      "phone": "[[CLIENT TO CONFIRM: same numbers as Mapusa?]]",
-      "openingHours": "[[CLIENT TO PROVIDE]]"
+      "phone": "+919657061122",
+      "phoneNote": "Client: use the numbers from the website (both helpdesk numbers apply to both branches).",
+      "openingHours": "Client: same as Google Business Profile. To be read from the Candolim GBP listing in Phase 3."
     }
   ],
   "doctors": [
@@ -117,11 +127,46 @@
       "photo": "[[CLIENT TO CONFIRM: is photo-38.jpg / photo-47.jpg Dr. Sandeep?]]",
       "publish": false
     },
-    { "slug": "dr-santosh", "name": "Dr. Santosh", "qualifications": "M.D.S.", "specialisation": "Prosthodontist and Implantologist", "evidence": "Signage photo only", "publish": false },
-    { "slug": "dr-deepa", "name": "Dr. Deepa", "qualifications": "M.D.S.", "specialisation": "Oral Pathologist", "evidence": "Signage photo only", "publish": false },
-    { "slug": "dr-sravani", "name": "Dr. Sravani", "qualifications": "[[partly obscured on signage]]", "specialisation": "Dental Surgeon", "evidence": "Signage photo only", "publish": false },
-    { "slug": "dr-shraddha-nagvekar", "name": "Dr. Shraddha Nagve[...]", "qualifications": "[[obscured]]", "specialisation": "Dental Surgeon", "evidence": "Signage photo only; surname partly obscured", "publish": false },
-    { "slug": "dr-neil", "name": "Dr. Neil", "qualifications": "M.D.S.", "specialisation": "Pedodontist (Kids Specialist)", "evidence": "Signage photo only", "publish": false }
+    {
+      "slug": "dr-santosh",
+      "name": "Dr. Santosh",
+      "qualifications": "M.D.S.",
+      "specialisation": "Prosthodontist and Implantologist",
+      "evidence": "Signage photo only",
+      "publish": false
+    },
+    {
+      "slug": "dr-deepa",
+      "name": "Dr. Deepa",
+      "qualifications": "M.D.S.",
+      "specialisation": "Oral Pathologist",
+      "evidence": "Signage photo only",
+      "publish": false
+    },
+    {
+      "slug": "dr-sravani",
+      "name": "Dr. Sravani",
+      "qualifications": "[[partly obscured on signage]]",
+      "specialisation": "Dental Surgeon",
+      "evidence": "Signage photo only",
+      "publish": false
+    },
+    {
+      "slug": "dr-shraddha-nagvekar",
+      "name": "Dr. Shraddha Nagve[...]",
+      "qualifications": "[[obscured]]",
+      "specialisation": "Dental Surgeon",
+      "evidence": "Signage photo only; surname partly obscured",
+      "publish": false
+    },
+    {
+      "slug": "dr-neil",
+      "name": "Dr. Neil",
+      "qualifications": "M.D.S.",
+      "specialisation": "Pedodontist (Kids Specialist)",
+      "evidence": "Signage photo only",
+      "publish": false
+    }
   ],
   "doctorsNote": "The legacy site has NO doctors page. These names were read from the specialists board in a shop-front photo of unknown date. None will be published until the client confirms the current team, full names, registration numbers, photos and bios.",
   "stats": {
@@ -139,28 +184,80 @@
       { "file": "slider-3.jpg", "size": "1200x800", "subject": "Hero slider (doctor at desk)" },
       { "file": "about-img.jpg", "size": "800x810", "subject": "Doctor portrait, arms crossed" },
       { "file": "photo-38.jpg", "size": "1013x1350", "subject": "Doctor portrait at desk" },
-      { "file": "photo-39.jpg", "size": "1013x1350", "subject": "Doctor treating patient with dental microscope" },
-      { "file": "photo-41.jpg", "size": "900x1200", "subject": "Doctor pointing at clinic signage" },
-      { "file": "photo-42.jpg", "size": "900x1200", "subject": "Shop front (Duler, Mapusa) with specialists board" },
+      {
+        "file": "photo-39.jpg",
+        "size": "1013x1350",
+        "subject": "Doctor treating patient with dental microscope"
+      },
+      {
+        "file": "photo-41.jpg",
+        "size": "900x1200",
+        "subject": "Doctor pointing at clinic signage"
+      },
+      {
+        "file": "photo-42.jpg",
+        "size": "900x1200",
+        "subject": "Shop front (Duler, Mapusa) with specialists board"
+      },
       { "file": "photo-47.jpg", "size": "800x1200", "subject": "Doctor standing in operatory" },
       { "file": "photo-49.jpg", "size": "800x1200", "subject": "Microscope-assisted treatment" },
-      { "file": "photo-51.jpg", "size": "800x1200", "subject": "Microscope-assisted treatment with assistant" },
-      { "file": "photo-52.jpg", "size": "800x1200", "subject": "Consultation in chair, patient visible" },
-      { "file": "photo-53.jpg", "size": "800x1200", "subject": "Consultation in chair, patient visible" },
+      {
+        "file": "photo-51.jpg",
+        "size": "800x1200",
+        "subject": "Microscope-assisted treatment with assistant"
+      },
+      {
+        "file": "photo-52.jpg",
+        "size": "800x1200",
+        "subject": "Consultation in chair, patient visible"
+      },
+      {
+        "file": "photo-53.jpg",
+        "size": "800x1200",
+        "subject": "Consultation in chair, patient visible"
+      },
       { "file": "photo-55.jpg", "size": "800x1200", "subject": "Treatment, patient visible" },
-      { "file": "photo-56.jpg", "size": "1200x800", "subject": "Consultation at desk, patients visible" },
-      { "file": "photo-57.jpg", "size": "1200x800", "subject": "Consultation at desk, patients visible" },
-      { "file": "photo-60.jpg", "size": "1200x800", "subject": "Doctor at desk with X-ray on screen" },
+      {
+        "file": "photo-56.jpg",
+        "size": "1200x800",
+        "subject": "Consultation at desk, patients visible"
+      },
+      {
+        "file": "photo-57.jpg",
+        "size": "1200x800",
+        "subject": "Consultation at desk, patients visible"
+      },
+      {
+        "file": "photo-60.jpg",
+        "size": "1200x800",
+        "subject": "Doctor at desk with X-ray on screen"
+      },
       { "file": "photo-62.jpg", "size": "1200x800", "subject": "Doctor at desk with model" },
       { "file": "news-2.png", "size": "320x226", "subject": "Blog: cartoon man brushing" },
-      { "file": "news-4.jpg", "size": "320x216", "subject": "Blog: clinical photo of oral cancer lesion on tongue" },
+      {
+        "file": "news-4.jpg",
+        "size": "320x216",
+        "subject": "Blog: clinical photo of oral cancer lesion on tongue"
+      },
       { "file": "news-6.png", "size": "320x160", "subject": "Blog: toothbrush clipart" }
     ],
     "notes": "All alt text on the legacy site is 'portfolio', 'logo' or empty. Gallery contains clinic/doctor photos, not before/after cases. Photos with identifiable patients need written consent before reuse."
   },
   "legacyUrls": [
-    "/", "/about", "/service", "/service/view/1", "/service/view/2", "/service/view/19",
-    "/photo-gallery", "/news", "/news/view/2", "/news/view/4", "/news/view/6", "/category/1",
-    "/faq", "/contact", "/single-blog.html"
+    "/",
+    "/about",
+    "/service",
+    "/service/view/1",
+    "/service/view/2",
+    "/service/view/19",
+    "/photo-gallery",
+    "/news",
+    "/news/view/2",
+    "/news/view/4",
+    "/news/view/6",
+    "/category/1",
+    "/faq",
+    "/contact",
+    "/single-blog.html"
   ]
 }
