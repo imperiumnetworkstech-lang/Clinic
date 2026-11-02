@@ -37,14 +37,17 @@ pnpm --filter @edc/backend admin:create --name "Owner Name" --email owner@exampl
 
 ## Scripts (root)
 
-| Command                                    | Does                                                                                           |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| `pnpm dev` / `dev:api` / `dev:web`         | Run both apps or one                                                                           |
-| `pnpm db:start` · `db:migrate` · `db:seed` | Local database lifecycle (`pnpm --filter @edc/backend db:rollback` reverts the last migration) |
-| `pnpm test`                                | Shared + backend tests. The backend suite boots its own throwaway Postgres on port 54339.      |
-| `pnpm lint` · `format` · `typecheck`       | Quality gates (also run by CI and, for staged files, the pre-commit hook)                      |
+| Command                                    | Does                                                                                                                                    |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev` / `dev:api` / `dev:web`         | Run both apps or one                                                                                                                    |
+| `pnpm db:start` · `db:migrate` · `db:seed` | Local database lifecycle (`pnpm --filter @edc/backend db:rollback` reverts the last migration)                                          |
+| `pnpm test`                                | Shared, frontend (Vitest + Testing Library, jsdom) and backend tests. The backend suite boots its own throwaway Postgres on port 54339. |
+| `pnpm --filter @edc/frontend images`       | Regenerate responsive AVIF/WebP photos from `frontend/public/images/original`                                                           |
+| `pnpm lint` · `format` · `typecheck`       | Quality gates (also run by CI and, for staged files, the pre-commit hook)                                                               |
 
 API docs (Swagger UI) are at http://localhost:4000/api/docs in development only.
+
+The component gallery (every UI building block and the colour tokens) is at http://localhost:5173/__ui in development only. It is not included in production builds.
 
 ## Architecture notes
 

@@ -72,6 +72,18 @@ expressions-dental/                plain pnpm workspaces (no Turborepo, no Docke
 | **8. Quality**               | Unit/API/E2E coverage, Lighthouse CI budgets, axe on every route, security review (OWASP checklist), dependency audit, load test on availability endpoint                                                                                                                                                                          | DoD checklist green                                                                           |
 | **9. Deploy**                | Vercel (frontend + backend projects), Neon Postgres, Vercel Cron; GitHub Actions CI; backups (nightly pg_dump → encrypted S3, restore drill); go-live SEO checklist (redirects, GSC, GBP update, Bing, citations)                                                                                                                  | Live, monitored, handed over                                                                  |
 
+## 3a. Phase 2 status (2026-11-03): done
+
+Delivered: a component library on Radix (Button/ButtonLink, Sheet, Accordion, Card, Badge, IconTile, TextField, Skeleton, EmptyState, SectionHeading); a desktop Treatments mega menu; tablet navigation from 768px; a phone top bar that hides on scroll down; a bottom tab bar (Home · Treatments · Book · Clinics · More) with a More sheet; accessibility settings (3 text sizes, high contrast) applied before first paint; PWA support (manifest, maskable icon, service worker, branded offline page, install prompt plus iOS hint); an analytics consent banner (dormant until `VITE_GA_MEASUREMENT_ID` is set); and a dev-only gallery at `/__ui`. Checked at 360/390/414/768/1024/1440/1920 with no horizontal overflow and all tap targets ≥ 44px. 7 component tests.
+
+Deviations, with reasons:
+
+- **vite-plugin-pwa → a hand-written `public/sw.js`.** The plugin targets SPA builds; the service worker here is about 80 lines, network-first for pages, and never caches `/api`.
+- **Page transitions and Framer Motion move to Phase 3/7.** There is only one page so far; the transitions arrive with the Phase 3 routes.
+- **Dark mode tokens exist, but no toggle yet.** Components still use light-only surfaces. High contrast (for the elderly persona) took priority. The toggle comes in the Phase 7 polish.
+- **The Portal tab is replaced by Clinics** until the portal sign-in channel (B2) is decided.
+- **Treatment menu links go to rows on the home page** (`/#t-<slug>`) until Phase 3 adds treatment pages.
+
 ## 4. Open questions (batched; answers unblock Phase 1–3)
 
 **Business facts (from the content audit — the clinic needs to answer these)**

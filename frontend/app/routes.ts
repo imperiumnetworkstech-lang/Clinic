@@ -1,3 +1,6 @@
-import { index, type RouteConfig } from '@react-router/dev/routes';
+import { index, route, type RouteConfig } from '@react-router/dev/routes';
 
-export default [index('routes/home.tsx')] satisfies RouteConfig;
+const devOnly =
+  process.env.NODE_ENV === 'production' ? [] : [route('__ui', 'routes/dev.ui-gallery.tsx')];
+
+export default [index('routes/home.tsx'), ...devOnly] satisfies RouteConfig;
