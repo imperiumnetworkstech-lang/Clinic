@@ -39,9 +39,29 @@ const envSchema = z
     OTP_DELIVERY: z.enum(['log', 'none']).default('none'),
 
     CRON_SECRET: z.string().min(32).optional(),
+
+    /** Patient portal sign-in emails. `log` prints links to the dev log (never in production). */
+    EMAIL_DELIVERY: z.enum(['log', 'resend', 'none']).default('none'),
+    RESEND_API_KEY: z.string().min(10).optional(),
+    /** Verified sender, e.g. "Expressions Dental Clinic <noreply@expressionsdentalclinic.com>". */
+    EMAIL_FROM: z.string().min(3).optional(),
   })
   .superRefine((env, ctx) => {
+    if (env.EMAIL_DELIVERY === 'resend' && (!env.RESEND_API_KEY || !env.EMAIL_FROM)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['EMAIL_DELIVERY'],
+        message: 'resend needs RESEND_API_KEY and EMAIL_FROM',
+      });
+    }
     if (env.NODE_ENV !== 'production') return;
+    if (env.EMAIL_DELIVERY === 'log') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['EMAIL_DELIVERY'],
+        message: 'log delivery is dev-only',
+      });
+    }
     if (env.OTP_DELIVERY === 'log') {
       ctx.addIssue({ code: 'custom', path: ['OTP_DELIVERY'], message: 'log delivery is dev-only' });
     }

@@ -2,7 +2,15 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DEFAULT_ROLES, PERMISSIONS, ROLE_KEYS } from '@edc/shared';
-import { Location, Permission, Role, RolePermission, Setting } from '../../models/index.js';
+import {
+  Location,
+  LocationSchedule,
+  Permission,
+  Role,
+  RolePermission,
+  Setting,
+  type OpeningHours,
+} from '../../models/index.js';
 import { sequelize } from '../sequelize.js';
 
 interface ClinicLocation {
@@ -17,6 +25,12 @@ interface ClinicLocation {
   geo: { lat: number; lng: number };
   googlePlaceId: string;
   phone: string;
+  openingHours?: unknown;
+}
+
+function confirmedWeekly(hours: unknown): OpeningHours | null {
+  if (typeof hours !== 'object' || hours === null || !('weekly' in hours)) return null;
+  return (hours as { weekly: OpeningHours }).weekly;
 }
 
 /** Returns the value unless it is missing or a `[[CLIENT TO …]]` placeholder. */
@@ -71,7 +85,7 @@ export async function seedRequired(): Promise<void> {
 
     for (const [index, location] of locations.entries()) {
       const address = confirmed(location.addressOnGoogle) ?? location.addressOnWebsite;
-      await Location.findOrCreate({
+      const [row] = await Location.findOrCreate({
         where: { slug: location.id },
         defaults: {
           slug: location.id,
@@ -90,6 +104,17 @@ export async function seedRequired(): Promise<void> {
         },
         transaction,
       });
+
+      // Online booking starts only for branches whose weekly hours are confirmed; the clinic
+      // then adjusts slot length, chairs and breaks in admin (never overwritten here).
+      const weekly = confirmedWeekly(location.openingHours);
+      if (weekly) {
+        await LocationSchedule.findOrCreate({
+          where: { locationId: row.id },
+          defaults: { locationId: row.id, weekly, updatedBy: null },
+          transaction,
+        });
+      }
     }
 
     const defaults: Record<string, unknown> = {

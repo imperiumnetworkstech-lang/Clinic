@@ -1,4 +1,5 @@
 import { Lead, Location, OtpChallenge, Patient, PatientConsent } from './clinic.js';
+import { Appointment, Holiday, LocationSchedule, PatientLoginLink } from './scheduling.js';
 import {
   AuditLog,
   Permission,
@@ -38,7 +39,20 @@ Lead.belongsTo(Location, { foreignKey: 'locationId', as: 'location' });
 Lead.belongsTo(User, { foreignKey: 'assignedTo', as: 'assignee' });
 Lead.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
 
+Location.hasOne(LocationSchedule, { foreignKey: 'locationId', as: 'schedule' });
+LocationSchedule.belongsTo(Location, { foreignKey: 'locationId', as: 'location' });
+LocationSchedule.belongsTo(User, { foreignKey: 'updatedBy', as: 'editor' });
+Location.hasMany(Holiday, { foreignKey: 'locationId', as: 'holidays' });
+Holiday.belongsTo(Location, { foreignKey: 'locationId', as: 'location' });
+Appointment.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
+Appointment.belongsTo(Location, { foreignKey: 'locationId', as: 'location' });
+Appointment.belongsTo(User, { foreignKey: 'confirmedBy', as: 'confirmer' });
+Appointment.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+Patient.hasMany(Appointment, { foreignKey: 'patientId', as: 'appointments' });
+
 export type { ActorType, SubjectType, UserStatus } from './identity.js';
+export type { AppointmentSource, AppointmentStatus } from './scheduling.js';
+export { APPOINTMENT_STATUSES, SLOT_HOLDING } from './scheduling.js';
 export type {
   AppointmentRequestDetails,
   ConsentType,
@@ -51,7 +65,11 @@ export type {
 } from './clinic.js';
 
 export {
+  Appointment,
   AuditLog,
+  Holiday,
+  LocationSchedule,
+  PatientLoginLink,
   Lead,
   Location,
   OtpChallenge,

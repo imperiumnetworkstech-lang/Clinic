@@ -1,11 +1,18 @@
-import { patientOtpSendBody, patientOtpVerifyBody } from '@edc/shared';
+import {
+  patientEmailLinkBody,
+  patientEmailVerifyBody,
+  patientOtpSendBody,
+  patientOtpVerifyBody,
+} from '@edc/shared';
 import { Router } from 'express';
 import { Op } from 'sequelize';
 import { endSession, issueSession, rotateSession } from '../auth/tokens.js';
-import { hmac, randomNumericCode, safeEqual } from '../lib/crypto.js';
+import { env } from '../config/env.js';
+import { hmac, randomNumericCode, randomToken, safeEqual, sha256 } from '../lib/crypto.js';
 import { serviceUnavailable, unauthorized } from '../lib/errors.js';
 import { requireCsrf } from '../middleware/csrf.js';
-import { OtpChallenge, Patient } from '../models/index.js';
+import { OtpChallenge, Patient, PatientLoginLink } from '../models/index.js';
+import { emailDelivery } from '../services/emailDelivery.js';
 import { audit } from '../services/audit.js';
 import { otpDelivery } from '../services/otpDelivery.js';
 import { consume, RULES } from '../services/rateLimit.js';
@@ -104,4 +111,80 @@ patientAuthRouter.post('/refresh', requireCsrf, async (req, res) => {
 patientAuthRouter.post('/logout', requireCsrf, async (req, res) => {
   await endSession(req, res, 'patient');
   res.status(204).end();
+});
+
+const LINK_TTL_MINUTES = 15;
+
+function signInEmail(link: string) {
+  return {
+    subject: 'Your sign-in link for Expressions Dental Clinic',
+    text: `Use this link to sign in to your patient portal. It works once and expires in ${LINK_TTL_MINUTES} minutes:
+
+${link}
+
+If you didn't ask for this, you can ignore this email.
+
+Expressions Dental Clinic, Goa`,
+    html: `<p>Use the button below to sign in to your patient portal. It works once and expires in ${LINK_TTL_MINUTES} minutes.</p><p><a href="${link}" style="display:inline-block;padding:12px 22px;border-radius:999px;background:#d2027f;color:#ffffff;font-weight:600;text-decoration:none">Sign in</a></p><p style="color:#576170">If you didn't ask for this, you can ignore this email.<br>Expressions Dental Clinic, Goa</p>`,
+  };
+}
+
+/**
+ * Emails a single-use sign-in link to patients registered with that address. Answers the same
+ * way either way, so the endpoint can't reveal who is a patient.
+ */
+patientAuthRouter.post('/email-link', async (req, res) => {
+  if (!emailDelivery.available) {
+    throw serviceUnavailable(
+      'email_unavailable',
+      'Online sign-in is not available yet. Please call or WhatsApp the clinic.',
+    );
+  }
+  const { email } = patientEmailLinkBody.parse(req.body);
+  await consume(RULES.emailLinkPerIp, req.ip ?? 'unknown');
+  await consume(RULES.emailLinkPerEmail, email);
+
+  if ((await Patient.count({ where: { email } })) > 0) {
+    const token = randomToken(32);
+    await PatientLoginLink.create({
+      email,
+      tokenHash: sha256(token),
+      expiresAt: new Date(Date.now() + LINK_TTL_MINUTES * 60_000),
+      ip: req.ip ?? null,
+    });
+    const link = `${env.APP_ORIGIN}/portal/verify?token=${encodeURIComponent(token)}`;
+    await emailDelivery.send({ to: email, ...signInEmail(link) });
+    await audit(req, {
+      action: 'auth.email_link_sent',
+      actorType: 'patient',
+      actorId: hmac(email),
+    });
+  }
+  res.status(202).json({ status: 'sent', expiresInMinutes: LINK_TTL_MINUTES });
+});
+
+patientAuthRouter.post('/email-link/verify', async (req, res) => {
+  const { token } = patientEmailVerifyBody.parse(req.body);
+  const link = await PatientLoginLink.findOne({ where: { tokenHash: sha256(token) } });
+  if (!link || link.usedAt || link.expiresAt.getTime() <= Date.now()) {
+    throw unauthorized(
+      'link_invalid',
+      'This sign-in link has expired or was already used. Request a new one.',
+    );
+  }
+  // Atomic single use: only one request can flip used_at from null.
+  const [claimed] = await PatientLoginLink.update(
+    { usedAt: new Date() },
+    { where: { id: link.id, usedAt: { [Op.is]: null } } },
+  );
+  if (claimed !== 1) {
+    throw unauthorized('link_invalid', 'This sign-in link was already used. Request a new one.');
+  }
+  const session = await issueSession(req, res, 'patient', `email:${link.email}`);
+  await audit(req, { action: 'auth.login', actorType: 'patient', actorId: hmac(link.email) });
+  res.json({
+    accessToken: session.accessToken,
+    expiresIn: session.expiresIn,
+    csrfToken: session.csrfToken,
+  });
 });

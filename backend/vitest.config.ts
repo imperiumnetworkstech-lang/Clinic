@@ -12,6 +12,7 @@ const testEnv = {
   HMAC_SECRET: 'test-hmac-secret-that-is-long-enough-0123456789',
   ENFORCE_STAFF_2FA: 'true',
   OTP_DELIVERY: 'log',
+  EMAIL_DELIVERY: 'log',
 };
 
 export default defineConfig({

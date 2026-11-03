@@ -56,4 +56,6 @@ export const RULES = {
   // Requests reach the API via the website's server, so many patients can share one IP.
   bookingPerIp: { name: 'booking_ip', points: 300, windowSeconds: 60 * 60 },
   bookingPerPhone: { name: 'booking_phone', points: 3, windowSeconds: 60 * 60 },
+  emailLinkPerEmail: { name: 'email_link_email', points: 3, windowSeconds: 15 * 60 },
+  emailLinkPerIp: { name: 'email_link_ip', points: 20, windowSeconds: 60 * 60 },
 } satisfies Record<string, RateLimitRule>;

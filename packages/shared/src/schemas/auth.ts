@@ -68,3 +68,6 @@ export type StaffProfile = z.infer<typeof staffProfile>;
 export type AccessTokenResponse = z.infer<typeof accessTokenResponse>;
 export type StaffLoginResponse = z.infer<typeof staffLoginResponse>;
 export type MfaSetupResponse = z.infer<typeof mfaSetupResponse>;
+
+export const patientEmailLinkBody = z.object({ email: emailSchema });
+export const patientEmailVerifyBody = z.object({ token: z.string().min(20).max(200) });

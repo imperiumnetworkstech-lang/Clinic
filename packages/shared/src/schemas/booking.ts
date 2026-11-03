@@ -43,3 +43,36 @@ export const appointmentRequestBody = z.object({
 
 export type AppointmentRequestBody = z.infer<typeof appointmentRequestBody>;
 export type AppointmentRequestInput = z.input<typeof appointmentRequestBody>;
+
+/** Booking a specific free slot (branches with online booking enabled). */
+export const slotBookingBody = z.object({
+  reason: z.string().trim().min(1, 'Choose what the visit is for').max(60),
+  branch: z.enum(BRANCH_IDS, { message: 'Choose a clinic' }),
+  slotStart: z.iso.datetime({ offset: true, message: 'Choose a time' }),
+  patientFor: z.enum(PATIENT_FOR),
+  name: z.string().trim().min(2, 'Enter your name').max(120),
+  phone: phoneSchema,
+  /** Optional: lets the patient sign in to the portal with an emailed link. */
+  email: z
+    .union([z.literal(''), z.email('Enter a valid email address').trim().toLowerCase().max(254)])
+    .optional()
+    .default(''),
+  notes: z.string().trim().max(500, 'Keep it under 500 characters').optional().default(''),
+  consent: z.literal(true, { message: 'Please agree so we can contact you' }),
+});
+
+export type SlotBookingBody = z.infer<typeof slotBookingBody>;
+
+export interface AvailableSlot {
+  /** ISO timestamp of the slot start. */
+  start: string;
+  /** Local clinic time, e.g. "10:30". */
+  time: string;
+  available: boolean;
+}
+
+export interface AvailabilityDay {
+  date: string;
+  open: boolean;
+  availableCount: number;
+}
