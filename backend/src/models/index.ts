@@ -1,4 +1,4 @@
-import { Location, OtpChallenge, Patient, PatientConsent } from './clinic.js';
+import { Lead, Location, OtpChallenge, Patient, PatientConsent } from './clinic.js';
 import {
   AuditLog,
   Permission,
@@ -34,11 +34,25 @@ Patient.hasMany(PatientConsent, { foreignKey: 'patientId', as: 'consents' });
 PatientConsent.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
 PatientConsent.belongsTo(User, { foreignKey: 'recordedBy', as: 'recorder' });
 
+Lead.belongsTo(Location, { foreignKey: 'locationId', as: 'location' });
+Lead.belongsTo(User, { foreignKey: 'assignedTo', as: 'assignee' });
+Lead.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
+
 export type { ActorType, SubjectType, UserStatus } from './identity.js';
-export type { ConsentType, DayKey, Gender, OpeningHours, PatientSource } from './clinic.js';
+export type {
+  AppointmentRequestDetails,
+  ConsentType,
+  DayKey,
+  Gender,
+  LeadSource,
+  LeadStatus,
+  OpeningHours,
+  PatientSource,
+} from './clinic.js';
 
 export {
   AuditLog,
+  Lead,
   Location,
   OtpChallenge,
   Patient,

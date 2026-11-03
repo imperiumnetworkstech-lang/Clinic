@@ -1,5 +1,6 @@
 import {
   accessTokenResponse,
+  appointmentRequestBody,
   createStaffBody,
   mfaSetupResponse,
   mfaTokenBody,
@@ -12,7 +13,7 @@ import {
 } from '@edc/shared';
 import { z } from 'zod';
 
-type Method = 'get' | 'post';
+type Method = 'get' | 'post' | 'patch';
 
 interface Operation {
   method: Method;
@@ -111,6 +112,22 @@ const OPERATIONS: Operation[] = [
     summary: 'End the portal session',
     auth: 'cookie',
     status: 204,
+  },
+  {
+    method: 'post',
+    path: '/api/v1/public/appointment-requests',
+    tag: 'Public',
+    summary: 'Website appointment request (stored as a lead for the front desk)',
+    body: appointmentRequestBody,
+    status: 201,
+  },
+  {
+    method: 'get',
+    path: '/api/v1/admin/leads',
+    tag: 'Admin',
+    summary: 'Enquiries inbox (filter by status, paginated)',
+    auth: 'staff',
+    permission: 'leads.read',
   },
   {
     method: 'get',

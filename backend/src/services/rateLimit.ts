@@ -53,4 +53,7 @@ export const RULES = {
   otpSendPerIp: { name: 'otp_send_ip', points: 10, windowSeconds: 60 * 60 },
   otpVerifyPerPhone: { name: 'otp_verify_phone', points: 10, windowSeconds: 10 * 60 },
   refreshPerIp: { name: 'refresh_ip', points: 60, windowSeconds: 60 },
+  // Requests reach the API via the website's server, so many patients can share one IP.
+  bookingPerIp: { name: 'booking_ip', points: 300, windowSeconds: 60 * 60 },
+  bookingPerPhone: { name: 'booking_phone', points: 3, windowSeconds: 60 * 60 },
 } satisfies Record<string, RateLimitRule>;

@@ -13,6 +13,7 @@ import { adminRouter } from './routes/admin.js';
 import { buildOpenApiDocument } from './routes/openapi.js';
 import { patientRouter } from './routes/patient.js';
 import { patientAuthRouter } from './routes/patientAuth.js';
+import { publicRouter } from './routes/public.js';
 import { staffAuthRouter } from './routes/staffAuth.js';
 
 export function createApp(): express.Express {
@@ -54,6 +55,7 @@ export function createApp(): express.Express {
   const api = Router();
   api.use('/auth/staff', staffAuthRouter);
   api.use('/auth/patient', patientAuthRouter);
+  api.use('/public', publicRouter);
   api.use('/admin', adminRouter);
   api.use('/me', patientRouter);
   app.use('/api/v1', api);

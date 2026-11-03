@@ -2,9 +2,9 @@ import { createStaffBody, PERMISSIONS, type StaffProfile } from '@edc/shared';
 import { Router } from 'express';
 import { z } from 'zod';
 import { hashPassword } from '../auth/password.js';
-import { badRequest, forbidden } from '../lib/errors.js';
+import { badRequest, forbidden, notFound } from '../lib/errors.js';
 import { requirePermission, requireStaff, staffPrincipal } from '../middleware/auth.js';
-import { AuditLog, Permission, Role, User } from '../models/index.js';
+import { AuditLog, Lead, Location, Permission, Role, User } from '../models/index.js';
 import { audit } from '../services/audit.js';
 
 export const adminRouter = Router();
@@ -119,4 +119,39 @@ adminRouter.get('/audit-log', requirePermission('audit.read'), async (req, res) 
     offset: (query.page - 1) * query.pageSize,
   });
   res.json({ page: query.page, pageSize: query.pageSize, total: count, items: rows });
+});
+
+const leadsQuery = z.object({
+  status: z.enum(['new', 'contacted', 'booked', 'lost']).optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(25),
+});
+
+adminRouter.get('/leads', requirePermission('leads.read'), async (req, res) => {
+  const query = leadsQuery.parse(req.query);
+  const { rows, count } = await Lead.findAndCountAll({
+    where: query.status ? { status: query.status } : {},
+    include: [{ model: Location, as: 'location', attributes: ['slug', 'name'] }],
+    order: [['createdAt', 'DESC']],
+    limit: query.pageSize,
+    offset: (query.page - 1) * query.pageSize,
+  });
+  res.json({ page: query.page, pageSize: query.pageSize, total: count, items: rows });
+});
+
+const leadUpdateBody = z.object({ status: z.enum(['new', 'contacted', 'booked', 'lost']) });
+
+adminRouter.patch('/leads/:id', requirePermission('leads.write'), async (req, res) => {
+  const { status } = leadUpdateBody.parse(req.body);
+  const lead = await Lead.findByPk(z.uuid().parse(req.params.id));
+  if (!lead) throw notFound('lead_not_found', 'This enquiry no longer exists.');
+  const previous = lead.status;
+  await lead.update({ status });
+  await audit(req, {
+    action: 'lead.status_changed',
+    entity: 'lead',
+    entityId: lead.id,
+    meta: { from: previous, to: status },
+  });
+  res.json({ id: lead.id, status: lead.status });
 });

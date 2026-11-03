@@ -47,6 +47,11 @@ describe('platform', () => {
     const second = encrypt('Allergic to penicillin');
     expect(first).not.toBe(second);
     expect(decrypt(first)).toBe('Allergic to penicillin');
-    expect(() => decrypt(first.replace(/.$/, 'A'))).toThrow();
+    // Flip one real ciphertext byte (not base64 padding bits): the auth tag must then fail.
+    const [version, iv, tag, ciphertext = ''] = first.split(':');
+    const bytes = Buffer.from(ciphertext, 'base64url');
+    bytes[0] = (bytes[0] ?? 0) ^ 0xff;
+    const tampered = [version, iv, tag, bytes.toString('base64url')].join(':');
+    expect(() => decrypt(tampered)).toThrow();
   });
 });
