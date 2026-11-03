@@ -33,6 +33,8 @@ const envSchema = z
     HMAC_SECRET: z.string().min(32),
 
     TOTP_ISSUER: z.string().default('Expressions Dental'),
+    // false is a testing mode: staff sign in with a password alone, even with an authenticator
+    // enrolled. Allowed in production for pre-launch testing; the logger warns at every start.
     ENFORCE_STAFF_2FA: booleanString.default(true),
 
     /** How patient OTP codes are delivered. `log` writes them to the dev log; never in production. */
@@ -77,13 +79,6 @@ const envSchema = z
     }
     if (env.OTP_DELIVERY === 'log') {
       ctx.addIssue({ code: 'custom', path: ['OTP_DELIVERY'], message: 'log delivery is dev-only' });
-    }
-    if (!env.ENFORCE_STAFF_2FA) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['ENFORCE_STAFF_2FA'],
-        message: 'staff 2FA cannot be disabled in production',
-      });
     }
   });
 

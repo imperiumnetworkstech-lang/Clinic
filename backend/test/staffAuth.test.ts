@@ -1,5 +1,6 @@
 import { authenticator } from 'otplib';
 import { describe, expect, it } from 'vitest';
+import { env } from '../src/config/env.js';
 import { AuditLog, RefreshToken, User } from '../src/models/index.js';
 import {
   api,
@@ -104,6 +105,20 @@ describe('staff two-factor authentication', () => {
       .send({ mfaToken: login.body.mfaToken, code: authenticator.generate(secret) });
     expect(verified.status).toBe(200);
     expect(verified.body.status).toBe('ok');
+  });
+
+  it('skips the TOTP step entirely in testing mode', async () => {
+    const { user, client } = await loginWithEnrolment('super_admin');
+    env.ENFORCE_STAFF_2FA = false;
+    try {
+      const login = await client
+        .post('/api/v1/auth/staff/login')
+        .send({ email: user.email, password: PASSWORD });
+      expect(login.status).toBe(200);
+      expect(login.body.status).toBe('ok');
+    } finally {
+      env.ENFORCE_STAFF_2FA = true;
+    }
   });
 
   it('does not accept an MFA token from the wrong stage', async () => {

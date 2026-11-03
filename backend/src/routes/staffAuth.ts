@@ -85,7 +85,7 @@ staffAuthRouter.post('/login', async (req, res) => {
   }
   await reset(RULES.staffLoginPerAccount, email);
 
-  if (user.totpEnabled) {
+  if (env.ENFORCE_STAFF_2FA && user.totpEnabled) {
     const body: StaffLoginResponse = {
       status: 'mfa_required',
       mfaToken: signMfaToken({ sub: user.id, stage: 'verify' }),

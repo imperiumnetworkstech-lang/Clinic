@@ -28,3 +28,7 @@ export const logger = pino({
     ? {}
     : { transport: { target: 'pino-pretty', options: { colorize: true } } }),
 });
+
+if (isProduction && !env.ENFORCE_STAFF_2FA) {
+  logger.warn('ENFORCE_STAFF_2FA=false: staff sign in without 2FA. Re-enable before launch.');
+}

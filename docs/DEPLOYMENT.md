@@ -76,6 +76,8 @@ The site is `noindex` until launch, so Google won't index the preview.
 | `ENFORCE_STAFF_2FA`            | `true`                                                                           |
 | `LOG_LEVEL`                    | `info`                                                                           |
 
+> ⚠️ **Testing mode:** `ENFORCE_STAFF_2FA=false` lets staff sign in with a password alone (no authenticator code), and the API logs a warning at every start. Set it back to `true` and redeploy before the clinic goes live.
+
 > ⚠️ **Back up `DATA_ENCRYPTION_KEY`** in a password manager. If it is lost, encrypted data (staff 2FA secrets now, clinical notes later) cannot be recovered.
 
 4. Click **Deploy**, then check:
