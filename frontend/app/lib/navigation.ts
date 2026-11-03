@@ -1,13 +1,12 @@
-/**
- * Site navigation. Until the Phase 3 pages exist, items point at sections of the home page
- * (with a leading "/" so they also work from other routes).
- */
+/** Main site navigation (header, footer, More sheet). */
 export const NAV_LINKS = [
-  { href: '/#treatments', label: 'Treatments' },
-  { href: '/#clinic', label: 'Our clinic' },
-  { href: '/#reviews', label: 'Reviews' },
-  { href: '/#locations', label: 'Locations' },
+  { href: '/treatments', label: 'Treatments' },
+  { href: '/about', label: 'About us' },
+  { href: '/contact', label: 'Contact & hours' },
+  { href: '/faq', label: 'FAQ' },
 ];
 
-/** Anchor for one treatment row on the home page; opening it expands that row. */
-export const treatmentHref = (slug: string) => `/#t-${slug}`;
+export const LEGAL_LINKS = [
+  { href: '/privacy-policy', label: 'Privacy policy' },
+  { href: '/medical-disclaimer', label: 'Medical disclaimer' },
+];

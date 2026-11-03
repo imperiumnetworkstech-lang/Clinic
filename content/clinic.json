@@ -20,7 +20,7 @@
       "Welcome to Expressions Dental Clinic.",
       "At Expressions Dental Clinic, it is our goal to help you maintain your optimal oral health. We provide you with the information; advice and care that you need to make decisions about your dental health.",
       "Come open your eyes to the ultimate in international quality or close your eyes and trust us. Either way, you are in good hands, because the word compromise does not exist in our lexicon.",
-      "We understand the importance of making our patient’s feel welcome and relaxed. Step into our dental office, and enjoy our modern, yet comfortable décor as you are greeted by a team of professionals who know how to make people feel at ease.",
+      "We understand the importance of making our patients feel welcome and relaxed. Step into our dental office, and enjoy our modern, yet comfortable décor as you are greeted by a team of professionals who know how to make people feel at ease.",
       "Your treatment needs and your smile designing are skillfully fashioned in a state of the art dental office, that uses the latest technology and latest materials."
     ],
     "foundedYear": "[[CLIENT TO PROVIDE: year founded]]",
@@ -99,16 +99,46 @@
       "googlePlaceId": "ChIJmYZR3xjrvzsRqAmnoJfHNzA",
       "phone": "+919657061122",
       "openingHours": {
-        "source": "Google Business Profile (partial read, 2026-11-03)",
-        "known": {
-          "tuesday": "10:00-20:00",
-          "wednesday": "10:00-20:00",
-          "thursday": "10:00-20:00"
+        "source": "Google Business Profile, read 2026-11-03 (client: use Google's hours)",
+        "weekly": {
+          "monday": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "tuesday": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "wednesday": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "thursday": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "friday": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "saturday": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "sunday": []
         },
-        "monday": "[[CLIENT TO CONFIRM]]",
-        "friday": "[[CLIENT TO CONFIRM]]",
-        "saturday": "[[CLIENT TO CONFIRM]]",
-        "sunday": "[[CLIENT TO CONFIRM]]",
         "breaks": "[[CLIENT TO CONFIRM: lunch break?]]"
       }
     },

@@ -1,7 +1,6 @@
 import {
   ArrowRight,
   BadgeIndianRupee,
-  CheckCircle2,
   HeartHandshake,
   House,
   MapPin,
@@ -9,14 +8,14 @@ import {
   Navigation,
   Phone,
   Quote,
-  Sparkles,
   Star,
-  Stethoscope,
 } from 'lucide-react';
-import { useEffect, type ComponentType } from 'react';
-import { useBooking } from '../components/BookingSheet';
-import { ToothIcon, WhatsAppIcon } from '../components/icons';
+import type { ComponentType } from 'react';
+import { Link } from 'react-router';
+import { WhatsAppIcon } from '../components/icons';
 import { Picture, type ImageName } from '../components/Picture';
+import { TreatmentCategoryGrid } from '../components/TreatmentCategoryGrid';
+import { JsonLd } from '../components/JsonLd';
 import { SectionHeading } from '../components/ui/primitives';
 import {
   branches,
@@ -24,23 +23,20 @@ import {
   googleRating,
   primaryPhone,
   testimonials,
-  treatmentCategories,
-  treatmentCount,
   whatsappLink,
-  type CategoryId,
 } from '../lib/clinic';
+import { dentistSchemas, organizationSchema, pageMeta, websiteSchema } from '../lib/seo';
+import { treatmentCount } from '../lib/treatments';
 import { button, container, eyebrow } from '../lib/ui';
 import type { Route } from './+types/home';
 
 export function meta(_: Route.MetaArgs) {
-  return [
-    { title: `${CLINIC_NAME} | Dentist in Mapusa & Candolim, Goa` },
-    {
-      name: 'description',
-      content:
-        'Family, advanced and cosmetic dentistry at our clinics in Duler (Mapusa) and Candolim, Goa. Book on WhatsApp or call +91 96570 61122.',
-    },
-  ];
+  return pageMeta({
+    title: `${CLINIC_NAME} | Dentist in Mapusa & Candolim, Goa`,
+    description:
+      'Family, advanced and cosmetic dentistry at our clinics in Duler (Mapusa) and Candolim, Goa. Book online, on WhatsApp or call +91 96570 61122.',
+    path: '/',
+  });
 }
 
 const GENERAL_ENQUIRY = 'Hello Expressions Dental Clinic, I would like to book an appointment.';
@@ -58,7 +54,6 @@ function Stars({ className = '' }: { className?: string }) {
 /* ---------------------------------------------------------------- hero */
 
 function Hero() {
-  const { openBooking } = useBooking();
   return (
     <section id="top" aria-labelledby="hero-title" className="relative overflow-hidden">
       <div
@@ -88,10 +83,10 @@ function Hero() {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <button type="button" onClick={openBooking} className={button.primary}>
+            <Link to="/book" prefetch="intent" viewTransition className={button.primary}>
               Book an appointment
               <ArrowRight size={18} />
-            </button>
+            </Link>
             <a
               href={whatsappLink(GENERAL_ENQUIRY)}
               target="_blank"
@@ -218,48 +213,7 @@ function ReviewThemes() {
 
 /* ---------------------------------------------------------------- treatments */
 
-const CATEGORY_STYLE: Record<
-  CategoryId,
-  { icon: ComponentType<{ size?: number }>; tint: string; iconTint: string }
-> = {
-  'general-treatments': {
-    icon: ToothIcon,
-    tint: 'from-secondary-50',
-    iconTint: 'bg-secondary-100 text-secondary-700',
-  },
-  'advanced-treatments': {
-    icon: Stethoscope,
-    tint: 'from-neutral-100',
-    iconTint: 'bg-neutral-200 text-neutral-800',
-  },
-  'cosmetic-treatments': {
-    icon: Sparkles,
-    tint: 'from-primary-50',
-    iconTint: 'bg-primary-100 text-primary-700',
-  },
-};
-
-/** Opens the treatment row named in the URL hash (links from the Treatments menu). */
-function useOpenTreatmentFromHash() {
-  useEffect(() => {
-    const open = () => {
-      const target = window.location.hash.startsWith('#t-')
-        ? document.getElementById(window.location.hash.slice(1))
-        : null;
-      const details = target?.querySelector('details');
-      if (details) {
-        details.open = true;
-        target?.scrollIntoView({ block: 'center' });
-      }
-    };
-    open();
-    window.addEventListener('hashchange', open);
-    return () => window.removeEventListener('hashchange', open);
-  }, []);
-}
-
 function Treatments() {
-  useOpenTreatmentFromHash();
   return (
     <section id="treatments" aria-labelledby="treatments-title" className="py-20 md:py-28">
       <div className={container}>
@@ -270,57 +224,18 @@ function Treatments() {
             title="Complete dental care under one roof"
             intro="Everything from routine check-ups to implants and smile makeovers."
           />
-          <a
-            href={whatsappLink('Hello, I am not sure which treatment I need. Can you help?')}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/treatments"
+            prefetch="intent"
+            viewTransition
             className="inline-flex min-h-11 items-center gap-2 font-semibold text-link hover:underline"
           >
-            Not sure what you need? Ask us
+            All treatments explained
             <ArrowRight size={18} />
-          </a>
+          </Link>
         </div>
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {treatmentCategories.map((category) => {
-            const style = CATEGORY_STYLE[category.id];
-            const Icon = style.icon;
-            return (
-              <article
-                key={category.id}
-                className={`flex flex-col rounded-[1.75rem] bg-gradient-to-b ${style.tint} to-white to-40% p-7 ring-1 ring-neutral-200/80 sm:p-8`}
-              >
-                <span className={`grid size-12 place-items-center rounded-2xl ${style.iconTint}`}>
-                  <Icon size={24} />
-                </span>
-                <h3 className="mt-5 text-xl font-bold">{category.title}</h3>
-                <p className="mt-2 text-muted">{category.blurb}</p>
-                <ul className="mt-6 divide-y divide-neutral-200/80 border-t border-neutral-200/80">
-                  {category.treatments.map((treatment) => (
-                    <li key={treatment.slug} id={`t-${treatment.slug}`} className="py-1.5">
-                      <details className="group">
-                        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold [&::-webkit-details-marker]:hidden">
-                          <span className="flex items-center gap-2.5">
-                            <CheckCircle2 size={18} className="shrink-0 text-primary-500" />
-                            {treatment.name}
-                          </span>
-                          <span
-                            aria-hidden="true"
-                            className="text-xl leading-none text-neutral-400 transition group-open:rotate-45"
-                          >
-                            +
-                          </span>
-                        </summary>
-                        <p className="mt-2 pl-7 text-[0.95rem] leading-relaxed text-muted">
-                          {treatment.description}
-                        </p>
-                      </details>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            );
-          })}
+        <div className="mt-12">
+          <TreatmentCategoryGrid />
         </div>
       </div>
     </section>
@@ -506,7 +421,6 @@ function Locations() {
 /* ---------------------------------------------------------------- final CTA */
 
 function FinalCta() {
-  const { openBooking } = useBooking();
   return (
     <section aria-labelledby="cta-title" className="py-20 md:py-28">
       <div className={container}>
@@ -529,9 +443,9 @@ function FinalCta() {
             Send us a message and we’ll find you the earliest convenient time.
           </p>
           <div className="relative mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <button type="button" onClick={openBooking} className={button.onBrand}>
+            <Link to="/book" prefetch="intent" viewTransition className={button.onBrand}>
               Book an appointment
-            </button>
+            </Link>
             <a href={primaryPhone.href} className={button.onBrandGhost}>
               <Phone size={18} />
               Call {primaryPhone.display}
@@ -546,6 +460,7 @@ function FinalCta() {
 export default function Home() {
   return (
     <>
+      <JsonLd data={[organizationSchema(), websiteSchema(), ...dentistSchemas()]} />
       <Hero />
       <ReviewThemes />
       <Treatments />

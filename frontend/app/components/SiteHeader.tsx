@@ -1,13 +1,14 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { ArrowRight, ChevronDown, Phone } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { CLINIC_NAME, primaryPhone, treatmentCategories, whatsappLink } from '../lib/clinic';
+import { CLINIC_NAME, primaryPhone, whatsappLink } from '../lib/clinic';
 import { cn } from '../lib/cn';
-import { NAV_LINKS, treatmentHref } from '../lib/navigation';
+import { NAV_LINKS } from '../lib/navigation';
+import { treatmentCategories, treatmentHref } from '../lib/treatments';
 import { container } from '../lib/ui';
-import { useBooking } from './BookingSheet';
 import { WhatsAppIcon } from './icons';
-import { Button } from './ui/Button';
+import { buttonVariants } from './ui/Button';
+import { Link } from 'react-router';
 
 /** On phones the bar slides away while scrolling down and returns on any scroll up. */
 function useHideOnScroll(): boolean {
@@ -53,12 +54,14 @@ function TreatmentsMenu() {
                 {category.treatments.map((treatment) => (
                   <li key={treatment.slug}>
                     <NavigationMenu.Link asChild>
-                      <a
-                        href={treatmentHref(treatment.slug)}
+                      <Link
+                        to={treatmentHref(treatment.slug)}
+                        prefetch="intent"
+                        viewTransition
                         className="-mx-3 flex min-h-10 items-center rounded-xl px-3 font-medium text-neutral-800 hover:bg-primary-50 hover:text-primary-700"
                       >
                         {treatment.name}
-                      </a>
+                      </Link>
                     </NavigationMenu.Link>
                   </li>
                 ))}
@@ -67,6 +70,16 @@ function TreatmentsMenu() {
           ))}
           <div className="flex flex-col justify-between rounded-2xl bg-gradient-to-br from-primary-50 to-secondary-50 p-6">
             <div>
+              <NavigationMenu.Link asChild>
+                <Link
+                  to="/treatments"
+                  viewTransition
+                  className="mb-5 inline-flex min-h-11 items-center gap-1 font-semibold text-link hover:underline"
+                >
+                  All treatments
+                  <ArrowRight size={16} />
+                </Link>
+              </NavigationMenu.Link>
               <p className="font-display text-lg font-bold">Not sure what you need?</p>
               <p className="mt-2 text-[0.95rem] text-muted">
                 Tell us what’s bothering you and we’ll suggest the right next step.
@@ -92,7 +105,6 @@ function TreatmentsMenu() {
 }
 
 export function SiteHeader() {
-  const { openBooking } = useBooking();
   const hidden = useHideOnScroll();
 
   // Always opaque: content must never show through the sticky bar, with or without JS.
@@ -106,8 +118,9 @@ export function SiteHeader() {
       <div
         className={`${container} relative flex h-16 items-center justify-between gap-3 md:h-20 lg:gap-6`}
       >
-        <a
-          href="/"
+        <Link
+          to="/"
+          viewTransition
           className="flex min-h-11 shrink-0 items-center"
           aria-label={`${CLINIC_NAME}, home`}
         >
@@ -118,7 +131,7 @@ export function SiteHeader() {
             height={152}
             className="h-10 w-auto lg:h-12"
           />
-        </a>
+        </Link>
 
         <NavigationMenu.Root
           aria-label="Main"
@@ -130,9 +143,9 @@ export function SiteHeader() {
             {NAV_LINKS.slice(1).map((link) => (
               <NavigationMenu.Item key={link.href}>
                 <NavigationMenu.Link asChild>
-                  <a href={link.href} className={navLink}>
+                  <Link to={link.href} prefetch="intent" viewTransition className={navLink}>
                     {link.label}
-                  </a>
+                  </Link>
                 </NavigationMenu.Link>
               </NavigationMenu.Item>
             ))}
@@ -149,10 +162,10 @@ export function SiteHeader() {
             <Phone size={18} className="text-primary-600" />
             <span className="hidden xl:inline">{primaryPhone.display}</span>
           </a>
-          <Button onClick={openBooking}>
+          <Link to="/book" prefetch="intent" viewTransition className={buttonVariants()}>
             <span className="lg:hidden">Book</span>
             <span className="hidden lg:inline">Book appointment</span>
-          </Button>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">

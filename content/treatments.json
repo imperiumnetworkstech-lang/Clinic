@@ -1,0 +1,777 @@
+{
+  "$comment": "Treatment page content. Short descriptions come from the clinic's legacy site; everything else is original explanatory copy written for patients and MUST be approved by a clinic dentist before launch (reviewStatus). No prices (client decision). Never add clinic-specific claims (equipment, sittings, guarantees) without client confirmation.",
+  "reviewStatus": "needs-doctor-review",
+  "treatments": [
+    {
+      "slug": "root-canal-treatment",
+      "name": "Root Canal Treatment",
+      "category": "general-treatments",
+      "legacySlug": "root-canal-treatment",
+      "metaTitle": "Root Canal Treatment in Mapusa & Candolim, Goa",
+      "metaDescription": "Save an infected or painful tooth with root canal treatment. Clear explanations and comfortable care at Expressions Dental Clinic, Goa.",
+      "summary": "Root canal treatment saves a tooth whose inner pulp has become infected or inflamed. The damaged pulp is removed, the canals are cleaned and disinfected, then sealed so the tooth can keep working.",
+      "whoFor": [
+        "Lingering pain with hot or cold, or a toothache that wakes you at night",
+        "A deep cavity or crack that has reached the nerve",
+        "Swelling or a pimple on the gum near a tooth",
+        "A tooth that has darkened after an injury"
+      ],
+      "steps": [
+        {
+          "title": "Examination and X-ray",
+          "text": "We check the tooth and take an X-ray to see the roots and the extent of infection."
+        },
+        {
+          "title": "Numbing",
+          "text": "Local anaesthetic numbs the area so the procedure feels much like having a filling."
+        },
+        {
+          "title": "Cleaning the canals",
+          "text": "The infected pulp is removed and the canals are shaped, cleaned and disinfected."
+        },
+        {
+          "title": "Sealing",
+          "text": "The canals are filled and sealed. Depending on the tooth, this may take one or more visits."
+        },
+        {
+          "title": "Protecting the tooth",
+          "text": "Back teeth usually need a crown afterwards to protect them from cracking."
+        }
+      ],
+      "aftercare": [
+        "Some tenderness for a few days is normal; your dentist will advise on pain relief.",
+        "Avoid chewing hard food on the tooth until the final filling or crown is placed.",
+        "Keep brushing and flossing normally, and attend the follow-up visits."
+      ],
+      "faqs": [
+        {
+          "q": "Does a root canal hurt?",
+          "a": "The procedure is done under local anaesthetic, so most patients feel pressure rather than pain. It usually relieves the pain the infection was causing."
+        },
+        {
+          "q": "Is it better to remove the tooth instead?",
+          "a": "Keeping your natural tooth is usually the better choice for chewing and for the bone around it. Your dentist will explain the options for your tooth."
+        },
+        {
+          "q": "Will I need a crown?",
+          "a": "Back teeth often do, because a root-treated tooth can become brittle. Your dentist will advise based on how much tooth structure remains."
+        }
+      ],
+      "related": ["dental-crowns", "dental-fillings", "tooth-extraction"]
+    },
+    {
+      "slug": "dental-fillings",
+      "name": "Dental Fillings",
+      "category": "general-treatments",
+      "legacySlug": "dental-fillings",
+      "metaTitle": "Tooth-Coloured Dental Fillings in Mapusa & Candolim, Goa",
+      "metaDescription": "Repair cavities and chipped teeth with natural-looking fillings at our Mapusa and Candolim clinics in Goa.",
+      "summary": "Dental fillings restore teeth damaged by decay, cracks or wear. The decayed part is removed and the tooth is rebuilt with a filling material, usually tooth-coloured.",
+      "whoFor": [
+        "Cavities found at a check-up or on an X-ray",
+        "Sensitivity to sweet, hot or cold food",
+        "Small chips, cracks or worn edges",
+        "Old fillings that have broken or leak"
+      ],
+      "steps": [
+        { "title": "Check and numbing", "text": "We examine the tooth and numb it if needed." },
+        {
+          "title": "Removing decay",
+          "text": "The decayed or damaged part of the tooth is gently removed and cleaned."
+        },
+        {
+          "title": "Filling",
+          "text": "The tooth is rebuilt in layers, shaped to your bite and polished."
+        }
+      ],
+      "aftercare": [
+        "If you were numbed, wait until the feeling returns before eating.",
+        "Mild sensitivity can last a few days; tell us if your bite feels high.",
+        "Brush twice a day and cut down on sugary snacks to prevent new cavities."
+      ],
+      "faqs": [
+        { "q": "How long does a filling take?", "a": "Most fillings are done in a single visit." },
+        {
+          "q": "Can I eat after a filling?",
+          "a": "Yes, once the numbness wears off. Your dentist will tell you if your filling material needs any extra care."
+        }
+      ],
+      "related": ["root-canal-treatment", "tooth-scaling", "dental-crowns"]
+    },
+    {
+      "slug": "tooth-scaling",
+      "name": "Teeth Cleaning & Scaling",
+      "category": "general-treatments",
+      "legacySlug": "tooth-scaling",
+      "metaTitle": "Teeth Cleaning & Scaling in Goa | Expressions Dental Clinic",
+      "metaDescription": "Professional teeth cleaning removes tartar and plaque to keep gums healthy. Book at our Duler (Mapusa) or Candolim clinic.",
+      "summary": "Scaling is a professional clean that removes hardened plaque (tartar or calculus) that brushing cannot. It helps prevent gum disease, bad breath and staining.",
+      "whoFor": [
+        "Everyone, as part of regular check-ups",
+        "Gums that bleed when brushing",
+        "Visible yellow or brown deposits near the gum line",
+        "Persistent bad breath"
+      ],
+      "steps": [
+        { "title": "Gum check", "text": "We check your gums and how much tartar has built up." },
+        {
+          "title": "Scaling",
+          "text": "Instruments remove tartar from above and just below the gum line."
+        },
+        {
+          "title": "Polishing",
+          "text": "Teeth are polished to remove surface stains and smooth the surfaces."
+        }
+      ],
+      "aftercare": [
+        "Gums may feel tender or bleed slightly for a day or two.",
+        "Teeth can feel sensitive briefly; a sensitivity toothpaste helps.",
+        "Keep up brushing and flossing so tartar builds up more slowly."
+      ],
+      "faqs": [
+        {
+          "q": "Does scaling damage the enamel?",
+          "a": "No. Scaling removes deposits sitting on the teeth; it does not remove enamel."
+        },
+        {
+          "q": "How often should I have my teeth cleaned?",
+          "a": "Many people benefit from a clean every six months; your dentist will suggest what suits your gums."
+        }
+      ],
+      "related": ["gum-surgery", "dental-fillings", "teeth-whitening"]
+    },
+    {
+      "slug": "dentures",
+      "name": "Dentures",
+      "category": "general-treatments",
+      "legacySlug": "dentures",
+      "metaTitle": "Full & Partial Dentures in Mapusa & Candolim, Goa",
+      "metaDescription": "Comfortable, natural-looking full and partial dentures to replace missing teeth. Talk to us about your options.",
+      "summary": "A denture is a removable replacement for missing teeth and the surrounding gum tissue. Dentures can replace a few teeth (partial) or a full arch (complete).",
+      "whoFor": [
+        "Several or all teeth missing in an arch",
+        "Difficulty chewing or speaking because of missing teeth",
+        "People who prefer a removable option, or for whom implants are not suitable"
+      ],
+      "steps": [
+        {
+          "title": "Consultation",
+          "text": "We examine your mouth and discuss partial, complete or implant-supported options."
+        },
+        {
+          "title": "Impressions and bite",
+          "text": "Moulds and bite records are taken so the denture fits your mouth and face."
+        },
+        {
+          "title": "Try-in",
+          "text": "You try a trial version to check the look, fit and bite before it is finalised."
+        },
+        {
+          "title": "Fitting and adjustments",
+          "text": "The finished denture is fitted, with follow-up visits to ease any sore spots."
+        }
+      ],
+      "aftercare": [
+        "It takes a few weeks to get used to eating and speaking with a new denture.",
+        "Remove and clean your denture daily, and rest your gums at night if advised.",
+        "Come back if anything rubs or the fit changes over time."
+      ],
+      "faqs": [
+        {
+          "q": "Will people notice I wear dentures?",
+          "a": "Modern dentures are made to look natural, with teeth chosen to suit your face."
+        },
+        {
+          "q": "Can dentures be fixed in place?",
+          "a": "Implants can be used to hold a denture more securely. Ask us whether this is an option for you."
+        }
+      ],
+      "related": ["dental-implants", "dental-crowns", "tooth-extraction"]
+    },
+    {
+      "slug": "dental-crowns",
+      "name": "Dental Crowns",
+      "category": "general-treatments",
+      "legacySlug": "dental-crown",
+      "metaTitle": "Dental Crowns (Caps) in Goa | Expressions Dental Clinic",
+      "metaDescription": "Restore broken, weak or root-treated teeth with a dental crown. Natural-looking options at our Mapusa and Candolim clinics.",
+      "summary": "A crown is a tooth-shaped cap placed over a tooth to restore its shape, size and strength, and to improve how it looks and works.",
+      "whoFor": [
+        "Teeth that are cracked, broken or heavily filled",
+        "Back teeth after root canal treatment",
+        "Badly worn or discoloured teeth",
+        "Covering a dental implant"
+      ],
+      "steps": [
+        {
+          "title": "Preparing the tooth",
+          "text": "The tooth is numbed and reshaped so the crown can fit over it."
+        },
+        { "title": "Measuring", "text": "An impression or scan records the tooth and your bite." },
+        {
+          "title": "Temporary protection",
+          "text": "A temporary crown may be placed while the final crown is made."
+        },
+        {
+          "title": "Fitting",
+          "text": "The final crown is checked for fit, colour and bite, then cemented in place."
+        }
+      ],
+      "aftercare": [
+        "Avoid very sticky or hard food on a temporary crown.",
+        "Brush and floss around the crown like a natural tooth.",
+        "Tell us if your bite feels uneven after fitting."
+      ],
+      "faqs": [
+        {
+          "q": "What are crowns made of?",
+          "a": "Options include all-ceramic and metal-ceramic crowns. Your dentist will recommend one based on the tooth's position and strength needs."
+        },
+        {
+          "q": "How long do crowns last?",
+          "a": "With good care, crowns can last many years. Regular check-ups help spot problems early."
+        }
+      ],
+      "related": ["ceramic-crowns", "cad-cam-crowns", "root-canal-treatment"]
+    },
+    {
+      "slug": "tooth-extraction",
+      "name": "Tooth Extraction",
+      "category": "general-treatments",
+      "legacySlug": "tooth-extraction",
+      "metaTitle": "Tooth Extraction in Mapusa & Candolim, Goa",
+      "metaDescription": "Gentle tooth removal when a tooth can't be saved, with clear aftercare advice. Expressions Dental Clinic, Goa.",
+      "summary": "A dental extraction is the removal of a tooth from its socket in the jaw bone. It is considered when a tooth cannot be saved or is causing problems.",
+      "whoFor": [
+        "Teeth too damaged or decayed to repair",
+        "Severe gum disease with loose teeth",
+        "Crowding before orthodontic treatment, when advised",
+        "Wisdom teeth causing pain or infection"
+      ],
+      "steps": [
+        {
+          "title": "Assessment",
+          "text": "We examine the tooth, take an X-ray if needed, and talk through alternatives."
+        },
+        { "title": "Numbing", "text": "Local anaesthetic numbs the tooth and surrounding area." },
+        {
+          "title": "Removal",
+          "text": "The tooth is gently loosened and removed. Some teeth need a minor surgical approach."
+        },
+        {
+          "title": "Healing",
+          "text": "Gauze is placed to help a clot form, and you receive written aftercare instructions."
+        }
+      ],
+      "aftercare": [
+        "Bite on the gauze as advised and avoid rinsing hard for the first 24 hours.",
+        "Do not smoke or drink through a straw while the socket heals.",
+        "Eat soft food and keep the area clean as instructed. Contact us if bleeding or pain increases."
+      ],
+      "faqs": [
+        {
+          "q": "Should a missing tooth be replaced?",
+          "a": "Often yes, to prevent neighbouring teeth from drifting. Options include implants, bridges and dentures."
+        }
+      ],
+      "related": ["impacted-wisdom-tooth-removal", "dental-implants", "dentures"]
+    },
+    {
+      "slug": "child-dental-care",
+      "name": "Child Dental Care",
+      "category": "general-treatments",
+      "legacySlug": "child-dental-care",
+      "metaTitle": "Children's Dentist in Mapusa & Candolim, Goa",
+      "metaDescription": "Gentle dental care for children, from first visits to habits like thumb sucking. Expressions Dental Clinic, Goa.",
+      "summary": "Many children are found to have oral habits like thumb sucking, which may affect normal growth. We provide care designed for children, from first check-ups to treating these habits and cavities.",
+      "whoFor": [
+        "A first dental visit by the first birthday, or soon after the first tooth appears",
+        "Thumb sucking, tongue thrusting or mouth breathing",
+        "Cavities, toothache or injuries to baby or adult teeth",
+        "Advice on brushing, diet and fluoride for your child"
+      ],
+      "steps": [
+        {
+          "title": "A friendly first visit",
+          "text": "We take it slowly so your child gets comfortable with the chair and the team."
+        },
+        {
+          "title": "Check-up",
+          "text": "We check teeth, gums, bite and habits, and explain what we see."
+        },
+        {
+          "title": "Prevention and treatment",
+          "text": "We suggest preventive care and treat any problems in a child-friendly way."
+        }
+      ],
+      "aftercare": [
+        "Brush your child's teeth twice a day with a fluoride toothpaste suitable for their age.",
+        "Limit sugary drinks and snacks between meals.",
+        "Keep up regular check-ups so small problems are caught early."
+      ],
+      "faqs": [
+        {
+          "q": "When should my child first see a dentist?",
+          "a": "Ideally by their first birthday, or within six months of the first tooth appearing."
+        },
+        {
+          "q": "Why treat baby teeth if they fall out anyway?",
+          "a": "Healthy baby teeth help with eating, speech and holding space for the adult teeth."
+        }
+      ],
+      "related": ["dental-fillings", "orthodontic-treatment", "tooth-scaling"]
+    },
+    {
+      "slug": "dental-implants",
+      "name": "Dental Implants",
+      "category": "advanced-treatments",
+      "legacySlug": "dental-implants",
+      "metaTitle": "Dental Implants in Goa | Expressions Dental Clinic",
+      "metaDescription": "Replace missing teeth with dental implants that look and feel natural. Consultations at our Mapusa and Candolim clinics.",
+      "summary": "A dental implant is a root replacement, usually made of titanium, placed in the jaw bone to support a crown, bridge or denture. It can replace one or several missing teeth.",
+      "whoFor": [
+        "One or more missing teeth",
+        "Loose dentures that need more support",
+        "Adults with healthy gums and enough bone, or who can have bone grafting"
+      ],
+      "steps": [
+        {
+          "title": "Consultation and planning",
+          "text": "We examine your mouth, take X-rays or scans, and plan the implant position."
+        },
+        {
+          "title": "Implant placement",
+          "text": "Under local anaesthetic, the implant is placed into the jaw bone."
+        },
+        {
+          "title": "Healing",
+          "text": "The bone bonds to the implant over a period of weeks to months."
+        },
+        {
+          "title": "The new tooth",
+          "text": "A connector (abutment) and a custom crown, bridge or denture are fitted on the implant."
+        }
+      ],
+      "aftercare": [
+        "Follow the post-surgery instructions and take any prescribed medicines as directed.",
+        "Clean around implants carefully every day, like natural teeth.",
+        "Avoid smoking, which increases the risk of implant problems.",
+        "Attend regular check-ups so we can monitor the implant and gums."
+      ],
+      "faqs": [
+        {
+          "q": "Am I suitable for implants?",
+          "a": "Most healthy adults are. Bone levels, gum health, smoking and some medical conditions affect suitability; your dentist will assess this."
+        },
+        {
+          "q": "How long does the whole process take?",
+          "a": "It depends on bone healing and whether grafting is needed. Your dentist will give you a timeline at the consultation."
+        },
+        {
+          "q": "Does it hurt?",
+          "a": "Placement is done under local anaesthetic. Discomfort afterwards is usually manageable with the advised pain relief."
+        }
+      ],
+      "related": ["dental-crowns", "dentures", "tooth-extraction"]
+    },
+    {
+      "slug": "gum-surgery",
+      "name": "Gum Surgery",
+      "category": "advanced-treatments",
+      "legacySlug": "gum-surgery",
+      "metaTitle": "Gum Disease Treatment & Gum Surgery in Goa",
+      "metaDescription": "Treatment for advanced gum disease to remove bacteria below the gums and protect your teeth. Expressions Dental Clinic.",
+      "summary": "Periodontal (gum) surgery treats advanced gum disease by removing bacteria and tartar from deep below the gums, and reshaping or repairing the gum and bone where needed.",
+      "whoFor": [
+        "Deep gum pockets that do not respond to cleaning",
+        "Bleeding, receding or swollen gums",
+        "Loose teeth caused by gum disease"
+      ],
+      "steps": [
+        {
+          "title": "Gum assessment",
+          "text": "We measure gum pockets and take X-rays to check bone levels."
+        },
+        {
+          "title": "Deep cleaning first",
+          "text": "Non-surgical deep cleaning is usually tried before surgery."
+        },
+        {
+          "title": "Surgical treatment",
+          "text": "Under local anaesthetic, deep deposits are removed and the gums are repositioned or repaired."
+        },
+        { "title": "Review", "text": "Follow-up visits check healing and gum health." }
+      ],
+      "aftercare": [
+        "Use any prescribed mouthwash and medicines as directed.",
+        "Eat soft food and avoid the treated area while it heals.",
+        "Regular professional cleaning is important to keep gum disease under control."
+      ],
+      "faqs": [
+        {
+          "q": "Can gum disease affect my general health?",
+          "a": "Research links gum disease with conditions such as diabetes. Keeping your gums healthy is part of looking after your overall health."
+        }
+      ],
+      "related": ["tooth-scaling", "gum-depigmentation", "dental-implants"]
+    },
+    {
+      "slug": "orthodontic-treatment",
+      "name": "Orthodontic Treatment (Braces)",
+      "category": "advanced-treatments",
+      "legacySlug": "orthodontic-treatment",
+      "metaTitle": "Braces & Orthodontic Treatment in Goa",
+      "metaDescription": "Straighten teeth and improve your bite with orthodontic treatment for children and adults. Expressions Dental Clinic, Goa.",
+      "summary": "Orthodontic treatment straightens or moves teeth to improve their appearance and how they work, using braces or other appliances.",
+      "whoFor": [
+        "Crowded, gapped or crooked teeth",
+        "Overbite, underbite or crossbite",
+        "Children whose jaws and teeth are still developing, and adults"
+      ],
+      "steps": [
+        {
+          "title": "Assessment",
+          "text": "We examine your teeth and bite and take records such as photos, X-rays and impressions."
+        },
+        {
+          "title": "Treatment plan",
+          "text": "Your dentist explains the options, expected duration and what is involved."
+        },
+        {
+          "title": "Fitting",
+          "text": "Braces or appliances are fitted and adjusted at regular visits."
+        },
+        {
+          "title": "Retention",
+          "text": "Retainers help keep teeth in their new position once treatment ends."
+        }
+      ],
+      "aftercare": [
+        "Clean carefully around braces, using interdental brushes if advised.",
+        "Avoid hard and sticky food that can damage braces.",
+        "Wear retainers exactly as instructed."
+      ],
+      "faqs": [
+        {
+          "q": "Is there an age limit for braces?",
+          "a": "No. Adults can have orthodontic treatment as long as their teeth and gums are healthy."
+        },
+        {
+          "q": "How long does treatment take?",
+          "a": "It depends on the case. Your dentist will estimate the duration after the assessment."
+        }
+      ],
+      "related": ["child-dental-care", "smile-designing", "laminate-veneers"]
+    },
+    {
+      "slug": "impacted-wisdom-tooth-removal",
+      "name": "Impacted Tooth Removal",
+      "category": "advanced-treatments",
+      "legacySlug": "dental-impaction",
+      "metaTitle": "Impacted Wisdom Tooth Removal in Goa",
+      "metaDescription": "Removal of impacted wisdom teeth that cause pain, swelling or infection. Expressions Dental Clinic, Mapusa & Candolim.",
+      "summary": "An impacted tooth is one that fails to fully emerge through the gum, most commonly a wisdom tooth. When it causes problems, it can be removed with minor oral surgery.",
+      "whoFor": [
+        "Pain, swelling or infection around a partly erupted wisdom tooth",
+        "Food trapping and decay in a hard-to-clean area",
+        "Damage to the neighbouring tooth"
+      ],
+      "steps": [
+        {
+          "title": "X-ray assessment",
+          "text": "An X-ray shows the tooth's position and its relation to nearby nerves."
+        },
+        { "title": "Planning", "text": "Your dentist explains the procedure, risks and recovery." },
+        {
+          "title": "Removal",
+          "text": "Under local anaesthetic, the tooth is removed, sometimes in sections."
+        },
+        {
+          "title": "Recovery",
+          "text": "You receive aftercare instructions and a follow-up appointment if needed."
+        }
+      ],
+      "aftercare": [
+        "Some swelling and stiffness for a few days is common; cold compresses help in the first day.",
+        "Eat soft food, avoid smoking and do not rinse hard for 24 hours.",
+        "Contact us if pain worsens after a few days, or for fever or heavy bleeding."
+      ],
+      "faqs": [
+        {
+          "q": "Do all wisdom teeth need to be removed?",
+          "a": "No. Wisdom teeth that are healthy and causing no problems can often stay. Your dentist will advise."
+        }
+      ],
+      "related": ["tooth-extraction", "dental-implants", "tooth-scaling"]
+    },
+    {
+      "slug": "smile-designing",
+      "name": "Smile Designing",
+      "category": "cosmetic-treatments",
+      "legacySlug": "smile-designing",
+      "metaTitle": "Smile Design & Smile Makeover in Goa",
+      "metaDescription": "Plan your ideal smile by adjusting the size, shape, colour and alignment of your teeth. Expressions Dental Clinic, Goa.",
+      "summary": "Smile designing is a planned approach to changing the size, shape, colour and alignment of teeth, and the surrounding gums, to enhance your smile.",
+      "whoFor": [
+        "Discoloured, chipped, uneven or gapped teeth",
+        "A 'gummy' or uneven gum line",
+        "People who want a coordinated plan rather than single treatments"
+      ],
+      "steps": [
+        {
+          "title": "Consultation",
+          "text": "We discuss what you would like to change and examine your teeth, gums and bite."
+        },
+        {
+          "title": "Design",
+          "text": "Photos and models help plan the result, which we review with you."
+        },
+        {
+          "title": "Treatment",
+          "text": "The plan may combine whitening, veneers, crowns, gum shaping or orthodontics."
+        },
+        {
+          "title": "Review",
+          "text": "We check the result and your bite, and advise on keeping your smile healthy."
+        }
+      ],
+      "aftercare": [
+        "Keep up regular check-ups and cleaning to protect your new smile.",
+        "Limit staining food and drinks, and do not smoke."
+      ],
+      "faqs": [
+        {
+          "q": "Can I see the result before treatment?",
+          "a": "The planning stage is designed to show you the expected outcome so you can decide before committing."
+        }
+      ],
+      "related": ["laminate-veneers", "teeth-whitening", "gum-depigmentation"]
+    },
+    {
+      "slug": "laminate-veneers",
+      "name": "Laminate Veneers",
+      "category": "cosmetic-treatments",
+      "legacySlug": "laminate-veneers",
+      "metaTitle": "Porcelain & Laminate Veneers in Goa",
+      "metaDescription": "Thin, natural-looking veneers to improve the shape, spacing and colour of your front teeth. Expressions Dental Clinic.",
+      "summary": "Veneers are thin, translucent laminates bonded to the front of teeth to improve their appearance: shape, spacing and colour. They can also correct mild crowding or replace old composite bonding.",
+      "whoFor": [
+        "Stained teeth that whitening cannot brighten",
+        "Small gaps, chips or uneven edges",
+        "Mildly crowded or misshapen front teeth"
+      ],
+      "steps": [
+        {
+          "title": "Planning",
+          "text": "We discuss the look you want and check that veneers suit your teeth and bite."
+        },
+        {
+          "title": "Preparation",
+          "text": "A thin layer of enamel may be reshaped, and impressions are taken."
+        },
+        {
+          "title": "Bonding",
+          "text": "The veneers are tried in, adjusted and bonded to your teeth."
+        }
+      ],
+      "aftercare": [
+        "Avoid biting very hard objects such as ice or pens.",
+        "Wear a night guard if you grind your teeth.",
+        "Brush and floss normally and attend regular check-ups."
+      ],
+      "faqs": [
+        {
+          "q": "Are veneers permanent?",
+          "a": "Veneers last many years but may need replacing eventually. Because enamel is usually reshaped, the decision should be considered carefully."
+        }
+      ],
+      "related": ["smile-designing", "ceramic-crowns", "teeth-whitening"]
+    },
+    {
+      "slug": "ceramic-crowns",
+      "name": "Ceramic Crowns",
+      "category": "cosmetic-treatments",
+      "legacySlug": "ceramic-crowns",
+      "metaTitle": "Natural-Looking Ceramic Crowns in Goa",
+      "metaDescription": "Metal-free ceramic crowns that blend in with your natural teeth. Expressions Dental Clinic, Mapusa & Candolim.",
+      "summary": "Cosmetic crowns are made from translucent ceramic materials that look attractive and blend in well with the rest of your teeth.",
+      "whoFor": [
+        "Visible teeth that need a crown",
+        "Replacing older crowns with dark edges",
+        "People who prefer metal-free restorations"
+      ],
+      "steps": [
+        {
+          "title": "Shade matching",
+          "text": "We match the ceramic colour to your neighbouring teeth."
+        },
+        {
+          "title": "Preparation and impression",
+          "text": "The tooth is shaped and an impression or scan is taken."
+        },
+        {
+          "title": "Fitting",
+          "text": "The crown is checked for fit, colour and bite, then bonded in place."
+        }
+      ],
+      "aftercare": [
+        "Brush and floss around the crown like a natural tooth.",
+        "Avoid using your teeth to open packets or bite hard objects."
+      ],
+      "faqs": [
+        {
+          "q": "Are ceramic crowns strong enough for back teeth?",
+          "a": "Modern ceramics are strong, but the best material depends on your bite. Your dentist will recommend the right option."
+        }
+      ],
+      "related": ["dental-crowns", "cad-cam-crowns", "laminate-veneers"]
+    },
+    {
+      "slug": "cad-cam-crowns",
+      "name": "CAD/CAM Dental Crowns",
+      "category": "cosmetic-treatments",
+      "legacySlug": "cad-cam-dental-crowns",
+      "metaTitle": "CAD/CAM Dental Crowns in Goa",
+      "metaDescription": "Precisely designed and milled crowns using computer-aided design and manufacturing. Expressions Dental Clinic, Goa.",
+      "summary": "Computer-aided design and computer-assisted milling (CAD/CAM) are used to design and manufacture crowns and other dental restorations with precision.",
+      "whoFor": [
+        "Teeth that need a crown, inlay or onlay",
+        "Patients who want precisely fitting ceramic restorations"
+      ],
+      "steps": [
+        {
+          "title": "Preparing the tooth",
+          "text": "The tooth is shaped to receive the restoration."
+        },
+        {
+          "title": "Digital design",
+          "text": "The restoration is designed on a computer from a digital record of your tooth."
+        },
+        {
+          "title": "Milling and fitting",
+          "text": "It is milled from a block of material, checked and bonded in place."
+        }
+      ],
+      "aftercare": ["Look after it like a natural tooth: brush, floss and attend check-ups."],
+      "faqs": [
+        {
+          "q": "How is CAD/CAM different from a regular crown?",
+          "a": "The crown is designed and made with computer-guided tools, which allows a precise, consistent fit."
+        }
+      ],
+      "related": ["ceramic-crowns", "dental-crowns", "smile-designing"]
+    },
+    {
+      "slug": "gum-depigmentation",
+      "name": "Gum Shaping & Depigmentation",
+      "category": "cosmetic-treatments",
+      "legacySlug": "gum-shaping",
+      "metaTitle": "Gum Depigmentation & Gum Shaping in Goa",
+      "metaDescription": "Treat dark gum patches and reshape an uneven gum line for a more balanced smile. Expressions Dental Clinic.",
+      "summary": "Gum depigmentation (sometimes called gum bleaching) is a cosmetic procedure to remove dark spots or patches on the gums caused by excess melanin. Gum shaping evens out an uneven or 'gummy' gum line.",
+      "whoFor": [
+        "Dark patches or uneven colour on the gums",
+        "Excess gum showing when you smile",
+        "An uneven gum line around the front teeth"
+      ],
+      "steps": [
+        {
+          "title": "Consultation",
+          "text": "We examine the gums and explain what can be achieved."
+        },
+        {
+          "title": "Treatment",
+          "text": "Under local anaesthetic, the pigmented layer is removed or the gum line is reshaped."
+        },
+        {
+          "title": "Healing",
+          "text": "The gums heal over the following weeks, revealing the new colour or shape."
+        }
+      ],
+      "aftercare": [
+        "Eat soft, cool food for the first few days.",
+        "Follow cleaning instructions carefully while the gums heal.",
+        "Avoid smoking, which can cause pigmentation to return."
+      ],
+      "faqs": [
+        {
+          "q": "Can the dark colour come back?",
+          "a": "Pigmentation can return over time in some people, especially smokers. Your dentist will discuss what to expect."
+        }
+      ],
+      "related": ["smile-designing", "gum-surgery", "teeth-whitening"]
+    },
+    {
+      "slug": "teeth-whitening",
+      "name": "Teeth Whitening",
+      "category": "cosmetic-treatments",
+      "legacySlug": "dental-bleaching",
+      "metaTitle": "Teeth Whitening in Mapusa & Candolim, Goa",
+      "metaDescription": "Professional teeth whitening to lighten your natural tooth colour safely. Expressions Dental Clinic, Goa.",
+      "summary": "Dental bleaching, or teeth whitening, is an effective way to lighten the natural colour of your teeth without removing any of the tooth surface.",
+      "whoFor": [
+        "Teeth yellowed by age, tea, coffee or tobacco",
+        "People with healthy teeth and gums who want a brighter smile"
+      ],
+      "steps": [
+        {
+          "title": "Check-up",
+          "text": "We check that your teeth and gums are healthy and note your starting shade."
+        },
+        {
+          "title": "Whitening",
+          "text": "A professional whitening gel is applied while your gums are protected."
+        },
+        {
+          "title": "Review",
+          "text": "We compare the result with your starting shade and advise on maintenance."
+        }
+      ],
+      "aftercare": [
+        "Temporary sensitivity is common and usually settles within a few days.",
+        "Limit tea, coffee, red wine and tobacco to help the result last.",
+        "Occasional touch-ups can maintain the colour."
+      ],
+      "faqs": [
+        {
+          "q": "Does whitening work on crowns or fillings?",
+          "a": "No. Whitening lightens natural teeth only; existing crowns or fillings may need replacing to match."
+        },
+        {
+          "q": "How long do results last?",
+          "a": "Results can last a few years, depending on diet and habits such as smoking."
+        }
+      ],
+      "related": ["smile-designing", "tooth-scaling", "laminate-veneers"]
+    },
+    {
+      "slug": "tooth-jewellery",
+      "name": "Tooth Jewellery",
+      "category": "cosmetic-treatments",
+      "legacySlug": "tooth-jewellery",
+      "metaTitle": "Tooth Jewellery in Goa | Expressions Dental Clinic",
+      "metaDescription": "Add a little sparkle with tooth jewellery bonded safely to your tooth and removable without damage.",
+      "summary": "We use tooth jewellery designed specifically to be bonded to teeth. It can be removed or changed later without damaging the tooth.",
+      "whoFor": ["Anyone with healthy front teeth who wants a decorative accent"],
+      "steps": [
+        { "title": "Choosing", "text": "Pick a design and the tooth where you would like it." },
+        {
+          "title": "Bonding",
+          "text": "The tooth surface is cleaned and the jewel is bonded with a dental adhesive."
+        }
+      ],
+      "aftercare": [
+        "Brush gently around the jewel.",
+        "Avoid biting hard food directly on it.",
+        "Ask us to remove it rather than trying at home."
+      ],
+      "faqs": [
+        {
+          "q": "Does it damage the tooth?",
+          "a": "No drilling is needed. The jewel is bonded to the surface and can be removed by the dentist."
+        }
+      ],
+      "related": ["teeth-whitening", "smile-designing", "laminate-veneers"]
+    }
+  ]
+}

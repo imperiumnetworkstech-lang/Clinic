@@ -1,17 +1,20 @@
 import { CalendarPlus, House, MapPin, Menu, Stethoscope } from 'lucide-react';
 import { useState } from 'react';
-import { useBooking } from './BookingSheet';
+import { NavLink } from 'react-router';
+import { cn } from '../lib/cn';
 import { MoreSheet } from './MoreSheet';
 
 const tab =
-  'flex min-h-14 flex-1 flex-col items-center justify-center gap-1 text-[0.7rem] font-semibold text-neutral-600 transition active:scale-95';
+  'flex min-h-14 flex-1 flex-col items-center justify-center gap-1 text-[0.7rem] font-semibold transition active:scale-95';
+
+const tabState = ({ isActive }: { isActive: boolean }) =>
+  cn(tab, isActive ? 'text-primary-700' : 'text-neutral-600');
 
 /**
  * App-style navigation for phones (<768px), pinned to the thumb zone and safe-area aware.
  * Book sits raised in the centre. Portal joins once its login channel is decided (B2).
  */
 export function BottomTabBar() {
-  const { openBooking } = useBooking();
   const [moreOpen, setMoreOpen] = useState(false);
 
   return (
@@ -21,28 +24,28 @@ export function BottomTabBar() {
         className="fixed inset-x-0 bottom-0 z-40 border-t border-neutral-200/80 bg-white/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150 md:hidden"
       >
         <div className="mx-auto flex max-w-lg items-end px-2">
-          <a href="/#top" className={tab}>
+          <NavLink to="/" end viewTransition className={tabState}>
             <House size={22} />
             Home
-          </a>
-          <a href="/#treatments" className={tab}>
+          </NavLink>
+          <NavLink to="/treatments" viewTransition className={tabState}>
             <Stethoscope size={22} />
             Treatments
-          </a>
-          <button type="button" onClick={openBooking} className={`${tab} -mt-6 text-primary-700`}>
+          </NavLink>
+          <NavLink to="/book" viewTransition className={cn(tab, '-mt-6 text-primary-700')}>
             <span className="grid size-14 place-items-center rounded-full bg-brand text-white shadow-[0_10px_24px_-6px_rgb(210_2_127/0.6)] ring-4 ring-white">
               <CalendarPlus size={24} />
             </span>
             Book
-          </button>
-          <a href="/#locations" className={tab}>
+          </NavLink>
+          <NavLink to="/contact" viewTransition className={tabState}>
             <MapPin size={22} />
             Clinics
-          </a>
+          </NavLink>
           <button
             type="button"
             onClick={() => setMoreOpen(true)}
-            className={tab}
+            className={cn(tab, 'text-neutral-600')}
             aria-haspopup="dialog"
             aria-expanded={moreOpen}
           >

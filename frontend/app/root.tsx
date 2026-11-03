@@ -8,10 +8,10 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from 'react-router';
 import type { Route } from './+types/root';
 import './app.css';
-import { BookingProvider } from './components/BookingSheet';
 import { BottomTabBar } from './components/BottomTabBar';
 import { ConsentBanner } from './components/ConsentBanner';
 import { InstallPrompt } from './components/InstallPrompt';
@@ -29,8 +29,6 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#ffffff" />
-        {/* Not indexable until launch; Phase 3 replaces this with per-page SEO tags. */}
-        <meta name="robots" content="noindex, nofollow" />
         <link rel="icon" href="/images/brand/favicon-48.png" sizes="48x48" />
         <link rel="apple-touch-icon" href="/images/brand/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
@@ -53,9 +51,13 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export default function App() {
   useEffect(registerServiceWorker, []);
+  const { pathname } = useLocation();
+
+  // The staff area has its own minimal layout: no public header, tab bar or prompts.
+  if (pathname.startsWith('/admin')) return <Outlet />;
 
   return (
-    <BookingProvider>
+    <>
       <a
         href="#main"
         className="sr-only z-50 rounded-full bg-white px-4 py-2 font-semibold focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -70,7 +72,7 @@ export default function App() {
       <BottomTabBar />
       <InstallPrompt />
       <ConsentBanner />
-    </BookingProvider>
+    </>
   );
 }
 
@@ -78,6 +80,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   const notFound = isRouteErrorResponse(error) && error.status === 404;
   return (
     <main className={`${container} py-24 text-center`}>
+      <title>{notFound ? 'Page not found | Expressions Dental Clinic' : 'Error'}</title>
+      <meta name="robots" content="noindex" />
       <h1 className="text-4xl font-bold">{notFound ? 'Page not found' : 'Something went wrong'}</h1>
       <p className="mx-auto mt-4 max-w-md text-muted">
         {notFound

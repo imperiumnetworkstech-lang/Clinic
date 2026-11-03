@@ -56,40 +56,6 @@ export const branches: Branch[] = clinicData.locations.map((location) => ({
   directionsHref: `https://www.google.com/maps/search/?api=1&query=${location.geo.lat},${location.geo.lng}&query_place_id=${location.googlePlaceId}`,
 }));
 
-export type CategoryId = 'general-treatments' | 'advanced-treatments' | 'cosmetic-treatments';
-
-const CATEGORY_COPY: Record<CategoryId, { title: string; blurb: string }> = {
-  'general-treatments': {
-    title: 'General dentistry',
-    blurb: 'Check-ups, cleaning, fillings and root canals: everyday care that keeps teeth healthy.',
-  },
-  'advanced-treatments': {
-    title: 'Advanced treatments',
-    blurb: 'Implants, gum surgery, braces and impacted teeth, handled by experienced doctors.',
-  },
-  'cosmetic-treatments': {
-    title: 'Cosmetic dentistry',
-    blurb: 'Smile design, veneers, whitening and natural-looking ceramic crowns.',
-  },
-};
-
-export const treatmentCategories = clinicData.treatmentCategories.map((category) => {
-  const id = category.slug as CategoryId;
-  return {
-    id,
-    ...CATEGORY_COPY[id],
-    treatments: clinicData.treatments
-      .filter((treatment) => treatment.category === category.slug)
-      .map((treatment) => ({
-        slug: treatment.slug,
-        name: treatment.name,
-        description: treatment.shortDescription,
-      })),
-  };
-});
-
-export const treatmentCount = clinicData.treatments.length;
-
 export const testimonials = clinicData.testimonials.map((testimonial) => ({
   quote: testimonial.quote,
   name: testimonial.name,

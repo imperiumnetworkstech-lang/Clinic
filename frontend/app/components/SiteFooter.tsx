@@ -1,7 +1,8 @@
 import { Accessibility, Mail, MapPin, Phone } from 'lucide-react';
 import { useState } from 'react';
 import { branches, CLINIC_NAME, email, phones, social } from '../lib/clinic';
-import { NAV_LINKS } from '../lib/navigation';
+import { Link } from 'react-router';
+import { LEGAL_LINKS, NAV_LINKS } from '../lib/navigation';
 import { container } from '../lib/ui';
 import { AccessibilityPanel } from './AccessibilityPanel';
 import { ConsentSettingsLink } from './ConsentBanner';
@@ -54,9 +55,13 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-1">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="inline-flex min-h-11 items-center hover:text-white">
+                <Link
+                  to={link.href}
+                  viewTransition
+                  className="inline-flex min-h-11 items-center hover:text-white"
+                >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -124,6 +129,15 @@ export function SiteFooter() {
               <Accessibility size={16} />
               Accessibility
             </button>
+            {LEGAL_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className="inline-flex min-h-11 items-center hover:text-white"
+              >
+                {link.label}
+              </Link>
+            ))}
             <ConsentSettingsLink className="min-h-11 hover:text-white" />
             <p>Designed & developed by Imperium Networks</p>
           </div>
