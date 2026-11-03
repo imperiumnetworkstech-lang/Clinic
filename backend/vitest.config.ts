@@ -1,3 +1,5 @@
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 /** Test-only values; the suite runs against a throwaway embedded Postgres on its own port. */
@@ -13,6 +15,8 @@ const testEnv = {
   ENFORCE_STAFF_2FA: 'true',
   OTP_DELIVERY: 'log',
   EMAIL_DELIVERY: 'log',
+  FILE_STORAGE: 'local',
+  FILE_STORAGE_DIR: path.join(tmpdir(), 'edc-test-files'),
 };
 
 export default defineConfig({

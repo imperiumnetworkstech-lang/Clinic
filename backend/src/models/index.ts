@@ -1,3 +1,4 @@
+import { Invoice, InvoiceItem, PatientFile, Payment } from './billing.js';
 import { Lead, Location, OtpChallenge, Patient, PatientConsent } from './clinic.js';
 import { ClinicalNote, TreatmentPlan, TreatmentPlanItem } from './clinical.js';
 import { Appointment, Holiday, LocationSchedule, PatientLoginLink } from './scheduling.js';
@@ -66,9 +67,25 @@ TreatmentPlan.hasMany(TreatmentPlanItem, {
 });
 TreatmentPlanItem.belongsTo(TreatmentPlan, { foreignKey: 'planId', as: 'plan' });
 
+Patient.hasMany(Invoice, { foreignKey: 'patientId', as: 'invoices' });
+Invoice.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
+Invoice.belongsTo(Location, { foreignKey: 'locationId', as: 'location' });
+Invoice.belongsTo(Appointment, { foreignKey: 'appointmentId', as: 'appointment' });
+Invoice.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+Invoice.hasMany(InvoiceItem, { foreignKey: 'invoiceId', as: 'items', onDelete: 'CASCADE' });
+InvoiceItem.belongsTo(Invoice, { foreignKey: 'invoiceId', as: 'invoice' });
+Invoice.hasMany(Payment, { foreignKey: 'invoiceId', as: 'payments' });
+Payment.belongsTo(Invoice, { foreignKey: 'invoiceId', as: 'invoice' });
+Payment.belongsTo(User, { foreignKey: 'receivedBy', as: 'receiver' });
+Patient.hasMany(PatientFile, { foreignKey: 'patientId', as: 'files' });
+PatientFile.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
+PatientFile.belongsTo(User, { foreignKey: 'uploadedBy', as: 'uploader' });
+
 export type { ActorType, SubjectType, UserStatus } from './identity.js';
 export type { AppointmentSource, AppointmentStatus } from './scheduling.js';
 export { PLAN_ITEM_STATUSES, PLAN_STATUSES } from './clinical.js';
+export { FILE_KINDS, PAYMENT_METHODS } from './billing.js';
+export type { FileKind, PaymentMethod } from './billing.js';
 export type { PlanItemStatus, PlanStatus } from './clinical.js';
 export { APPOINTMENT_STATUSES, SLOT_HOLDING } from './scheduling.js';
 export type {
@@ -86,6 +103,10 @@ export {
   Appointment,
   AuditLog,
   ClinicalNote,
+  Invoice,
+  InvoiceItem,
+  PatientFile,
+  Payment,
   TreatmentPlan,
   TreatmentPlanItem,
   Holiday,

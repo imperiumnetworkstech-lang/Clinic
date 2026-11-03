@@ -23,6 +23,7 @@ export function api(ip = randomIp()) {
     get: (url: string) => request(app).get(url).set('X-Forwarded-For', ip),
     put: (url: string) => request(app).put(url).set('X-Forwarded-For', ip),
     patch: (url: string) => request(app).patch(url).set('X-Forwarded-For', ip),
+    delete: (url: string) => request(app).delete(url).set('X-Forwarded-For', ip),
   };
 }
 

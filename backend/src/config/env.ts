@@ -45,6 +45,12 @@ const envSchema = z
     RESEND_API_KEY: z.string().min(10).optional(),
     /** Verified sender, e.g. "Expressions Dental Clinic <noreply@expressionsdentalclinic.com>". */
     EMAIL_FROM: z.string().min(3).optional(),
+    /**
+     * Patient files (X-rays, photos, reports). `local` keeps them on this machine's disk, for
+     * development only; `none` turns uploads off. A cloud provider is added before launch.
+     */
+    FILE_STORAGE: z.enum(['local', 'none']).default('none'),
+    FILE_STORAGE_DIR: z.string().default('.data/files'),
   })
   .superRefine((env, ctx) => {
     if (env.EMAIL_DELIVERY === 'resend' && (!env.RESEND_API_KEY || !env.EMAIL_FROM)) {
@@ -55,6 +61,13 @@ const envSchema = z
       });
     }
     if (env.NODE_ENV !== 'production') return;
+    if (env.FILE_STORAGE === 'local') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['FILE_STORAGE'],
+        message: 'local file storage is for development; serverless disks are not kept',
+      });
+    }
     if (env.EMAIL_DELIVERY === 'log') {
       ctx.addIssue({
         code: 'custom',

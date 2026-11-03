@@ -6,6 +6,7 @@ import * as m02 from './migrations/20261103-02-clinic-patients.js';
 import * as m03 from './migrations/20261103-03-leads.js';
 import * as m04 from './migrations/20261103-04-appointments.js';
 import * as m05 from './migrations/20261103-05-clinical.js';
+import * as m06 from './migrations/20261103-06-billing-files.js';
 import { sequelize } from './sequelize.js';
 
 interface MigrationModule {
@@ -20,6 +21,7 @@ const MIGRATIONS: Array<[name: string, module: MigrationModule]> = [
   ['20261103-03-leads', m03],
   ['20261103-04-appointments', m04],
   ['20261103-05-clinical', m05],
+  ['20261103-06-billing-files', m06],
 ];
 
 export const migrator = new Umzug<QueryInterface>({

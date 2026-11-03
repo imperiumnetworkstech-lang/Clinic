@@ -10,6 +10,8 @@ import { logger } from './lib/logger.js';
 import { errorHandler, notFoundHandler } from './middleware/errors.js';
 import './models/index.js';
 import { adminRouter } from './routes/admin.js';
+import { adminBillingRouter } from './routes/adminBilling.js';
+import { adminFilesRouter } from './routes/adminFiles.js';
 import { adminPatientsRouter } from './routes/adminPatients.js';
 import { adminSchedulingRouter } from './routes/adminScheduling.js';
 import { buildOpenApiDocument } from './routes/openapi.js';
@@ -17,6 +19,8 @@ import { patientRouter } from './routes/patient.js';
 import { patientAuthRouter } from './routes/patientAuth.js';
 import { publicRouter } from './routes/public.js';
 import { staffAuthRouter } from './routes/staffAuth.js';
+import { storageRouter } from './routes/storage.js';
+import { diskStore } from './services/storage.js';
 
 export function createApp(): express.Express {
   const app = express();
@@ -61,6 +65,10 @@ export function createApp(): express.Express {
   api.use('/admin', adminRouter);
   api.use('/admin', adminSchedulingRouter);
   api.use('/admin', adminPatientsRouter);
+  api.use('/admin', adminBillingRouter);
+  api.use('/admin', adminFilesRouter);
+  // Signed upload/download links for the development file store only.
+  if (diskStore) api.use('/storage', storageRouter(diskStore));
   api.use('/me', patientRouter);
   app.use('/api/v1', api);
 
