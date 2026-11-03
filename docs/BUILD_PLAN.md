@@ -117,9 +117,10 @@ Client decisions: live slots that the front desk confirms; portal sign-in by ema
 Delivered:
 
 - **Booking:** `/book` shows a day strip and free times for branches with online booking (Duler now; Candolim keeps the request form until the clinic sets its hours). Bookings are held as `pending` with an `APT-` reference; a taken slot returns the patient to the picker with fresh times.
-- **Patient portal:** `/portal/login` (emailed link), `/portal/verify` (token removed from the address bar before use), and `/portal` with upcoming and past visits and online cancellation up to 2 hours before. All noindex and excluded from the sitemap and robots.
+- **Patient portal:** `/portal/login` (emailed link), `/portal/verify` (token removed from the address bar before use), and `/portal` with upcoming and past visits and online rescheduling or cancellation up to 2 hours before (a moved booking goes back to the front desk to confirm). All noindex and excluded from the sitemap and robots.
 - **Admin:** Appointments (day view, Confirm / Check in / No-show / Complete / Cancel / Restore, and a pre-filled WhatsApp confirmation that is held back during quiet hours), and Schedule (weekly hours with breaks, appointment length, patients at the same time, notice, booking window and closed days; owner only).
 - **Mobile:** the tab bar is now Home · Treatments · Book · Portal · More.
+- **Exit check:** a Playwright test (`frontend/e2e/booking.spec.ts`, run in CI) books a slot, has the front desk confirm it, then reschedules and cancels it from the portal.
 
 Waiting on the clinic: Candolim's weekly hours, the number of chairs per branch, and a sender domain for portal emails (Resend).
 
