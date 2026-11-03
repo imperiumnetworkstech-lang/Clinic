@@ -140,7 +140,14 @@ Waiting on the clinic: Candolim's weekly hours, the number of chairs per branch,
 - **Security:** clinical text is encrypted at rest; opening a record's clinical part is audited; the dashboard returns counts only.
 - Migration `20261103-05-clinical` adds the new tables and columns (additive).
 
-Next: 5b billing (invoices with no GST, recorded payments, PDF receipts) and patient files (storage provider to be decided), then 5c CMS. The Phase 5 E2E (sign-in with 2FA → check-in → complete → invoice) lands with 5b.
+## 3e. Phase 5b status (2026-11-03): built
+
+- **Billing:** invoices from a patient's record (treatment lines with tooth and quantity, discount, optional link to a visit), numbered `INV-000001`; payments by cash, UPI, card or bank transfer, part payments allowed and overpaying refused, receipts numbered `RCT-000001`; void with a reason (payments first, then the invoice). Invoice and receipt PDFs (A4, no GST lines, amounts printed as "Rs." because the standard PDF fonts lack ₹). **Billing** page: the day's collections by method and every balance still due.
+- **Files:** X-rays, photos, reports (JPEG, PNG, WebP, PDF, DICOM, up to 15 MB) uploaded straight to storage through a signed link; opened through 5-minute links; a 48-hour share link to send the patient; original file names encrypted; every view, share and delete audited. `FILE_STORAGE=local` is for development only; production shows "File storage isn't set up yet" until a provider is chosen.
+- **Phase 5 exit check:** `frontend/e2e/admin.spec.ts` (in CI): owner signs in with two-step verification → registers a patient → books → checks in → completes → invoices → takes payment → sees it in the day's collections.
+- Migration `20261103-06-billing-files` (additive).
+
+Next: 5c CMS (draft → doctor review → publish for blog posts, FAQs and treatment pages), plus a price list to pre-fill invoice lines if the clinic wants one.
 
 ## 4. Open questions (batched; answers unblock Phase 1–3)
 
