@@ -14,14 +14,16 @@ const HOP_BY_HOP = new Set([
   'content-length',
 ]);
 
+function unavailable(title: string, status: number): Response {
+  return Response.json(
+    { title, status, code: 'api_unavailable' },
+    { status, headers: { 'content-type': 'application/problem+json' } },
+  );
+}
+
 async function forward(request: Request): Promise<Response> {
   const origin = apiOrigin();
-  if (!origin) {
-    return Response.json(
-      { title: 'The API is not configured', status: 503, code: 'api_unavailable' },
-      { status: 503, headers: { 'content-type': 'application/problem+json' } },
-    );
-  }
+  if (!origin) return unavailable('The API is not configured', 503);
 
   const url = new URL(request.url);
   const headers = new Headers();
@@ -30,12 +32,17 @@ async function forward(request: Request): Promise<Response> {
   });
 
   const hasBody = request.method !== 'GET' && request.method !== 'HEAD';
-  const upstream = await fetch(`${origin}${url.pathname}${url.search}`, {
-    method: request.method,
-    headers,
-    body: hasBody ? await request.arrayBuffer() : undefined,
-    redirect: 'manual',
-  });
+  let upstream: Response;
+  try {
+    upstream = await fetch(`${origin}${url.pathname}${url.search}`, {
+      method: request.method,
+      headers,
+      body: hasBody ? await request.arrayBuffer() : undefined,
+      redirect: 'manual',
+    });
+  } catch {
+    return unavailable('The API could not be reached', 502);
+  }
 
   const responseHeaders = new Headers();
   upstream.headers.forEach((value, key) => {

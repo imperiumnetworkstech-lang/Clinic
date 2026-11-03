@@ -5,5 +5,7 @@
 export function apiOrigin(): string | null {
   const configured = process.env.API_ORIGIN?.replace(/\/+$/, '');
   if (configured) return configured;
-  return process.env.NODE_ENV === 'production' ? null : 'http://localhost:4000';
+  // Vercel sets VERCEL on every build and function; the local API never exists there.
+  const deployed = process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL);
+  return deployed ? null : 'http://localhost:4000';
 }
