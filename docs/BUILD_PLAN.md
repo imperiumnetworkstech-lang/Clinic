@@ -110,6 +110,19 @@ Deviations:
 - **Doctor pages wait** for the client to confirm the team, registration numbers and photos.
 - **Blog articles are original rewrites** (needs-doctor-review). The old posts duplicated third-party text, so they were not republished.
 
+## 3c. Phase 4 status (2026-11-03): done
+
+Client decisions: live slots that the front desk confirms; portal sign-in by emailed link; slot length set by the clinic in admin (default 30 minutes).
+
+Delivered:
+
+- **Booking:** `/book` shows a day strip and free times for branches with online booking (Duler now; Candolim keeps the request form until the clinic sets its hours). Bookings are held as `pending` with an `APT-` reference; a taken slot returns the patient to the picker with fresh times.
+- **Patient portal:** `/portal/login` (emailed link), `/portal/verify` (token removed from the address bar before use), and `/portal` with upcoming and past visits and online cancellation up to 2 hours before. All noindex and excluded from the sitemap and robots.
+- **Admin:** Appointments (day view, Confirm / Check in / No-show / Complete / Cancel / Restore, and a pre-filled WhatsApp confirmation that is held back during quiet hours), and Schedule (weekly hours with breaks, appointment length, patients at the same time, notice, booking window and closed days; owner only).
+- **Mobile:** the tab bar is now Home · Treatments · Book · Portal · More.
+
+Waiting on the clinic: Candolim's weekly hours, the number of chairs per branch, and a sender domain for portal emails (Resend).
+
 ## 4. Open questions (batched; answers unblock Phase 1–3)
 
 **Business facts (from the content audit — the clinic needs to answer these)**

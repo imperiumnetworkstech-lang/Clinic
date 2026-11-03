@@ -70,6 +70,9 @@ The site is `noindex` until launch, so Google won't index the preview.
 | `HMAC_SECRET`                  | same command as `JWT_ACCESS_SECRET` (a new value)                                |
 | `CRON_SECRET`                  | same command as `JWT_ACCESS_SECRET` (a new value)                                |
 | `OTP_DELIVERY`                 | `none`                                                                           |
+| `EMAIL_DELIVERY`               | `resend` once a sender domain is verified in Resend; until then `none`           |
+| `RESEND_API_KEY`               | from resend.com → API Keys (only with `EMAIL_DELIVERY=resend`)                   |
+| `EMAIL_FROM`                   | e.g. `Expressions Dental Clinic <appointments@your-verified-domain>`             |
 | `ENFORCE_STAFF_2FA`            | `true`                                                                           |
 | `LOG_LEVEL`                    | `info`                                                                           |
 
@@ -86,4 +89,6 @@ If the API fails to start, its logs (Vercel → project → **Logs**) list exact
 - Every push to `main` redeploys both projects automatically, and pull requests get preview URLs.
 - GitHub Actions (`.github/workflows/ci.yml`) runs lint, typecheck, tests and the build on every push.
 - The custom domain (`expressionsdentalclinic.com`) is moved over at launch (Phase 9), together with the 301 redirects from the old site's URLs, Search Console and the Google Business Profile website link. **Don't point the domain at Vercel before then**, or the old site's Google rankings could drop.
-- Website ↔ API wiring (a `/api` rewrite on the website domain) is added in Phase 4, when the website starts calling the API.
+- The website forwards `/api/*` to the API (`API_ORIGIN` on the website project), so the browser only ever talks to one origin.
+- With `EMAIL_DELIVERY=none` the patient portal's "Email me a sign-in link" shows a "call us" message; booking itself works either way.
+- New migrations run with `pnpm --filter @edc/backend db:migrate` against the Neon URL (load it from `backend/.env.neon`). They are additive; never seed demo data on Neon.
