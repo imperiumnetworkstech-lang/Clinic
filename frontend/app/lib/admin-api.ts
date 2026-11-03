@@ -31,8 +31,12 @@ async function parse<T>(response: Response): Promise<T> {
       response.status,
       typeof body.code === 'string' ? body.code : 'error',
       typeof body.title === 'string' ? body.title : 'Something went wrong. Please try again.',
-      Array.isArray(body.errors) ? (body.errors as ApiError['fieldErrors']) : [],
-      typeof body.details === 'object' && body.details !== null
+      Array.isArray(body.errors)
+        ? (body.errors as ApiError['fieldErrors'])
+        : Array.isArray(body.details)
+          ? (body.details as ApiError['fieldErrors'])
+          : [],
+      typeof body.details === 'object' && body.details !== null && !Array.isArray(body.details)
         ? (body.details as ApiError['details'])
         : undefined,
     );
@@ -540,4 +544,55 @@ export const filesApi = {
       json('POST', { hours }),
     ),
   remove: (id: string) => authed<undefined>(`/api/v1/admin/files/${id}`, { method: 'DELETE' }),
+};
+
+/* ------------------------------------------------------------------ Phase 5c: content */
+
+export type ContentKind = 'blog_post' | 'faq' | 'treatment';
+export type DraftState = 'editing' | 'in_review' | 'changes_requested' | 'approved';
+
+export interface ContentSummary {
+  id: string;
+  type: ContentKind;
+  slug: string;
+  title: string;
+  sortOrder: number;
+  live: boolean;
+  archived: boolean;
+  publishedAt: string | null;
+  publishedReviewed: boolean;
+  draftStatus: DraftState | null;
+  draftUpdatedAt: string | null;
+  reviewNote: string;
+}
+
+export interface ContentDetail extends ContentSummary {
+  publishedData: Record<string, unknown> | null;
+  draftData: Record<string, unknown> | null;
+  history: Array<{ id: string; action: string; note: string; by: string; at: string }>;
+}
+
+const contentAction = (id: string, action: string, body?: unknown) =>
+  authed<ContentSummary>(
+    `/api/v1/admin/content/${id}/${action}`,
+    body === undefined ? { method: 'POST' } : json('POST', body),
+  );
+
+export const contentApi = {
+  list: (type?: ContentKind) =>
+    authed<ContentSummary[]>(`/api/v1/admin/content${type ? `?type=${type}` : ''}`),
+  get: (id: string) => authed<ContentDetail>(`/api/v1/admin/content/${id}`),
+  create: (type: 'blog_post' | 'faq', slug: string, data: Record<string, unknown>) =>
+    authed<{ id: string }>('/api/v1/admin/content', json('POST', { type, slug, data })),
+  saveDraft: (id: string, data: Record<string, unknown>) =>
+    authed<ContentSummary>(`/api/v1/admin/content/${id}/draft`, json('PUT', { data })),
+  discard: (id: string) =>
+    authed<ContentSummary>(`/api/v1/admin/content/${id}/draft`, { method: 'DELETE' }),
+  submit: (id: string) => contentAction(id, 'submit'),
+  review: (id: string, decision: 'approve' | 'changes', note: string) =>
+    contentAction(id, 'review', { decision, note }),
+  approveLive: (id: string) => contentAction(id, 'approve-live'),
+  publish: (id: string) => contentAction(id, 'publish'),
+  unpublish: (id: string) => contentAction(id, 'unpublish'),
+  restore: (id: string) => contentAction(id, 'restore'),
 };

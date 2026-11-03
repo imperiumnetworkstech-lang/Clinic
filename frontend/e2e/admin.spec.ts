@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { authenticator } from 'otplib';
+import { signIn } from './auth';
 import { DEMO_STAFF, goaDate } from './demo';
 
 test.use({ viewport: { width: 1280, height: 900 }, isMobile: false, hasTouch: false });
@@ -9,16 +9,8 @@ test.use({ viewport: { width: 1280, height: 900 }, isMobile: false, hasTouch: fa
  * patient, checks them in, completes the visit, invoices it and takes payment.
  */
 test('owner signs in with 2FA, completes a visit, invoices and takes payment', async ({ page }) => {
-  // 1. Password, then one-time authenticator setup (the key is shown for manual entry).
-  await page.goto('/admin/login');
-  await page.getByLabel('Email').fill(DEMO_STAFF.owner.email);
-  await page.getByLabel('Password').fill(DEMO_STAFF.owner.password);
-  await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('heading', { name: 'Set up two-step sign-in' })).toBeVisible();
-  const secret = ((await page.locator('code').textContent()) ?? '').trim();
-  await page.getByLabel('6-digit code').fill(authenticator.generate(secret));
-  await page.getByRole('button', { name: 'Finish setup and sign in' }).click();
-  await page.waitForURL('**/admin');
+  // 1. Password, then one-time authenticator setup.
+  await signIn(page, DEMO_STAFF.owner);
   await expect(page.getByRole('heading', { name: /^Hello/ })).toBeVisible();
 
   // 2. Register a patient.

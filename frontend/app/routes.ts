@@ -30,6 +30,8 @@ export default [
   route('admin/patients/:id', 'routes/admin.patient.tsx'),
   route('admin/billing', 'routes/admin.billing.tsx'),
   route('admin/enquiries', 'routes/admin.enquiries.tsx'),
+  route('admin/content', 'routes/admin.content.tsx'),
+  route('admin/content/:id', 'routes/admin.content-edit.tsx'),
   route('admin/schedule', 'routes/admin.schedule.tsx'),
   route('admin/staff', 'routes/admin.staff.tsx'),
   route('sitemap.xml', 'routes/sitemap.ts'),

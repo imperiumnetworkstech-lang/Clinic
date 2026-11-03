@@ -2,20 +2,26 @@ import { ArrowRight, CalendarPlus, Clock, ExternalLink, Info } from 'lucide-reac
 import { data, Link } from 'react-router';
 import { JsonLd } from '../components/JsonLd';
 import { PageHeader } from '../components/PageHeader';
-import { formatPublished, getPost, postHref, posts, readingMinutes, sectionId } from '../lib/blog';
+import { formatPublished, postHref, readingMinutes, sectionId } from '../lib/blog';
+import { loadPosts } from '../lib/content.server';
 import { articleSchema, pageMeta } from '../lib/seo';
 import { getTreatment, treatmentHref } from '../lib/treatments';
 import { button, container } from '../lib/ui';
 import type { Route } from './+types/blog-post';
 
-export function loader({ params }: Route.LoaderArgs) {
-  const post = getPost(params.slug);
+export async function loader({ params }: Route.LoaderArgs) {
+  const posts = await loadPosts();
+  const post = posts.find((entry) => entry.slug === params.slug);
   if (!post) throw data(null, { status: 404 });
-  return { slug: post.slug };
+  const more = posts
+    .filter((other) => other.slug !== post.slug)
+    .slice(0, 2)
+    .map((other) => ({ slug: other.slug, title: other.title, category: other.category }));
+  return { post, more };
 }
 
 export function meta({ data: loaded }: Route.MetaArgs) {
-  const post = getPost(loaded?.slug);
+  const post = loaded?.post;
   if (!post) return [{ title: 'Article not found' }];
   return pageMeta({
     title: post.metaTitle,
@@ -25,10 +31,8 @@ export function meta({ data: loaded }: Route.MetaArgs) {
 }
 
 export default function BlogPost({ loaderData }: Route.ComponentProps) {
-  const post = getPost(loaderData.slug);
-  if (!post) return null;
+  const { post, more } = loaderData;
   const related = post.relatedTreatments.map(getTreatment).filter((t) => t !== undefined);
-  const more = posts.filter((other) => other.slug !== post.slug).slice(0, 2);
 
   return (
     <>

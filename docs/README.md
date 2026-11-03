@@ -37,14 +37,14 @@ pnpm --filter @edc/backend admin:create --name "Owner Name" --email owner@exampl
 
 ## Scripts (root)
 
-| Command                                    | Does                                                                                                                                                                                                 |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev` / `dev:api` / `dev:web`         | Run both apps or one                                                                                                                                                                                 |
-| `pnpm db:start` · `db:migrate` · `db:seed` | Local database lifecycle (`pnpm --filter @edc/backend db:rollback` reverts the last migration)                                                                                                       |
-| `pnpm test`                                | Shared, frontend (Vitest + Testing Library, jsdom) and backend tests. The backend suite boots its own throwaway Postgres on port 54339.                                                              |
-| `pnpm --filter @edc/frontend images`       | Regenerate responsive AVIF/WebP photos from `frontend/public/images/original`                                                                                                                        |
-| `pnpm --filter @edc/frontend e2e`          | Playwright end-to-end flows on a phone-sized Chromium. Starts its own throwaway Postgres and API (`backend/scripts/e2e-stack.ts`, fake demo data) and the website; ports 4000 and 5173 must be free. |
-| `pnpm lint` · `format` · `typecheck`       | Quality gates (also run by CI and, for staged files, the pre-commit hook)                                                                                                                            |
+| Command                                    | Does                                                                                                                                                                                                                                               |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev` / `dev:api` / `dev:web`         | Run both apps or one                                                                                                                                                                                                                               |
+| `pnpm db:start` · `db:migrate` · `db:seed` | Local database lifecycle (`pnpm --filter @edc/backend db:rollback` reverts the last migration)                                                                                                                                                     |
+| `pnpm test`                                | Shared, frontend (Vitest + Testing Library, jsdom) and backend tests. The backend suite boots its own throwaway Postgres on port 54339.                                                                                                            |
+| `pnpm --filter @edc/frontend images`       | Regenerate responsive AVIF/WebP photos from `frontend/public/images/original`                                                                                                                                                                      |
+| `pnpm --filter @edc/frontend e2e`          | Playwright end-to-end flows (booking, admin visit-to-invoice, content publishing). Starts its own throwaway Postgres, API (port 4100, `backend/scripts/e2e-stack.ts`, fake demo data) and website (port 5174), so it can run alongside `pnpm dev`. |
+| `pnpm lint` · `format` · `typecheck`       | Quality gates (also run by CI and, for staged files, the pre-commit hook)                                                                                                                                                                          |
 
 API docs (Swagger UI) are at http://localhost:4000/api/docs in development only.
 

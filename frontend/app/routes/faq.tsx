@@ -1,9 +1,10 @@
-import clinicData from '../../../content/clinic.json';
 import { JsonLd } from '../components/JsonLd';
 import { PageHeader } from '../components/PageHeader';
 import { Accordion } from '../components/ui/Accordion';
+import { loadFaqs } from '../lib/content.server';
 import { faqSchema, pageMeta } from '../lib/seo';
 import { container } from '../lib/ui';
+import type { Route } from './+types/faq';
 
 export function meta() {
   return pageMeta({
@@ -14,13 +15,19 @@ export function meta() {
   });
 }
 
-const faqs = clinicData.faqs.map((faq, index) => ({
-  id: `faq-${index}`,
-  q: faq.question,
-  paragraphs: faq.answerParagraphs,
-}));
+export async function loader() {
+  const faqs = await loadFaqs();
+  return {
+    faqs: faqs.map((faq, index) => ({
+      id: `faq-${index}`,
+      q: faq.question,
+      paragraphs: faq.answerParagraphs,
+    })),
+  };
+}
 
-export default function Faq() {
+export default function Faq({ loaderData }: Route.ComponentProps) {
+  const { faqs } = loaderData;
   return (
     <>
       <JsonLd data={faqSchema(faqs.map((faq) => ({ q: faq.q, a: faq.paragraphs.join(' ') })))} />

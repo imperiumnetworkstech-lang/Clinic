@@ -6,24 +6,25 @@ import { JsonLd } from '../components/JsonLd';
 import { PageHeader } from '../components/PageHeader';
 import { Accordion } from '../components/ui/Accordion';
 import { primaryPhone, whatsappLink } from '../lib/clinic';
+import { loadTreatment } from '../lib/content.server';
 import { legacyRedirect } from '../lib/redirects';
 import { faqSchema, pageMeta, procedureSchema } from '../lib/seo';
 import { CATEGORIES, getTreatment, treatmentHref } from '../lib/treatments';
 import { button, container } from '../lib/ui';
 import type { Route } from './+types/treatment';
 
-export function loader({ params, request }: Route.LoaderArgs) {
-  const treatment = getTreatment(params.slug);
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const treatment = await loadTreatment(params.slug);
   if (!treatment) {
     const moved = legacyRedirect(new URL(request.url).pathname);
     if (moved) throw redirect(moved.to, moved.status);
     throw data(null, { status: 404 });
   }
-  return { slug: treatment.slug };
+  return { treatment };
 }
 
 export function meta({ data: loaded }: Route.MetaArgs) {
-  const treatment = getTreatment(loaded?.slug);
+  const treatment = loaded?.treatment;
   if (!treatment) return [{ title: 'Treatment not found' }];
   return pageMeta({
     title: treatment.metaTitle,
@@ -42,8 +43,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 export default function TreatmentPage({ loaderData }: Route.ComponentProps) {
-  const treatment = getTreatment(loaderData.slug);
-  if (!treatment) return null;
+  const { treatment } = loaderData;
   const category = CATEGORIES[treatment.category];
   const related = treatment.related.map(getTreatment).filter((item) => item !== undefined);
   const bookHref = `/book?treatment=${treatment.slug}`;

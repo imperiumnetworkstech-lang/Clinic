@@ -1,9 +1,11 @@
 import { ArrowRight, Clock } from 'lucide-react';
 import { Link } from 'react-router';
 import { PageHeader } from '../components/PageHeader';
-import { formatPublished, postHref, posts, readingMinutes } from '../lib/blog';
+import { formatPublished, postHref, readingMinutes } from '../lib/blog';
+import { loadPosts } from '../lib/content.server';
 import { pageMeta } from '../lib/seo';
 import { container } from '../lib/ui';
+import type { Route } from './+types/blog';
 
 export function meta() {
   return pageMeta({
@@ -14,7 +16,22 @@ export function meta() {
   });
 }
 
-export default function Blog() {
+export async function loader() {
+  const posts = await loadPosts();
+  return {
+    posts: posts.map((post) => ({
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      category: post.category,
+      publishedAt: post.publishedAt,
+      minutes: readingMinutes(post),
+    })),
+  };
+}
+
+export default function Blog({ loaderData }: Route.ComponentProps) {
+  const { posts } = loaderData;
   return (
     <>
       <PageHeader
@@ -42,7 +59,7 @@ export default function Blog() {
                 <span className="mt-6 flex items-center justify-between text-sm text-muted">
                   <span className="flex items-center gap-1.5">
                     <Clock size={14} aria-hidden="true" />
-                    {readingMinutes(post)} min read · {formatPublished(post.publishedAt)}
+                    {post.minutes} min read · {formatPublished(post.publishedAt)}
                   </span>
                   <ArrowRight
                     size={18}

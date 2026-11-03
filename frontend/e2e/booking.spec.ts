@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
-import { OUTBOX } from '../playwright.config';
+import { BASE_URL, OUTBOX } from '../playwright.config';
 import { DEMO_STAFF, goaDate } from './demo';
 
 const RECEPTIONIST = DEMO_STAFF.receptionist;
@@ -51,7 +51,7 @@ test('patient books, front desk confirms, patient reschedules then cancels', asy
   expect(reference).toMatch(/^APT-\d+$/);
 
   // 2. Front desk confirms it from the day view.
-  const staff = await browser.newPage({ baseURL: 'http://localhost:5173' });
+  const staff = await browser.newPage({ baseURL: BASE_URL });
   await staff.goto('/admin/login');
   await staff.getByLabel('Email').fill(RECEPTIONIST.email);
   await staff.getByLabel('Password').fill(RECEPTIONIST.password);

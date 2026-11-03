@@ -4,6 +4,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 /** Shared with backend/scripts/e2e-stack.ts, which writes every outgoing email here. */
 export const OUTBOX = path.join(tmpdir(), 'edc-e2e-outbox.jsonl');
+
+/** Own ports, so the suite can run while `pnpm dev` (4000/5173) is up. */
+const API_PORT = 4100;
+export const BASE_URL = 'http://localhost:5174';
 process.env.E2E_OUTBOX = OUTBOX;
 
 /**
@@ -19,7 +23,7 @@ export default defineConfig({
   reporter: process.env.CI ? [['github'], ['list']] : 'list',
   use: {
     ...devices['Pixel 7'],
-    baseURL: 'http://localhost:5173',
+    baseURL: BASE_URL,
     timezoneId: 'Asia/Kolkata',
     trace: 'retain-on-failure',
   },
@@ -27,15 +31,21 @@ export default defineConfig({
     {
       command: 'npx tsx scripts/e2e-stack.ts',
       cwd: '../backend',
-      url: 'http://localhost:4000/health',
-      env: { E2E_OUTBOX: OUTBOX },
+      url: `http://localhost:${API_PORT}/health`,
+      env: { E2E_OUTBOX: OUTBOX, E2E_API_PORT: String(API_PORT), E2E_WEB_ORIGIN: BASE_URL },
       timeout: 180_000,
       reuseExistingServer: false,
       stdout: 'pipe',
     },
     {
-      command: 'npx react-router dev --port 5173 --strictPort',
-      url: 'http://localhost:5173',
+      command: 'npx react-router dev --port 5174 --strictPort --force',
+      url: BASE_URL,
+      // Published CMS content must show at once, not after the usual one-minute cache.
+      env: {
+        CONTENT_CACHE_MS: '0',
+        API_ORIGIN: `http://localhost:${API_PORT}`,
+        VITE_CACHE_DIR: 'node_modules/.vite-e2e',
+      },
       timeout: 120_000,
       reuseExistingServer: false,
     },

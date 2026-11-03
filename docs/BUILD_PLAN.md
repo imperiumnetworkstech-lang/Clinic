@@ -147,7 +147,19 @@ Waiting on the clinic: Candolim's weekly hours, the number of chairs per branch,
 - **Phase 5 exit check:** `frontend/e2e/admin.spec.ts` (in CI): owner signs in with two-step verification → registers a patient → books → checks in → completes → invoices → takes payment → sees it in the day's collections.
 - Migration `20261103-06-billing-files` (additive).
 
-Next: 5c CMS (draft → doctor review → publish for blog posts, FAQs and treatment pages), plus a price list to pre-fill invoice lines if the clinic wants one.
+## 3f. Phase 5c status (2026-11-03): built
+
+Client decisions: blog articles, FAQs **and** treatment pages are editable; the existing copy stays published, flagged "not reviewed" until a dentist approves it.
+
+- **Admin → Content:** a "Needs attention" queue (unreviewed live copy, drafts waiting for review or publishing), plus Blog, FAQs and Treatment pages. Editors for each type with character counters for the Google title and description.
+- **Workflow:** edits are drafts and never change the live page. Writer (cms.write) → **Send for review** → dentist (cms.review) **Approve** or **Ask for changes** with a note → owner (cms.publish) **Publish**. A dentist can also approve live copy as it is. Articles and FAQs can be unpublished and put back; treatment pages can't (only their copy is editable: name, address, category and related links stay in code, so menus, booking and SEO can't break). Every step is kept in the entry's history and the audit log.
+- **Public site:** the blog, articles, FAQ page, treatment pages and sitemap read the live copy from the API (cached for one minute), and fall back to the copy bundled with the site if the API can't be reached.
+- **First import:** the required seed copies content/*.json into the CMS once (3 articles, 15 FAQs, 18 treatment pages); later runs never overwrite edits.
+- **Exit check:** `frontend/e2e/content.spec.ts` (in CI): an edit to a treatment page stays off the live page until it's reviewed and published.
+- Migration `20261103-07-cms` (additive).
+- **Testing setup:** the E2E suite now runs on its own ports (API 4100, website 5174) with its own Vite cache, so it can run while `pnpm dev` is up. The shared package is no longer pre-bundled by Vite, so its changes show up without clearing caches.
+
+Phase 5 is complete. Still open: a price list to pre-fill invoice lines (if the clinic wants one), a storage provider for patient files, and treatment prices are never shown publicly.
 
 ## 4. Open questions (batched; answers unblock Phase 1–3)
 

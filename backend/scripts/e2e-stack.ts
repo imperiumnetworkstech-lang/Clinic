@@ -1,6 +1,7 @@
 /**
  * Throwaway backend for the Playwright suite (frontend/e2e): a fresh embedded Postgres, all
- * migrations, the required seed plus fake demo users, and the API on :4000. Emails are
+ * migrations, the required seed plus fake demo users, and the API (port 4100 by default, so it
+ * never clashes with `pnpm dev`). Emails are
  * appended to an outbox file that the tests read instead of being sent. Test use only.
  */
 import { appendFileSync, writeFileSync } from 'node:fs';
@@ -11,15 +12,17 @@ import path from 'node:path';
 export const E2E_DEMO_PASSWORD = 'e2e-demo-password-0001';
 
 const outbox = process.env.E2E_OUTBOX ?? path.join(tmpdir(), 'edc-e2e-outbox.jsonl');
+const port = Number(process.env.E2E_API_PORT ?? 4100);
+const webOrigin = process.env.E2E_WEB_ORIGIN ?? 'http://localhost:5174';
 
 Object.assign(process.env, {
   NODE_ENV: 'test',
-  PORT: '4000',
+  PORT: String(port),
   LOG_LEVEL: 'warn',
   DATABASE_URL: 'postgres://edc_e2e:edc_e2e_pw@localhost:54349/edc_e2e',
   DATABASE_SSL: 'false',
-  APP_ORIGIN: 'http://localhost:5173',
-  CORS_ORIGINS: 'http://localhost:5173',
+  APP_ORIGIN: webOrigin,
+  CORS_ORIGINS: webOrigin,
   TRUST_PROXY: 'true',
   JWT_ACCESS_SECRET: 'e2e-access-secret-that-is-long-enough-0123456789',
   DATA_ENCRYPTION_KEY: Buffer.alloc(32, 9).toString('base64'),
@@ -53,8 +56,8 @@ emailDelivery.send = async (message) => {
 
 const { createApp } = await import('../src/app.js');
 const { sequelize } = await import('../src/db/sequelize.js');
-const server = createApp().listen(4000, () => {
-  process.stdout.write('E2E API listening on http://localhost:4000\n');
+const server = createApp().listen(port, () => {
+  process.stdout.write(`E2E API listening on http://localhost:${port}\n`);
 });
 
 const stop = async () => {

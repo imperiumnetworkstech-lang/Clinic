@@ -1,5 +1,5 @@
 import { absoluteUrl } from '../lib/seo';
-import { posts } from '../lib/blog';
+import { loadPosts } from '../lib/content.server';
 import { treatments } from '../lib/treatments';
 
 /** XML sitemap of every public, indexable page. Staff, API and portal paths are excluded. */
@@ -19,7 +19,8 @@ const STATIC_PATHS = [
   { path: '/medical-disclaimer', priority: '0.2' },
 ];
 
-export function loader() {
+export async function loader() {
+  const posts = await loadPosts();
   const entries = [
     ...STATIC_PATHS,
     ...treatments.map((treatment) => ({ path: `/treatments/${treatment.slug}`, priority: '0.8' })),
