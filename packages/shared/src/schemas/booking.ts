@@ -63,6 +63,11 @@ export const slotBookingBody = z.object({
 
 export type SlotBookingBody = z.infer<typeof slotBookingBody>;
 
+/** Moving an existing booking to another free slot at the same clinic. */
+export const rescheduleBody = z.object({
+  slotStart: z.iso.datetime({ offset: true, message: 'Choose a time' }),
+});
+
 export interface AvailableSlot {
   /** ISO timestamp of the slot start. */
   start: string;

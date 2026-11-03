@@ -2,7 +2,7 @@ import { BOOKING_CONSENT_VERSION, type SlotBookingBody } from '@edc/shared';
 import { Op, fn, col, where as sqlWhere } from 'sequelize';
 import { sequelize } from '../db/sequelize.js';
 import { HttpError, badRequest } from '../lib/errors.js';
-import { Appointment, Patient, PatientConsent } from '../models/index.js';
+import { Appointment, Location, Patient, PatientConsent, SLOT_HOLDING } from '../models/index.js';
 import { bookableBranch, slotsForDay, todayInGoa } from './availability.js';
 
 /**
@@ -92,5 +92,52 @@ export async function bookSlot(
       { transaction },
     );
     return { appointment, patient };
+  });
+}
+
+/**
+ * Moves a booking to another free slot at its clinic. It goes back to *pending* so the front
+ * desk confirms the new time. The patient's own booking doesn't count against the new slot.
+ */
+export async function rescheduleAppointment(
+  appointment: Appointment,
+  slotStart: string,
+): Promise<Appointment> {
+  return sequelize.transaction(async (transaction) => {
+    const location = await Location.findByPk(appointment.locationId, { transaction });
+    const branch = location ? await bookableBranch(location.slug, transaction) : null;
+    if (!branch) {
+      throw badRequest('online_booking_unavailable', 'Please call the clinic to change this time.');
+    }
+
+    const start = new Date(slotStart);
+    const slots = await slotsForDay(branch, todayInGoa(start), new Date(), transaction);
+    if (!slots.some((candidate) => candidate.start === start.toISOString())) {
+      throw badRequest('slot_invalid', 'That time is not bookable. Please choose another.');
+    }
+    const end = new Date(start.getTime() + branch.schedule.slotMinutes * 60_000);
+    const others = await Appointment.count({
+      where: {
+        id: { [Op.ne]: appointment.id },
+        locationId: branch.location.id,
+        status: { [Op.in]: SLOT_HOLDING },
+        startAt: { [Op.lt]: end },
+        endAt: { [Op.gt]: start },
+      },
+      transaction,
+    });
+    if (others >= branch.schedule.capacity) {
+      throw new HttpError(
+        409,
+        'slot_taken',
+        'Sorry, that time was just taken. Please choose another.',
+      );
+    }
+
+    await appointment.update(
+      { startAt: start, endAt: end, status: 'pending', confirmedAt: null, confirmedBy: null },
+      { transaction },
+    );
+    return appointment;
   });
 }

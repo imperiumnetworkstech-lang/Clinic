@@ -1,3 +1,4 @@
+import { rescheduleBody } from '@edc/shared';
 import { Router, type Request } from 'express';
 import { Op } from 'sequelize';
 import { z } from 'zod';
@@ -5,6 +6,7 @@ import { badRequest, notFound } from '../lib/errors.js';
 import { requirePatient } from '../middleware/auth.js';
 import { Appointment, Location, Patient } from '../models/index.js';
 import { audit } from '../services/audit.js';
+import { rescheduleAppointment } from '../services/booking.js';
 
 export const patientRouter = Router();
 
@@ -73,21 +75,30 @@ patientRouter.get('/appointments', async (req, res) => {
   });
 });
 
-patientRouter.post('/appointments/:id/cancel', async (req, res) => {
+/** A patient's own pending or confirmed booking that is still far enough away to change. */
+async function changeableAppointment(req: Request, action: 'cancel' | 'change') {
   const id = z.uuid().parse(req.params.id);
   const appointment = await Appointment.findOne({
     where: { id, patientId: { [Op.in]: await profileIds(req) } },
   });
   if (!appointment) throw notFound('appointment_not_found', 'Appointment not found.');
   if (!['pending', 'confirmed'].includes(appointment.status)) {
-    throw badRequest('not_cancellable', 'This appointment can no longer be cancelled online.');
+    throw badRequest(
+      action === 'cancel' ? 'not_cancellable' : 'not_changeable',
+      `This appointment can no longer be ${action === 'cancel' ? 'cancelled' : 'changed'} online.`,
+    );
   }
   if (appointment.startAt.getTime() - Date.now() <= CANCEL_CUTOFF_MINUTES * 60_000) {
     throw badRequest(
-      'too_late_to_cancel',
-      'It’s too close to your appointment to cancel online. Please call the clinic.',
+      action === 'cancel' ? 'too_late_to_cancel' : 'too_late_to_change',
+      `It’s too close to your appointment to ${action} it online. Please call the clinic.`,
     );
   }
+  return appointment;
+}
+
+patientRouter.post('/appointments/:id/cancel', async (req, res) => {
+  const appointment = await changeableAppointment(req, 'cancel');
   await appointment.update({
     status: 'cancelled',
     cancelledAt: new Date(),
@@ -99,4 +110,23 @@ patientRouter.post('/appointments/:id/cancel', async (req, res) => {
     entityId: appointment.id,
   });
   res.json({ id: appointment.id, status: appointment.status });
+});
+
+patientRouter.post('/appointments/:id/reschedule', async (req, res) => {
+  const { slotStart } = rescheduleBody.parse(req.body);
+  const appointment = await changeableAppointment(req, 'change');
+  const from = appointment.startAt.toISOString();
+  await rescheduleAppointment(appointment, slotStart);
+  await audit(req, {
+    action: 'appointment.rescheduled_by_patient',
+    entity: 'appointment',
+    entityId: appointment.id,
+    meta: { from, to: appointment.startAt.toISOString() },
+  });
+  res.json({
+    id: appointment.id,
+    status: appointment.status,
+    startAt: appointment.startAt.toISOString(),
+    endAt: appointment.endAt.toISOString(),
+  });
 });

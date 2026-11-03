@@ -114,6 +114,11 @@ export const portalApi = {
     ),
   appointments: () =>
     authed<{ upcoming: PortalAppointment[]; past: PortalAppointment[] }>('/api/v1/me/appointments'),
+  reschedule: (id: string, slotStart: string) =>
+    authed<{ id: string; status: string; startAt: string }>(
+      `/api/v1/me/appointments/${id}/reschedule`,
+      { method: 'POST', body: JSON.stringify({ slotStart }) },
+    ),
   cancel: (id: string) =>
     authed<{ id: string; status: string }>(`/api/v1/me/appointments/${id}/cancel`, {
       method: 'POST',

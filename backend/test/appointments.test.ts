@@ -296,6 +296,49 @@ describe('patient portal by email link', () => {
     expect(logout.status).toBe(204);
   });
 
+  it('moves a booking to another free time and back to pending', async () => {
+    const email = `move.${Date.now()}@example.test`;
+    const date = nextOpenDay(10);
+    const booked = await api()
+      .post('/api/v1/public/appointments')
+      .send(booking({ email, slotStart: at(date, '15:00') }));
+    const blocker = await api()
+      .post('/api/v1/public/appointments')
+      .send(booking({ slotStart: at(date, '16:00') }));
+    expect(blocker.status).toBe(201);
+    const row = await Appointment.findOne({ where: { reference: booked.body.reference } });
+    await row?.update({ status: 'confirmed' });
+
+    const tokens = captureLinks();
+    const client = api();
+    await client.post('/api/v1/auth/patient/email-link').send({ email });
+    const verify = await client
+      .post('/api/v1/auth/patient/email-link/verify')
+      .send({ token: tokens[0] });
+    const bearer = auth(verify.body.accessToken);
+    const move = (slotStart: string) =>
+      client
+        .post(`/api/v1/me/appointments/${row?.id}/reschedule`)
+        .set('Authorization', bearer)
+        .send({ slotStart });
+
+    expect((await move(at(date, '16:00'))).status).toBe(409);
+    expect((await move(at(date, '13:30'))).body.code).toBe('slot_invalid');
+
+    const moved = await move(at(date, '17:30'));
+    expect(moved.status).toBe(200);
+    expect(moved.body).toMatchObject({ status: 'pending', startAt: at(date, '17:30') });
+
+    const day = await api().get(`/api/v1/public/availability/mapusa/${date}`);
+    const slot = (time: string) =>
+      day.body.slots.find((s: { start: string }) => s.start === at(date, time));
+    expect(slot('15:00').available).toBe(true);
+    expect(slot('17:30').available).toBe(false);
+
+    // Moving within its own current time is allowed (it doesn't block itself).
+    expect((await move(at(date, '17:30'))).status).toBe(200);
+  });
+
   it('answers the same for unknown addresses and sends nothing', async () => {
     const tokens = captureLinks();
     const res = await api()
