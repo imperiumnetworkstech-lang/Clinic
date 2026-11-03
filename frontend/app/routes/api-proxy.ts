@@ -44,9 +44,11 @@ async function forward(request: Request): Promise<Response> {
     return unavailable('The API could not be reached', 502);
   }
 
+  // fetch() has already decompressed the body, so the upstream content-encoding no longer applies.
   const responseHeaders = new Headers();
   upstream.headers.forEach((value, key) => {
-    if (!HOP_BY_HOP.has(key.toLowerCase()) && key.toLowerCase() !== 'set-cookie') {
+    const name = key.toLowerCase();
+    if (!HOP_BY_HOP.has(name) && name !== 'set-cookie' && name !== 'content-encoding') {
       responseHeaders.set(key, value);
     }
   });
