@@ -9,6 +9,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "pnpm --filter @edc/shared build && react-router typegen && tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
+    "e2e": "playwright test",
     "images": "node scripts/optimise-images.mjs"
   },
   "dependencies": {
@@ -31,6 +32,7 @@
     "tailwind-merge": "3.7.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.0",
     "@react-router/dev": "7.18.5",
     "@tailwindcss/vite": "4.3.3",
     "@testing-library/jest-dom": "6.10.0",

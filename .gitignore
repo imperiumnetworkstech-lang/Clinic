@@ -11,3 +11,5 @@ __pycache__/
 backend/.data/
 *.log
 .neon
+test-results/
+playwright-report/

@@ -27,3 +27,25 @@ jobs:
       # Backend tests start their own embedded Postgres; no service containers needed.
       - run: pnpm test
       - run: pnpm --filter @edc/frontend build
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @edc/shared build
+      - run: pnpm --filter @edc/frontend exec playwright install --with-deps chromium
+      # Starts its own throwaway Postgres + API (backend/scripts/e2e-stack.ts) and the website.
+      - run: pnpm --filter @edc/frontend e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: frontend/test-results/
+          retention-days: 7
