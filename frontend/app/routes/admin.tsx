@@ -1,12 +1,13 @@
 import type { StaffProfile } from '@edc/shared';
 import { PATIENT_FOR_LABELS, TIME_OF_DAY_LABELS } from '@edc/shared';
-import { Inbox, LogOut, Phone, RefreshCw } from 'lucide-react';
+import { Inbox, Phone, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { AdminShell } from '../components/AdminShell';
 import { WhatsAppIcon } from '../components/icons';
 import { Button } from '../components/ui/Button';
 import { Badge, EmptyState, Skeleton } from '../components/ui/primitives';
-import { adminApi, ApiError, staffAuth, type LeadRow, type LeadStatus } from '../lib/admin-api';
+import { adminApi, ApiError, type LeadRow, type LeadStatus } from '../lib/admin-api';
 import { cn } from '../lib/cn';
 import { reasonLabel } from '../lib/treatments';
 import { container } from '../lib/ui';
@@ -28,13 +29,6 @@ const STATUSES: Array<{
   { value: 'booked', label: 'Booked', tone: 'success' },
   { value: 'lost', label: 'Lost', tone: 'neutral' },
 ];
-
-const ROLE_LABEL: Record<string, string> = {
-  super_admin: 'Owner',
-  doctor: 'Doctor',
-  receptionist: 'Front desk',
-  assistant: 'Assistant',
-};
 
 function formatDate(iso?: string) {
   if (!iso) return '—';
@@ -192,42 +186,10 @@ export default function AdminHome() {
     }
   };
 
-  const logout = async () => {
-    await staffAuth.logout();
-    navigate('/admin/login', { replace: true });
-  };
-
   const canSeeLeads = me?.permissions.includes('leads.read') ?? true;
 
   return (
-    <div className="min-h-dvh bg-surface">
-      <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white">
-        <div className={`${container} flex h-16 items-center justify-between gap-4`}>
-          <div className="flex items-center gap-3">
-            <img
-              src="/images/brand/mark-192.png"
-              alt=""
-              width={36}
-              height={36}
-              className="rounded-lg"
-            />
-            <span className="font-display font-bold">Admin</span>
-          </div>
-          <div className="flex items-center gap-3">
-            {me && (
-              <span className="hidden text-right text-sm sm:block">
-                <span className="block font-semibold">{me.name}</span>
-                <span className="block text-muted">{ROLE_LABEL[me.role] ?? me.role}</span>
-              </span>
-            )}
-            <Button variant="secondary" size="sm" onClick={() => void logout()}>
-              <LogOut size={16} />
-              Sign out
-            </Button>
-          </div>
-        </div>
-      </header>
-
+    <AdminShell me={me}>
       <main className={`${container} py-8`}>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -303,6 +265,6 @@ export default function AdminHome() {
           </div>
         )}
       </main>
-    </div>
+    </AdminShell>
   );
 }

@@ -150,3 +150,66 @@ export const adminApi = {
       body: JSON.stringify({ status }),
     }),
 };
+
+export type AppointmentStatus =
+  'pending' | 'confirmed' | 'checked_in' | 'completed' | 'no_show' | 'cancelled';
+
+export interface AppointmentRow {
+  id: string;
+  reference: string;
+  status: AppointmentStatus;
+  startAt: string;
+  endAt: string;
+  reason: string;
+  notes: string;
+  source: string;
+  patient: { id: string; code: string; name: string; phone: string; email: string | null } | null;
+  location: { slug: string; name: string } | null;
+}
+
+type Interval = { open: string; close: string };
+export type Weekly = Record<
+  'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday',
+  Interval[]
+>;
+
+export interface ScheduleSettings {
+  active: boolean;
+  slotMinutes: number;
+  capacity: number;
+  minNoticeMinutes: number;
+  maxDaysAhead: number;
+  weekly: Weekly;
+}
+
+export interface BranchSchedule {
+  id: string;
+  name: string;
+  schedule: (ScheduleSettings & { id: string }) | null;
+  holidays: Array<{ id: string; date: string; reason: string }>;
+}
+
+export const schedulingApi = {
+  appointments: (date: string, branch?: string) =>
+    authed<{ date: string; items: AppointmentRow[] }>(
+      `/api/v1/admin/appointments?date=${date}${branch ? `&branch=${branch}` : ''}`,
+    ),
+  setStatus: (id: string, status: AppointmentStatus) =>
+    authed<{ id: string; status: AppointmentStatus }>(`/api/v1/admin/appointments/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    }),
+  schedules: () => authed<BranchSchedule[]>('/api/v1/admin/schedules'),
+  saveSchedule: (branch: string, settings: ScheduleSettings) =>
+    authed<ScheduleSettings>(`/api/v1/admin/schedules/${branch}`, {
+      method: 'PUT',
+      body: JSON.stringify(settings),
+    }),
+  addHoliday: (branch: string, date: string, reason: string) =>
+    authed<{ id: string }>(`/api/v1/admin/schedules/${branch}/holidays`, {
+      method: 'POST',
+      body: JSON.stringify({ date, reason }),
+    }),
+  removeHoliday: (id: string) =>
+    authed<undefined>(`/api/v1/admin/holidays/${id}`, { method: 'DELETE' }),
+};
