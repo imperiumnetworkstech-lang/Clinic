@@ -37,10 +37,17 @@ expressions-dental/                plain pnpm workspaces (no Turborepo, no Docke
 | Patient login OTP | Can't go over WhatsApp automatically any more                                                             | See open question B2                                                                                                                                                                                                         |
 | Hosting           | Vercel                                                                                                    | See runtime above                                                                                                                                                                                                            |
 
-**Still open:**
+**Later decisions (2026-11-03):**
 
-- **B1. Booking.** Option A: an _appointment request_ (treatment, preferred date and time of day, branch). It opens a pre-filled WhatsApp to the clinic, the front desk confirms, and the request also lands in the admin inbox. Option B: real-time slot booking from the doctors' schedules. A matches how the clinic works today. The brief assumed B.
-- **B2. Patient-portal login.** Option 1: SMS OTP (MSG91 or similar; needs DLT registration and costs about ₹0.2 per SMS). Option 2: email magic link (free). Option 3: postpone the portal.
+| Topic                | Decision                                                                                 |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| B1. Booking          | Live slots; the front desk confirms each booking (Phase 4)                               |
+| B2. Portal login     | Email magic link (Phase 4)                                                               |
+| Slot length          | Set by the clinic in Admin → Schedule (default 30 minutes)                               |
+| GST                  | **No GST** on invoices; plain receipts with no tax lines                                 |
+| Payments             | Recorded by the front desk (cash / UPI / card, part payments, PDF receipt); Razorpay off |
+| Patient file storage | Provider decided before launch; built against a local development store until then       |
+| Phase 5 order        | 5a patients, calendar, treatment plans, dashboard, staff → 5b billing and files → 5c CMS |
 
 ## 2. Decisions and deviations needing your OK
 

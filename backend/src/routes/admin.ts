@@ -1,11 +1,24 @@
-import { createStaffBody, PERMISSIONS, type StaffProfile } from '@edc/shared';
+import { createStaffBody, PERMISSIONS, staffUpdateBody, type StaffProfile } from '@edc/shared';
 import { Router } from 'express';
+import { Op, QueryTypes } from 'sequelize';
 import { z } from 'zod';
 import { hashPassword } from '../auth/password.js';
+import { sequelize } from '../db/sequelize.js';
 import { badRequest, forbidden, notFound } from '../lib/errors.js';
 import { requirePermission, requireStaff, staffPrincipal } from '../middleware/auth.js';
-import { AuditLog, Lead, Location, Permission, Role, User } from '../models/index.js';
+import {
+  Appointment,
+  AuditLog,
+  Lead,
+  Location,
+  Patient,
+  Permission,
+  RefreshToken,
+  Role,
+  User,
+} from '../models/index.js';
 import { audit } from '../services/audit.js';
+import { addDays, todayInGoa } from '../services/availability.js';
 
 export const adminRouter = Router();
 
@@ -154,4 +167,100 @@ adminRouter.patch('/leads/:id', requirePermission('leads.write'), async (req, re
     meta: { from: previous, to: status },
   });
   res.json({ id: lead.id, status: lead.status });
+});
+
+adminRouter.patch('/staff/:id', requirePermission('staff.write'), async (req, res) => {
+  const principal = staffPrincipal(req);
+  const body = staffUpdateBody.parse(req.body);
+  const user = await User.findByPk(z.uuid().parse(req.params.id), {
+    include: [{ model: Role, as: 'role', attributes: ['key'] }],
+  });
+  if (!user) throw notFound('staff_not_found', 'Staff member not found.');
+  if (user.id === principal.id && (body.role !== undefined || body.status !== undefined)) {
+    throw forbidden('self_change', 'You can’t change your own role or deactivate yourself.');
+  }
+  const touchesOwner = user.role?.key === 'super_admin' || body.role === 'super_admin';
+  if (touchesOwner && principal.role !== 'super_admin') {
+    throw forbidden('role_escalation', 'Only an owner can change an owner account.');
+  }
+  const role = body.role ? await Role.findOne({ where: { key: body.role } }) : null;
+  if (body.role && !role) throw badRequest('unknown_role', 'That role does not exist.');
+
+  await user.update({
+    ...(body.name !== undefined ? { name: body.name } : {}),
+    ...(body.phone !== undefined ? { phone: body.phone } : {}),
+    ...(role ? { roleId: role.id } : {}),
+    ...(body.status !== undefined ? { status: body.status } : {}),
+  });
+  // A role change or deactivation ends every session, so new rights apply at once.
+  if (role || body.status === 'disabled') {
+    await RefreshToken.update(
+      { revokedAt: new Date(), revokedReason: 'staff_updated' },
+      { where: { subjectType: 'staff', subjectId: user.id, revokedAt: { [Op.is]: null } } },
+    );
+  }
+  await audit(req, {
+    action: 'staff.updated',
+    entity: 'user',
+    entityId: user.id,
+    meta: { fields: Object.keys(body), ...(body.role ? { role: body.role } : {}) },
+  });
+  res.json({ id: user.id });
+});
+
+/** Front-page numbers for the clinic. Counts only; no patient details. */
+adminRouter.get('/dashboard', requirePermission('dashboard.read'), async (_req, res) => {
+  const today = todayInGoa();
+  const dayStart = (date: string) => new Date(`${date}T00:00:00+05:30`);
+  const since90 = new Date(Date.now() - 90 * 86_400_000);
+
+  const [todayRows, toConfirm, newEnquiries, recallsDue, newPatients, outcomes, daily] =
+    await Promise.all([
+      Appointment.findAll({
+        where: { startAt: { [Op.gte]: dayStart(today), [Op.lt]: dayStart(addDays(today, 1)) } },
+        attributes: ['status'],
+      }),
+      Appointment.count({ where: { status: 'pending', startAt: { [Op.gt]: new Date() } } }),
+      Lead.count({ where: { status: 'new' } }),
+      Patient.count({ where: { nextRecallOn: { [Op.lte]: addDays(today, 30) } } }),
+      Patient.count({ where: { createdAt: { [Op.gte]: dayStart(addDays(today, -29)) } } }),
+      Appointment.findAll({
+        where: { status: { [Op.in]: ['completed', 'no_show'] }, startAt: { [Op.gte]: since90 } },
+        attributes: ['status'],
+      }),
+      sequelize.query<{ day: string; online: string; staff: string }>(
+        `SELECT to_char(created_at AT TIME ZONE 'Asia/Kolkata', 'YYYY-MM-DD') AS day,
+                count(*) FILTER (WHERE source = 'website') AS online,
+                count(*) FILTER (WHERE source <> 'website') AS staff
+           FROM appointments
+          WHERE deleted_at IS NULL AND created_at >= :since
+          GROUP BY 1`,
+        { replacements: { since: dayStart(addDays(today, -29)) }, type: QueryTypes.SELECT },
+      ),
+    ]);
+
+  const byStatus = (status: string) => todayRows.filter((row) => row.status === status).length;
+  const byDay = new Map(daily.map((row) => [row.day, row]));
+  const noShows = outcomes.filter((row) => row.status === 'no_show').length;
+
+  res.json({
+    today: {
+      total: todayRows.filter((row) => row.status !== 'cancelled').length,
+      pending: byStatus('pending'),
+      confirmed: byStatus('confirmed'),
+      checkedIn: byStatus('checked_in'),
+      completed: byStatus('completed'),
+      noShow: byStatus('no_show'),
+    },
+    toConfirm,
+    newEnquiries,
+    recallsDue,
+    newPatients30d: newPatients,
+    noShowRate90d: outcomes.length ? noShows / outcomes.length : null,
+    bookings30d: Array.from({ length: 30 }, (_, index) => {
+      const day = addDays(today, index - 29);
+      const row = byDay.get(day);
+      return { day, online: Number(row?.online ?? 0), staff: Number(row?.staff ?? 0) };
+    }),
+  });
 });

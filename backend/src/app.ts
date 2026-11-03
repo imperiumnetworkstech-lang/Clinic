@@ -10,6 +10,7 @@ import { logger } from './lib/logger.js';
 import { errorHandler, notFoundHandler } from './middleware/errors.js';
 import './models/index.js';
 import { adminRouter } from './routes/admin.js';
+import { adminPatientsRouter } from './routes/adminPatients.js';
 import { adminSchedulingRouter } from './routes/adminScheduling.js';
 import { buildOpenApiDocument } from './routes/openapi.js';
 import { patientRouter } from './routes/patient.js';
@@ -59,6 +60,7 @@ export function createApp(): express.Express {
   api.use('/public', publicRouter);
   api.use('/admin', adminRouter);
   api.use('/admin', adminSchedulingRouter);
+  api.use('/admin', adminPatientsRouter);
   api.use('/me', patientRouter);
   app.use('/api/v1', api);
 

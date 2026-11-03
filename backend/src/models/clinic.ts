@@ -89,6 +89,10 @@ export class Patient extends Model<InferAttributes<Patient>, InferCreationAttrib
   declare homeLocationId: ForeignKey<Location['id']> | null;
   /** Demo seed rows are flagged so they can never be mistaken for, or mixed with, real data. */
   declare isDemo: CreationOptional<boolean>;
+  /** Encrypted JSON (lib/crypto.ts) of allergies, conditions and medicines; see services/clinical.ts. */
+  declare medicalHistory: CreationOptional<string | null>;
+  declare nextRecallOn: CreationOptional<string | null>;
+  declare recallNote: CreationOptional<string>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date | null>;
@@ -119,6 +123,9 @@ Patient.init(
     },
     tags: { type: DataTypes.ARRAY(DataTypes.STRING(40)), allowNull: false, defaultValue: [] },
     isDemo: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+    medicalHistory: { type: DataTypes.TEXT },
+    nextRecallOn: { type: DataTypes.DATEONLY },
+    recallNote: { type: DataTypes.STRING(120), allowNull: false, defaultValue: '' },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
     deletedAt: DataTypes.DATE,

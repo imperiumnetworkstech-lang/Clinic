@@ -1,7 +1,9 @@
+import { appointmentMoveBody, staffAppointmentBody } from '@edc/shared';
 import { Router } from 'express';
-import { Op } from 'sequelize';
+import { Op, type Transaction } from 'sequelize';
+import { sequelize } from '../db/sequelize.js';
 import { z } from 'zod';
-import { badRequest, notFound } from '../lib/errors.js';
+import { badRequest, HttpError, notFound } from '../lib/errors.js';
 import { requirePermission, requireStaff, staffPrincipal } from '../middleware/auth.js';
 import {
   Appointment,
@@ -9,6 +11,9 @@ import {
   Location,
   LocationSchedule,
   Patient,
+  Role,
+  SLOT_HOLDING,
+  User,
   type AppointmentStatus,
 } from '../models/index.js';
 import { audit } from '../services/audit.js';
@@ -45,6 +50,7 @@ adminSchedulingRouter.get(
       include: [
         { model: Patient, as: 'patient', attributes: ['id', 'code', 'name', 'phone', 'email'] },
         { model: Location, as: 'location', attributes: ['slug', 'name'] },
+        { model: User, as: 'dentist', attributes: ['id', 'name'] },
       ],
       order: [['startAt', 'ASC']],
     });
@@ -96,6 +102,201 @@ adminSchedulingRouter.patch(
       meta: { from: previous, to: status },
     });
     res.json({ id: appointment.id, status: appointment.status });
+  },
+);
+
+/* ------------------------------------------------------------------ calendar */
+
+/** Staff who can be assigned as the treating dentist (doctors, and owners who practise). */
+adminSchedulingRouter.get(
+  '/dentists',
+  requirePermission('appointments.read'),
+  async (_req, res) => {
+    const users = await User.findAll({
+      where: { status: 'active' },
+      include: [
+        {
+          model: Role,
+          as: 'role',
+          attributes: ['key'],
+          where: { key: { [Op.in]: ['doctor', 'super_admin'] } },
+        },
+      ],
+      attributes: ['id', 'name'],
+      order: [['name', 'ASC']],
+    });
+    res.json(users.map((user) => ({ id: user.id, name: user.name, role: user.role?.key })));
+  },
+);
+
+const calendarQuery = z.object({
+  from: z.iso.date().optional(),
+  days: z.coerce.number().int().min(1).max(14).default(7),
+  branch: z.string().max(40).optional(),
+});
+
+adminSchedulingRouter.get('/calendar', requirePermission('appointments.read'), async (req, res) => {
+  const query = calendarQuery.parse(req.query);
+  const from = query.from ?? todayInGoa();
+  const location = query.branch ? await Location.findOne({ where: { slug: query.branch } }) : null;
+  if (query.branch && !location) throw notFound('branch_not_found', 'Unknown clinic.');
+  const items = await Appointment.findAll({
+    where: {
+      startAt: { [Op.gte]: goaDayStart(from), [Op.lt]: goaDayStart(addDays(from, query.days)) },
+      ...(location ? { locationId: location.id } : {}),
+    },
+    include: [
+      { model: Patient, as: 'patient', attributes: ['id', 'code', 'name', 'phone'] },
+      { model: Location, as: 'location', attributes: ['slug', 'name'] },
+      { model: User, as: 'dentist', attributes: ['id', 'name'] },
+    ],
+    order: [['startAt', 'ASC']],
+  });
+  res.json({ from, days: query.days, items });
+});
+
+/**
+ * Refuses a time that would overbook the branch (more patients than chairs) or the dentist,
+ * unless the front desk deliberately forces it. Runs inside the caller's transaction after
+ * locking the branch schedule row, so two concurrent bookings can't both slip through.
+ */
+async function assertBookable(options: {
+  locationId: string;
+  start: Date;
+  end: Date;
+  dentistId: string | null;
+  excludeId?: string;
+  force: boolean;
+  transaction: Transaction;
+}) {
+  const { locationId, start, end, dentistId, excludeId, force, transaction } = options;
+  const schedule = await LocationSchedule.findOne({
+    where: { locationId },
+    transaction,
+    lock: transaction.LOCK.UPDATE,
+  });
+  if (force) return;
+  const overlapping = {
+    status: { [Op.in]: SLOT_HOLDING },
+    startAt: { [Op.lt]: end },
+    endAt: { [Op.gt]: start },
+    ...(excludeId ? { id: { [Op.ne]: excludeId } } : {}),
+  };
+  const atBranch = await Appointment.count({ where: { ...overlapping, locationId }, transaction });
+  if (atBranch >= (schedule?.capacity ?? 1)) {
+    throw new HttpError(409, 'slot_full', 'Every chair is booked at that time.');
+  }
+  if (dentistId) {
+    const busy = await Appointment.count({ where: { ...overlapping, dentistId }, transaction });
+    if (busy > 0) {
+      throw new HttpError(409, 'dentist_busy', 'That dentist already has a patient then.');
+    }
+  }
+}
+
+async function activeDentist(id: string | null | undefined) {
+  if (!id) return;
+  const dentist = await User.findOne({ where: { id, status: 'active' } });
+  if (!dentist) throw badRequest('dentist_not_found', 'Choose an active dentist.');
+}
+
+adminSchedulingRouter.post(
+  '/appointments',
+  requirePermission('appointments.write'),
+  async (req, res) => {
+    const principal = staffPrincipal(req);
+    const body = staffAppointmentBody.parse(req.body);
+    const [patient, location] = await Promise.all([
+      Patient.findByPk(body.patientId),
+      Location.findOne({ where: { slug: body.branch, active: true } }),
+    ]);
+    if (!patient) throw notFound('patient_not_found', 'Patient not found.');
+    if (!location) throw notFound('branch_not_found', 'Unknown clinic.');
+    await activeDentist(body.dentistId);
+
+    const start = new Date(body.startAt);
+    const end = new Date(start.getTime() + body.durationMinutes * 60_000);
+    const appointment = await sequelize.transaction(async (transaction) => {
+      await assertBookable({
+        locationId: location.id,
+        start,
+        end,
+        dentistId: body.dentistId,
+        force: body.force,
+        transaction,
+      });
+      return Appointment.create(
+        {
+          patientId: patient.id,
+          locationId: location.id,
+          startAt: start,
+          endAt: end,
+          status: 'confirmed',
+          source: body.source,
+          reason: body.reason,
+          notes: body.notes,
+          dentistId: body.dentistId,
+          confirmedAt: new Date(),
+          confirmedBy: principal.id,
+          createdBy: principal.id,
+        },
+        { transaction },
+      );
+    });
+    await appointment.reload();
+    await audit(req, {
+      action: 'appointment.created_by_staff',
+      entity: 'appointment',
+      entityId: appointment.id,
+      meta: { branch: body.branch, source: body.source, forced: body.force },
+    });
+    res.status(201).json({ id: appointment.id, reference: appointment.reference });
+  },
+);
+
+adminSchedulingRouter.patch(
+  '/appointments/:id/time',
+  requirePermission('appointments.write'),
+  async (req, res) => {
+    const body = appointmentMoveBody.parse(req.body);
+    const appointment = await Appointment.findByPk(z.uuid().parse(req.params.id));
+    if (!appointment) throw notFound('appointment_not_found', 'Appointment not found.');
+    if (!['pending', 'confirmed'].includes(appointment.status)) {
+      throw badRequest('not_movable', 'Only upcoming appointments can be moved.');
+    }
+    const dentistId = body.dentistId === undefined ? appointment.dentistId : body.dentistId;
+    await activeDentist(dentistId);
+    const minutes =
+      body.durationMinutes ??
+      Math.round((appointment.endAt.getTime() - appointment.startAt.getTime()) / 60_000);
+    const start = new Date(body.startAt);
+    const end = new Date(start.getTime() + minutes * 60_000);
+    const from = appointment.startAt.toISOString();
+
+    await sequelize.transaction(async (transaction) => {
+      await assertBookable({
+        locationId: appointment.locationId,
+        start,
+        end,
+        dentistId,
+        excludeId: appointment.id,
+        force: body.force,
+        transaction,
+      });
+      await appointment.update({ startAt: start, endAt: end, dentistId }, { transaction });
+    });
+    await audit(req, {
+      action: 'appointment.moved_by_staff',
+      entity: 'appointment',
+      entityId: appointment.id,
+      meta: { from, to: start.toISOString(), forced: body.force },
+    });
+    res.json({
+      id: appointment.id,
+      startAt: appointment.startAt.toISOString(),
+      endAt: appointment.endAt.toISOString(),
+      dentistId: appointment.dentistId,
+    });
   },
 );
 

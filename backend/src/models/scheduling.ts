@@ -105,12 +105,14 @@ export class Appointment extends Model<
   declare cancelledAt: CreationOptional<Date | null>;
   declare cancelledBy: CreationOptional<'patient' | 'clinic' | null>;
   declare createdBy: ForeignKey<User['id']> | null;
+  declare dentistId: CreationOptional<ForeignKey<User['id']> | null>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date | null>;
 
   declare patient?: NonAttribute<Patient>;
   declare location?: NonAttribute<Location>;
+  declare dentist?: NonAttribute<User>;
 }
 
 Appointment.init(
@@ -133,6 +135,7 @@ Appointment.init(
     confirmedAt: { type: DataTypes.DATE },
     cancelledAt: { type: DataTypes.DATE },
     cancelledBy: { type: DataTypes.ENUM('patient', 'clinic') },
+    dentistId: { type: DataTypes.UUID },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
     deletedAt: DataTypes.DATE,

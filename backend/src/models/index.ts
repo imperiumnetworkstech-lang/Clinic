@@ -1,4 +1,5 @@
 import { Lead, Location, OtpChallenge, Patient, PatientConsent } from './clinic.js';
+import { ClinicalNote, TreatmentPlan, TreatmentPlanItem } from './clinical.js';
 import { Appointment, Holiday, LocationSchedule, PatientLoginLink } from './scheduling.js';
 import {
   AuditLog,
@@ -49,9 +50,26 @@ Appointment.belongsTo(Location, { foreignKey: 'locationId', as: 'location' });
 Appointment.belongsTo(User, { foreignKey: 'confirmedBy', as: 'confirmer' });
 Appointment.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
 Patient.hasMany(Appointment, { foreignKey: 'patientId', as: 'appointments' });
+Appointment.belongsTo(User, { foreignKey: 'dentistId', as: 'dentist' });
+
+Patient.hasMany(ClinicalNote, { foreignKey: 'patientId', as: 'clinicalNotes' });
+ClinicalNote.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
+ClinicalNote.belongsTo(User, { foreignKey: 'authorId', as: 'author' });
+ClinicalNote.belongsTo(Appointment, { foreignKey: 'appointmentId', as: 'appointment' });
+Patient.hasMany(TreatmentPlan, { foreignKey: 'patientId', as: 'treatmentPlans' });
+TreatmentPlan.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
+TreatmentPlan.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+TreatmentPlan.hasMany(TreatmentPlanItem, {
+  foreignKey: 'planId',
+  as: 'items',
+  onDelete: 'CASCADE',
+});
+TreatmentPlanItem.belongsTo(TreatmentPlan, { foreignKey: 'planId', as: 'plan' });
 
 export type { ActorType, SubjectType, UserStatus } from './identity.js';
 export type { AppointmentSource, AppointmentStatus } from './scheduling.js';
+export { PLAN_ITEM_STATUSES, PLAN_STATUSES } from './clinical.js';
+export type { PlanItemStatus, PlanStatus } from './clinical.js';
 export { APPOINTMENT_STATUSES, SLOT_HOLDING } from './scheduling.js';
 export type {
   AppointmentRequestDetails,
@@ -67,6 +85,9 @@ export type {
 export {
   Appointment,
   AuditLog,
+  ClinicalNote,
+  TreatmentPlan,
+  TreatmentPlanItem,
   Holiday,
   LocationSchedule,
   PatientLoginLink,
