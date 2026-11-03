@@ -24,7 +24,8 @@ Object.assign(process.env, {
   JWT_ACCESS_SECRET: 'e2e-access-secret-that-is-long-enough-0123456789',
   DATA_ENCRYPTION_KEY: Buffer.alloc(32, 9).toString('base64'),
   HMAC_SECRET: 'e2e-hmac-secret-that-is-long-enough-0123456789',
-  ENFORCE_STAFF_2FA: 'true',
+  // Local visual checks may sign in as the demo owner without an authenticator app.
+  ENFORCE_STAFF_2FA: process.env.E2E_STAFF_2FA === 'off' ? 'false' : 'true',
   OTP_DELIVERY: 'log',
   EMAIL_DELIVERY: 'log',
 });

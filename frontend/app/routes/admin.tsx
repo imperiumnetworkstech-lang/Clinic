@@ -1,232 +1,110 @@
-import type { StaffProfile } from '@edc/shared';
-import { PATIENT_FOR_LABELS, TIME_OF_DAY_LABELS } from '@edc/shared';
-import { Inbox, Phone, RefreshCw } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { CalendarDays, CalendarPlus, ClipboardList, Inbox, RefreshCw, Users } from 'lucide-react';
+import { useCallback, useEffect, useState, type ComponentType } from 'react';
+import { Link } from 'react-router';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { AdminShell } from '../components/AdminShell';
-import { WhatsAppIcon } from '../components/icons';
 import { Button } from '../components/ui/Button';
-import { Badge, EmptyState, Skeleton } from '../components/ui/primitives';
-import { adminApi, ApiError, type LeadRow, type LeadStatus } from '../lib/admin-api';
-import { cn } from '../lib/cn';
-import { reasonLabel } from '../lib/treatments';
+import { Skeleton } from '../components/ui/primitives';
+import { crmApi, type Dashboard } from '../lib/admin-api';
 import { container } from '../lib/ui';
+import { useStaff } from '../lib/use-staff';
 
 export function meta() {
   return [
-    { title: 'Enquiries | Expressions Dental admin' },
+    { title: 'Dashboard | Expressions Dental admin' },
     { name: 'robots', content: 'noindex, nofollow' },
   ];
 }
 
-const STATUSES: Array<{
-  value: LeadStatus;
+const shortDay = (iso: string) =>
+  new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(
+    new Date(`${iso}T00:00:00Z`),
+  );
+
+function Stat({
+  label,
+  value,
+  hint,
+  to,
+  icon: Icon,
+}: {
   label: string;
-  tone: 'brand' | 'info' | 'success' | 'neutral';
-}> = [
-  { value: 'new', label: 'New', tone: 'brand' },
-  { value: 'contacted', label: 'Contacted', tone: 'info' },
-  { value: 'booked', label: 'Booked', tone: 'success' },
-  { value: 'lost', label: 'Lost', tone: 'neutral' },
-];
-
-function formatDate(iso?: string) {
-  if (!iso) return '—';
-  return new Intl.DateTimeFormat('en-IN', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    timeZone: 'UTC',
-  }).format(new Date(`${iso}T00:00:00Z`));
-}
-
-function received(iso: string) {
-  return new Intl.DateTimeFormat('en-IN', {
-    day: 'numeric',
-    month: 'short',
-    hour: 'numeric',
-    minute: '2-digit',
-    timeZone: 'Asia/Kolkata',
-  }).format(new Date(iso));
-}
-
-function replyLink(lead: LeadRow) {
-  const text = `Hello ${lead.name}, this is Expressions Dental Clinic about your appointment request ${lead.reference}.`;
-  return `https://wa.me/${lead.phone.replace('+', '')}?text=${encodeURIComponent(text)}`;
-}
-
-function LeadCard({ lead, onStatus }: { lead: LeadRow; onStatus: (status: LeadStatus) => void }) {
-  const status = STATUSES.find((entry) => entry.value === lead.status);
-  const { details } = lead;
-  return (
-    <article className="rounded-3xl bg-white p-5 ring-1 ring-neutral-200 sm:p-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-sm text-muted">
-            {lead.reference} · received {received(lead.createdAt)}
-          </p>
-          <h2 className="mt-1 text-lg font-bold">{lead.name}</h2>
-        </div>
-        {status && <Badge tone={status.tone}>{status.label}</Badge>}
-      </div>
-
-      <dl className="mt-4 grid gap-x-6 gap-y-2 text-[0.95rem] sm:grid-cols-2">
-        {[
-          ['Visit for', details.reason ? reasonLabel(details.reason) : '—'],
-          ['Clinic', lead.location?.name ?? '—'],
-          [
-            'Preferred',
-            `${formatDate(details.preferredDate)} · ${
-              details.timeOfDay
-                ? (TIME_OF_DAY_LABELS[details.timeOfDay as keyof typeof TIME_OF_DAY_LABELS] ??
-                  details.timeOfDay)
-                : ''
-            }`,
-          ],
-          [
-            'For',
-            details.patientFor
-              ? (PATIENT_FOR_LABELS[details.patientFor as keyof typeof PATIENT_FOR_LABELS] ??
-                details.patientFor)
-              : '—',
-          ],
-        ].map(([term, value]) => (
-          <div key={term} className="flex gap-2">
-            <dt className="w-24 shrink-0 text-muted">{term}</dt>
-            <dd className="font-medium">{value}</dd>
-          </div>
-        ))}
-      </dl>
-      {details.notes && (
-        <p className="mt-3 rounded-2xl bg-surface p-3 text-[0.95rem]">“{details.notes}”</p>
-      )}
-
-      <div className="mt-5 flex flex-wrap items-center gap-2">
-        <a
-          href={`tel:${lead.phone}`}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary-50 px-4 font-semibold text-primary-700"
-        >
-          <Phone size={16} />
-          {lead.phone}
-        </a>
-        <a
-          href={replyLink(lead)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#E8F7EE] px-4 font-semibold text-[#0B5E31]"
-        >
-          <WhatsAppIcon size={18} />
-          Reply on WhatsApp
-        </a>
-        <label className="ml-auto flex items-center gap-2 text-sm font-semibold">
-          Status
-          <select
-            value={lead.status}
-            onChange={(event) => onStatus(event.target.value as LeadStatus)}
-            className="min-h-11 rounded-full bg-white px-4 ring-1 ring-neutral-300"
-          >
-            {STATUSES.map((entry) => (
-              <option key={entry.value} value={entry.value}>
-                {entry.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-    </article>
+  value: string | number;
+  hint?: string;
+  to?: string;
+  icon: ComponentType<{ size?: number; className?: string }>;
+}) {
+  const body = (
+    <>
+      <span className="flex items-center gap-2 text-sm font-semibold text-muted">
+        <Icon size={16} className="text-primary-600" />
+        {label}
+      </span>
+      <span className="mt-2 block text-3xl font-bold tabular-nums">{value}</span>
+      {hint && <span className="mt-1 block text-sm text-muted">{hint}</span>}
+    </>
+  );
+  const className = 'block rounded-3xl bg-white p-5 ring-1 ring-neutral-200';
+  return to ? (
+    <Link to={to} className={`${className} transition hover:ring-neutral-300`}>
+      {body}
+    </Link>
+  ) : (
+    <div className={className}>{body}</div>
   );
 }
 
-/** Staff home: the enquiries inbox (client-rendered, behind sign-in). */
-export default function AdminHome() {
-  const navigate = useNavigate();
-  const [me, setMe] = useState<StaffProfile | null>(null);
-  const [leads, setLeads] = useState<LeadRow[] | null>(null);
-  const [filter, setFilter] = useState<LeadStatus | 'all'>('new');
+/** Staff home: today at a glance, what needs attention, and booking trends. */
+export default function AdminDashboard() {
+  const { me, can, problem } = useStaff();
+  const [data, setData] = useState<Dashboard | null>(null);
   const [error, setError] = useState('');
 
-  const load = useCallback(
-    async (status: LeadStatus | 'all') => {
-      setError('');
-      setLeads(null);
-      try {
-        const profile = await adminApi.me();
-        setMe(profile);
-        if (!profile.permissions.includes('leads.read')) {
-          setLeads([]);
-          return;
-        }
-        const result = await adminApi.leads(status === 'all' ? undefined : status);
-        setLeads(result.items);
-      } catch (caught) {
-        if (caught instanceof ApiError && caught.status === 401) {
-          navigate('/admin/login', { replace: true });
-          return;
-        }
-        setError(caught instanceof ApiError ? caught.message : 'Could not reach the server.');
-        setLeads([]);
-      }
-    },
-    [navigate],
-  );
+  const load = useCallback(async () => {
+    setError('');
+    try {
+      setData(await crmApi.dashboard());
+    } catch (caught) {
+      setError(problem(caught));
+    }
+  }, [problem]);
 
   useEffect(() => {
-    void load(filter);
-  }, [filter, load]);
+    if (me && can('dashboard.read')) void load();
+  }, [me, can, load]);
 
-  const changeStatus = async (lead: LeadRow, status: LeadStatus) => {
-    setLeads(
-      (current) => current?.map((row) => (row.id === lead.id ? { ...row, status } : row)) ?? null,
-    );
-    try {
-      await adminApi.setLeadStatus(lead.id, status);
-    } catch {
-      setError('Could not update the status. Please try again.');
-      void load(filter);
-    }
-  };
-
-  const canSeeLeads = me?.permissions.includes('leads.read') ?? true;
+  const noDashboard = me && !can('dashboard.read');
+  const noShow =
+    data?.noShowRate90d === null || data === null
+      ? '—'
+      : `${Math.round(data.noShowRate90d * 100)}%`;
 
   return (
     <AdminShell me={me}>
       <main className={`${container} py-8`}>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold sm:text-3xl">Enquiries</h1>
-            <p className="mt-1 text-muted">Appointment requests from the website. Newest first.</p>
+            <h1 className="text-2xl font-bold sm:text-3xl">
+              {me ? `Hello, ${me.name.split(' ')[0]}` : 'Dashboard'}
+            </h1>
+            <p className="mt-1 text-muted">Today at the clinic, and what needs attention.</p>
           </div>
-          <Button variant="secondary" size="sm" onClick={() => void load(filter)}>
-            <RefreshCw size={16} />
-            Refresh
-          </Button>
+          {!noDashboard && (
+            <Button variant="secondary" size="sm" onClick={() => void load()}>
+              <RefreshCw size={16} />
+              Refresh
+            </Button>
+          )}
         </div>
-
-        {canSeeLeads && (
-          <div
-            className="mt-6 flex gap-2 overflow-x-auto pb-1"
-            role="tablist"
-            aria-label="Filter by status"
-          >
-            {[{ value: 'all' as const, label: 'All' }, ...STATUSES].map((entry) => (
-              <button
-                key={entry.value}
-                type="button"
-                role="tab"
-                aria-selected={filter === entry.value}
-                onClick={() => setFilter(entry.value)}
-                className={cn(
-                  'min-h-11 shrink-0 rounded-full px-4 font-semibold ring-1 transition',
-                  filter === entry.value
-                    ? 'bg-neutral-950 text-white ring-neutral-950'
-                    : 'bg-white ring-neutral-200 hover:bg-neutral-50',
-                )}
-              >
-                {entry.label}
-              </button>
-            ))}
-          </div>
-        )}
 
         {error && (
           <p role="alert" className="mt-6 rounded-2xl bg-[#FEF4F3] p-4 font-medium text-[#92020B]">
@@ -234,35 +112,122 @@ export default function AdminHome() {
           </p>
         )}
 
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {leads === null &&
-            [0, 1, 2, 3].map((key) => (
-              <div key={key} className="rounded-3xl bg-white p-6 ring-1 ring-neutral-200">
-                <Skeleton className="h-4 w-40" />
-                <Skeleton className="mt-3 h-6 w-56" />
-                <Skeleton className="mt-5 h-16 w-full" />
-              </div>
+        {noDashboard ? (
+          <p className="mt-8 rounded-3xl bg-white p-6 ring-1 ring-neutral-200">
+            Go to the{' '}
+            <Link to="/admin/appointments" className="font-semibold text-link underline">
+              day list
+            </Link>{' '}
+            to see today’s appointments.
+          </p>
+        ) : !data ? (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[0, 1, 2, 3].map((key) => (
+              <Skeleton key={key} className="h-32 rounded-3xl" />
             ))}
-          {leads?.map((lead) => (
-            <LeadCard
-              key={lead.id}
-              lead={lead}
-              onStatus={(status) => void changeStatus(lead, status)}
-            />
-          ))}
-        </div>
-
-        {leads?.length === 0 && !error && (
-          <div className="mt-2">
-            <EmptyState
-              icon={Inbox}
-              title={canSeeLeads ? 'No enquiries here' : 'No access to enquiries'}
-            >
-              {canSeeLeads
-                ? 'New appointment requests from the website will appear here.'
-                : 'Your role does not include the enquiries inbox.'}
-            </EmptyState>
           </div>
+        ) : (
+          <>
+            <section aria-labelledby="today-heading" className="mt-8">
+              <h2 id="today-heading" className="sr-only">
+                Today
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <Stat
+                  icon={CalendarDays}
+                  label="Booked today"
+                  value={data.today.total}
+                  hint={`${data.today.checkedIn} here now · ${data.today.completed} done`}
+                  to="/admin/appointments"
+                />
+                <Stat
+                  icon={ClipboardList}
+                  label="To confirm"
+                  value={data.toConfirm}
+                  hint="Upcoming online bookings"
+                  to="/admin/calendar"
+                />
+                <Stat
+                  icon={Inbox}
+                  label="New enquiries"
+                  value={data.newEnquiries}
+                  hint="Waiting for a reply"
+                  to={can('leads.read') ? '/admin/enquiries' : undefined}
+                />
+                <Stat
+                  icon={Users}
+                  label="Recalls due"
+                  value={data.recallsDue}
+                  hint="Overdue or in the next 30 days"
+                  to={can('patients.read') ? '/admin/patients?recall=due' : undefined}
+                />
+              </div>
+            </section>
+
+            <section
+              aria-labelledby="trend-heading"
+              className="mt-6 grid gap-4 lg:grid-cols-[1fr_18rem]"
+            >
+              <div className="rounded-3xl bg-white p-5 ring-1 ring-neutral-200 sm:p-6">
+                <h2 id="trend-heading" className="font-bold">
+                  Bookings made, last 30 days
+                </h2>
+                <div
+                  className="mt-4 h-64"
+                  role="img"
+                  aria-label={`Bookings in the last 30 days: ${data.bookings30d.reduce((sum, day) => sum + day.online, 0)} online, ${data.bookings30d.reduce((sum, day) => sum + day.staff, 0)} by staff.`}
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={data.bookings30d}
+                      margin={{ top: 4, right: 4, left: -24, bottom: 0 }}
+                    >
+                      <CartesianGrid vertical={false} stroke="#e5e7eb" />
+                      <XAxis
+                        dataKey="day"
+                        tickFormatter={shortDay}
+                        interval={6}
+                        tickLine={false}
+                        axisLine={false}
+                        fontSize={12}
+                      />
+                      <YAxis
+                        allowDecimals={false}
+                        tickLine={false}
+                        axisLine={false}
+                        fontSize={12}
+                      />
+                      <Tooltip labelFormatter={(value) => shortDay(String(value))} />
+                      <Legend iconType="circle" wrapperStyle={{ fontSize: 13 }} />
+                      <Bar
+                        dataKey="online"
+                        name="Online"
+                        stackId="b"
+                        fill="#d2027f"
+                        radius={[0, 0, 0, 0]}
+                      />
+                      <Bar
+                        dataKey="staff"
+                        name="Front desk"
+                        stackId="b"
+                        fill="#0083a1"
+                        radius={[4, 4, 0, 0]}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+              <div className="grid gap-4">
+                <Stat
+                  icon={CalendarPlus}
+                  label="New patients"
+                  value={data.newPatients30d}
+                  hint="Last 30 days"
+                />
+                <Stat icon={CalendarDays} label="No-show rate" value={noShow} hint="Last 90 days" />
+              </div>
+            </section>
+          </>
         )}
       </main>
     </AdminShell>

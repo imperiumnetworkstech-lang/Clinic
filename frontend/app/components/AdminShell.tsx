@@ -15,9 +15,13 @@ const ROLE_LABEL: Record<string, string> = {
 };
 
 const SECTIONS = [
-  { to: '/admin', label: 'Enquiries', permission: 'leads.read' },
-  { to: '/admin/appointments', label: 'Appointments', permission: 'appointments.read' },
+  { to: '/admin', label: 'Dashboard', permission: 'dashboard.read' },
+  { to: '/admin/calendar', label: 'Calendar', permission: 'appointments.read' },
+  { to: '/admin/appointments', label: 'Day list', permission: 'appointments.read' },
+  { to: '/admin/patients', label: 'Patients', permission: 'patients.read' },
+  { to: '/admin/enquiries', label: 'Enquiries', permission: 'leads.read' },
   { to: '/admin/schedule', label: 'Schedule', permission: 'appointments.read' },
+  { to: '/admin/staff', label: 'Staff', permission: 'staff.read' },
 ];
 
 /** Staff page frame: brand, signed-in user, sign out, and the section tabs they can use. */
@@ -65,7 +69,7 @@ export function AdminShell({ me, children }: { me: StaffProfile | null; children
             <NavLink
               key={section.to}
               to={section.to}
-              end
+              end={section.to === '/admin'}
               className={({ isActive }) =>
                 cn(
                   'flex min-h-11 shrink-0 items-center border-b-2 px-3 font-semibold transition',
