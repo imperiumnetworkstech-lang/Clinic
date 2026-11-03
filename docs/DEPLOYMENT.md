@@ -32,7 +32,17 @@ To apply future migrations, load `backend/.env.neon` the same way and run `pnpm 
    - **Root Directory:** `frontend`
    - **Framework Preset:** React Router (detected automatically)
    - Leave the build and install commands at their defaults.
-3. **Environment variables:** add `ENABLE_EXPERIMENTAL_COREPACK` = `1`. This makes Vercel use the pinned pnpm 10.
+3. **Environment variables:**
+
+   | Name                           | Value                                                                                                                                                                                                                                                                       |
+   | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `ENABLE_EXPERIMENTAL_COREPACK` | `1` (makes Vercel use the pinned pnpm 10)                                                                                                                                                                                                                                   |
+   | `API_ORIGIN`                   | the API project's URL from step 3, e.g. `https://expressions-dental-api.vercel.app` (no trailing slash). Booking requests and the `/admin` area use it. Without it the site still works, but bookings are only sent on WhatsApp and not saved, and `/admin` cannot sign in. |
+   | `VITE_SITE_URL`                | optional; the canonical domain. It defaults to `https://expressionsdentalclinic.com`.                                                                                                                                                                                       |
+   | `VITE_SITE_INDEXABLE`          | leave unset until launch. Set it to `true` only once the domain moves, to let search engines index the site.                                                                                                                                                                |
+
+   Add `API_ORIGIN` after the API is deployed, then redeploy the website.
+
 4. Click **Deploy**. Note the URL, e.g. `https://expressions-dental-web.vercel.app`.
 
 The site is `noindex` until launch, so Google won't index the preview.

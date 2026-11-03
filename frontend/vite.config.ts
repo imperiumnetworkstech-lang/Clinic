@@ -8,6 +8,7 @@ export default defineConfig({
   // and pages can end up with two copies of React ("Invalid hook call").
   optimizeDeps: {
     include: [
+      '@edc/shared',
       '@radix-ui/react-accordion',
       '@radix-ui/react-dialog',
       '@radix-ui/react-navigation-menu',
