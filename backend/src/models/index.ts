@@ -1,6 +1,7 @@
 import { Invoice, InvoiceItem, PatientFile, Payment } from './billing.js';
 import { Lead, Location, OtpChallenge, Patient, PatientConsent } from './clinic.js';
 import { ClinicalNote, TreatmentPlan, TreatmentPlanItem } from './clinical.js';
+import { CmsEntry, CmsRevision } from './cms.js';
 import { Appointment, Holiday, LocationSchedule, PatientLoginLink } from './scheduling.js';
 import {
   AuditLog,
@@ -81,11 +82,16 @@ Patient.hasMany(PatientFile, { foreignKey: 'patientId', as: 'files' });
 PatientFile.belongsTo(Patient, { foreignKey: 'patientId', as: 'patient' });
 PatientFile.belongsTo(User, { foreignKey: 'uploadedBy', as: 'uploader' });
 
+CmsEntry.hasMany(CmsRevision, { foreignKey: 'entryId', as: 'revisions', onDelete: 'CASCADE' });
+CmsRevision.belongsTo(CmsEntry, { foreignKey: 'entryId', as: 'entry' });
+CmsRevision.belongsTo(User, { foreignKey: 'actorId', as: 'actor' });
+
 export type { ActorType, SubjectType, UserStatus } from './identity.js';
 export type { AppointmentSource, AppointmentStatus } from './scheduling.js';
 export { PLAN_ITEM_STATUSES, PLAN_STATUSES } from './clinical.js';
 export { FILE_KINDS, PAYMENT_METHODS } from './billing.js';
 export type { FileKind, PaymentMethod } from './billing.js';
+export type { CmsAction } from './cms.js';
 export type { PlanItemStatus, PlanStatus } from './clinical.js';
 export { APPOINTMENT_STATUSES, SLOT_HOLDING } from './scheduling.js';
 export type {
@@ -103,6 +109,8 @@ export {
   Appointment,
   AuditLog,
   ClinicalNote,
+  CmsEntry,
+  CmsRevision,
   Invoice,
   InvoiceItem,
   PatientFile,

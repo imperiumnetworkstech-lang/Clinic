@@ -12,6 +12,7 @@ import {
   type OpeningHours,
 } from '../../models/index.js';
 import { sequelize } from '../sequelize.js';
+import { importContent } from './content.js';
 
 interface ClinicLocation {
   id: string;
@@ -51,7 +52,8 @@ async function readClinic(): Promise<{ locations: ClinicLocation[]; whatsapp: st
 /**
  * Idempotent reference data every environment needs: permission catalogue, system roles with
  * their default permissions (only applied when a role is first created, so owner edits stick),
- * the two clinic branches from content/clinic.json, and default settings.
+ * the two clinic branches from content/clinic.json, default settings, and the first import of
+ * the website content into the CMS.
  */
 export async function seedRequired(): Promise<void> {
   const { locations, whatsapp } = await readClinic();
@@ -125,4 +127,7 @@ export async function seedRequired(): Promise<void> {
       await Setting.findOrCreate({ where: { key }, defaults: { key, value }, transaction });
     }
   });
+
+  // Website content: first-time import of content/*.json into the CMS (never overwrites).
+  await importContent();
 }

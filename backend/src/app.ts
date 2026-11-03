@@ -11,6 +11,7 @@ import { errorHandler, notFoundHandler } from './middleware/errors.js';
 import './models/index.js';
 import { adminRouter } from './routes/admin.js';
 import { adminBillingRouter } from './routes/adminBilling.js';
+import { adminContentRouter, publicContentRouter } from './routes/adminContent.js';
 import { adminFilesRouter } from './routes/adminFiles.js';
 import { adminPatientsRouter } from './routes/adminPatients.js';
 import { adminSchedulingRouter } from './routes/adminScheduling.js';
@@ -67,6 +68,8 @@ export function createApp(): express.Express {
   api.use('/admin', adminPatientsRouter);
   api.use('/admin', adminBillingRouter);
   api.use('/admin', adminFilesRouter);
+  api.use('/admin', adminContentRouter);
+  api.use('/public', publicContentRouter);
   // Signed upload/download links for the development file store only.
   if (diskStore) api.use('/storage', storageRouter(diskStore));
   api.use('/me', patientRouter);
