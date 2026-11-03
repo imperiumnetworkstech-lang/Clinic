@@ -1,4 +1,4 @@
-import { CalendarPlus, House, MapPin, Menu, Stethoscope } from 'lucide-react';
+import { CalendarCheck, CalendarPlus, House, Menu, Stethoscope } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink } from 'react-router';
 import { cn } from '../lib/cn';
@@ -12,7 +12,7 @@ const tabState = ({ isActive }: { isActive: boolean }) =>
 
 /**
  * App-style navigation for phones (<768px), pinned to the thumb zone and safe-area aware.
- * Book sits raised in the centre. Portal joins once its login channel is decided (B2).
+ * Book sits raised in the centre; Portal is the patient's own appointments.
  */
 export function BottomTabBar() {
   const [moreOpen, setMoreOpen] = useState(false);
@@ -38,9 +38,9 @@ export function BottomTabBar() {
             </span>
             Book
           </NavLink>
-          <NavLink to="/contact" viewTransition className={tabState}>
-            <MapPin size={22} />
-            Clinics
+          <NavLink to="/portal" viewTransition className={tabState}>
+            <CalendarCheck size={22} />
+            Portal
           </NavLink>
           <button
             type="button"

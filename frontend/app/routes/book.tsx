@@ -2,11 +2,23 @@ import {
   appointmentRequestBody,
   PATIENT_FOR,
   PATIENT_FOR_LABELS,
+  slotBookingBody,
   TIME_OF_DAY,
   TIME_OF_DAY_LABELS,
   type AppointmentRequestBody,
+  type AvailabilityDay,
+  type AvailableSlot,
+  type SlotBookingBody,
 } from '@edc/shared';
-import { ArrowLeft, ArrowRight, CheckCircle2, Phone, ShieldCheck } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarCheck,
+  CheckCircle2,
+  Loader2,
+  Phone,
+  ShieldCheck,
+} from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { data, Form, Link, useNavigation } from 'react-router';
 import { WhatsAppIcon } from '../components/icons';
@@ -52,7 +64,37 @@ export function loader({ request }: Route.LoaderArgs) {
   };
 }
 
-type FieldErrors = Partial<Record<keyof AppointmentRequestBody | 'form', string>>;
+type FieldErrors = Partial<
+  Record<keyof AppointmentRequestBody | keyof SlotBookingBody | 'form', string>
+>;
+
+/** Appointment time in clinic local time, e.g. "10:30 am". */
+function goaTime(iso: string): string {
+  return new Intl.DateTimeFormat('en-IN', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: 'Asia/Kolkata',
+  }).format(new Date(iso));
+}
+
+const goaDate = (iso: string) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date(iso));
+
+function slotLabel(hhmm: string): string {
+  const [hours = 0, minutes = 0] = hhmm.split(':').map(Number);
+  const hour12 = ((hours + 11) % 12) + 1;
+  return `${hour12}:${String(minutes).padStart(2, '0')} ${hours < 12 ? 'am' : 'pm'}`;
+}
+
+function fieldErrors(issues: Array<{ path: PropertyKey[]; message: string }>): FieldErrors {
+  const errors: FieldErrors = {};
+  for (const issue of issues) {
+    const key = issue.path[0] as keyof FieldErrors;
+    errors[key] ??= issue.message;
+  }
+  return errors;
+}
 
 function formatDate(iso: string): string {
   return new Intl.DateTimeFormat('en-IN', {
@@ -81,24 +123,89 @@ function whatsappMessage(request: AppointmentRequestBody, reference: string | nu
     .join('\n');
 }
 
+function bookingWhatsappMessage(booking: SlotBookingBody, reference: string): string {
+  const branch = branches.find((entry) => entry.id === booking.branch)?.shortName ?? booking.branch;
+  return [
+    'Hello Expressions Dental Clinic, I booked an appointment on your website.',
+    `Reference: ${reference}`,
+    `Visit for: ${reasonLabel(booking.reason)}`,
+    `Clinic: ${branch}`,
+    `Time: ${formatDate(goaDate(booking.slotStart))}, ${goaTime(booking.slotStart)}`,
+    `Patient: ${PATIENT_FOR_LABELS[booking.patientFor]}`,
+    `Name: ${booking.name}`,
+  ].join('\n');
+}
+
+const failed = (errors: FieldErrors, values: Record<string, string>, status = 400) =>
+  data({ ok: false as const, errors, values }, { status });
+
+/** Books a live slot. Unlike a request, a failed save must stop here: no save, no slot. */
+async function bookSlot(request: Request, values: Record<string, string>, consent: boolean) {
+  const parsed = slotBookingBody.safeParse({ ...values, consent });
+  if (!parsed.success) return failed(fieldErrors(parsed.error.issues), values);
+
+  const origin = apiOrigin();
+  const unavailable = {
+    form: 'We couldn’t book that time just now. Please try again, or call or WhatsApp us.',
+  };
+  if (!origin) return failed(unavailable, values, 503);
+  let response: Response;
+  try {
+    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+    response = await fetch(`${origin}/api/v1/public/appointments`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        ...(clientIp ? { 'x-forwarded-for': clientIp } : {}),
+      },
+      body: JSON.stringify(parsed.data),
+    });
+  } catch {
+    return failed(unavailable, values, 503);
+  }
+
+  if (!response.ok) {
+    const problem = (await response.json().catch(() => ({}))) as { title?: string; code?: string };
+    if (problem.code === 'slot_taken' || problem.code === 'slot_invalid') {
+      return failed({ slotStart: problem.title ?? 'Please choose another time.' }, values, 409);
+    }
+    if (response.status === 429) {
+      return failed(
+        { form: 'Too many bookings from this number. Please call or WhatsApp us.' },
+        values,
+        429,
+      );
+    }
+    return failed(unavailable, values, 503);
+  }
+
+  const booked = (await response.json()) as { reference: string };
+  const booking = parsed.data;
+  return {
+    ok: true as const,
+    kind: 'booked' as const,
+    reference: booked.reference,
+    whatsappUrl: whatsappLink(bookingWhatsappMessage(booking, booked.reference)),
+    portal: booking.email !== '',
+    summary: {
+      reason: reasonLabel(booking.reason),
+      branch: branches.find((entry) => entry.id === booking.branch)?.shortName ?? '',
+      when: `${formatDate(goaDate(booking.slotStart))} · ${goaTime(booking.slotStart)}`,
+      name: booking.name,
+    },
+  };
+}
+
 export async function action({ request }: Route.ActionArgs) {
   const form = await request.formData();
   const values = Object.fromEntries(
     [...form.entries()].map(([key, value]) => [key, typeof value === 'string' ? value : '']),
   );
-  const parsed = appointmentRequestBody.safeParse({
-    ...values,
-    consent: form.get('consent') === 'on',
-  });
+  const consent = form.get('consent') === 'on';
+  if (values.slotStart) return bookSlot(request, values, consent);
 
-  if (!parsed.success) {
-    const errors: FieldErrors = {};
-    for (const issue of parsed.error.issues) {
-      const key = issue.path[0] as keyof FieldErrors;
-      errors[key] ??= issue.message;
-    }
-    return data({ ok: false as const, errors, values }, { status: 400 });
-  }
+  const parsed = appointmentRequestBody.safeParse({ ...values, consent });
+  if (!parsed.success) return failed(fieldErrors(parsed.error.issues), values);
 
   // Save to the clinic's enquiries inbox. If the API is unreachable the patient can still
   // send the request on WhatsApp, so a failed save never blocks them.
@@ -118,14 +225,7 @@ export async function action({ request }: Route.ActionArgs) {
       if (response.status === 400) {
         const problem = (await response.json()) as { title?: string; code?: string };
         if (problem.code === 'date_out_of_range') {
-          return data(
-            {
-              ok: false as const,
-              errors: { preferredDate: problem.title ?? 'Choose another date' } as FieldErrors,
-              values,
-            },
-            { status: 400 },
-          );
+          return failed({ preferredDate: problem.title ?? 'Choose another date' }, values);
         }
       }
       if (response.ok) reference = ((await response.json()) as { reference: string }).reference;
@@ -136,8 +236,10 @@ export async function action({ request }: Route.ActionArgs) {
 
   return {
     ok: true as const,
+    kind: 'request' as const,
     reference,
     whatsappUrl: whatsappLink(whatsappMessage(parsed.data, reference)),
+    portal: false,
     summary: {
       reason: reasonLabel(parsed.data.reason),
       branch: branches.find((entry) => entry.id === parsed.data.branch)?.shortName ?? '',
@@ -249,15 +351,168 @@ function Stepper({ step }: { step: number }) {
   );
 }
 
+const DAY_PARTS = [
+  { label: 'Morning', from: 0, to: 12 },
+  { label: 'Afternoon', from: 12, to: 17 },
+  { label: 'Evening', from: 17, to: 24 },
+];
+
+const chipClass =
+  'relative flex cursor-pointer flex-col items-center justify-center rounded-2xl bg-white ring-1 ring-neutral-200 transition hover:bg-neutral-50 has-[:checked]:bg-primary-600 has-[:checked]:text-white has-[:checked]:ring-primary-600 has-[:disabled]:cursor-not-allowed has-[:disabled]:bg-neutral-50 has-[:disabled]:text-neutral-500 has-[:disabled]:hover:bg-neutral-50 has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-secondary-500';
+
+/**
+ * Live slot picker: a strip of the next days with free times, then that day's slots. Both are
+ * native radio groups, so arrow keys and screen readers work without extra code.
+ */
+function SlotPicker({
+  branch,
+  days,
+  initialSlot,
+  error,
+  refresh,
+}: {
+  branch: string;
+  days: AvailabilityDay[];
+  initialSlot?: string;
+  error?: string;
+  refresh: number;
+}) {
+  const firstOpen = days.find((day) => day.availableCount > 0)?.date ?? '';
+  const [date, setDate] = useState(initialSlot ? goaDate(initialSlot) : firstOpen);
+  const [slots, setSlots] = useState<AvailableSlot[] | null>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
+
+  useEffect(() => {
+    if (!date) return;
+    let cancelled = false;
+    setSlots(null);
+    setLoadFailed(false);
+    fetch(`/api/v1/public/availability/${branch}/${date}`)
+      .then((response) => (response.ok ? response.json() : Promise.reject(response)))
+      .then((body: { slots: AvailableSlot[] }) => {
+        if (!cancelled) setSlots(body.slots);
+      })
+      .catch(() => {
+        if (!cancelled) setLoadFailed(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [branch, date, refresh]);
+
+  const dayLabel = (iso: string) => {
+    const value = new Date(`${iso}T00:00:00Z`);
+    const part = (options: Intl.DateTimeFormatOptions) =>
+      new Intl.DateTimeFormat('en-IN', { ...options, timeZone: 'UTC' }).format(value);
+    return {
+      weekday: part({ weekday: 'short' }),
+      day: part({ day: 'numeric' }),
+      month: part({ month: 'short' }),
+    };
+  };
+
+  return (
+    <div className="space-y-8">
+      <fieldset className="min-w-0">
+        <legend className="font-semibold">Choose a day</legend>
+        <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:px-0">
+          {days.map((day) => {
+            const label = dayLabel(day.date);
+            const full = day.availableCount === 0;
+            return (
+              <label
+                key={day.date}
+                className={cn(chipClass, 'min-h-20 min-w-[4.5rem] shrink-0 px-2')}
+              >
+                <input
+                  type="radio"
+                  name="slotDate"
+                  value={day.date}
+                  checked={date === day.date}
+                  disabled={full}
+                  onChange={() => setDate(day.date)}
+                  className="sr-only"
+                />
+                <span className="text-xs font-semibold uppercase">{label.weekday}</span>
+                <span className="text-xl leading-tight font-bold">{label.day}</span>
+                <span className="text-xs">
+                  {full ? (day.open ? 'Full' : 'Closed') : label.month}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
+
+      <fieldset aria-describedby={error ? 'slotStart-error' : undefined} aria-busy={!slots}>
+        <legend className="font-semibold">
+          Choose a time
+          {date && <span className="font-normal text-muted"> · {formatDate(date)}</span>}
+        </legend>
+        {loadFailed ? (
+          <p className="mt-3 text-[0.95rem] text-muted">
+            We couldn’t load times for this day. Please pick another day, or call us.
+          </p>
+        ) : !slots ? (
+          <p className="mt-3 flex items-center gap-2 text-[0.95rem] text-muted">
+            <Loader2 size={18} className="animate-spin motion-reduce:animate-none" />
+            Checking free times…
+          </p>
+        ) : (
+          DAY_PARTS.map((part) => {
+            const inPart = slots.filter((slot) => {
+              const hour = Number(slot.time.slice(0, 2));
+              return hour >= part.from && hour < part.to;
+            });
+            if (inPart.length === 0) return null;
+            return (
+              <div key={part.label} className="mt-4">
+                <p className="text-sm font-semibold text-muted">{part.label}</p>
+                <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                  {inPart.map((slot) => (
+                    <label key={slot.start} className={cn(chipClass, 'min-h-12 px-2')}>
+                      <input
+                        type="radio"
+                        name="slotStart"
+                        value={slot.start}
+                        defaultChecked={slot.start === initialSlot && slot.available}
+                        disabled={!slot.available}
+                        required={slot.available}
+                        className="sr-only"
+                      />
+                      <span className={cn('font-semibold', !slot.available && 'line-through')}>
+                        {slotLabel(slot.time)}
+                      </span>
+                      {!slot.available && <span className="sr-only"> (taken)</span>}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            );
+          })
+        )}
+        <FieldError id="slotStart-error" message={error} />
+      </fieldset>
+      <p className="text-sm text-muted">
+        Need a later date? Message us on WhatsApp and we’ll find a time.
+      </p>
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------------ page */
 
 function Confirmation({
+  kind,
   reference,
   whatsappUrl,
+  portal,
   summary,
 }: {
+  kind: 'booked' | 'request';
   reference: string | null;
   whatsappUrl: string;
+  portal: boolean;
   summary: { reason: string; branch: string; when: string; name: string };
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
@@ -271,10 +526,15 @@ function Confirmation({
         <CheckCircle2 size={34} />
       </span>
       <h2 ref={heading} tabIndex={-1} className="mt-5 text-2xl font-bold outline-none sm:text-3xl">
-        {reference ? 'Request received' : 'Almost done'}
+        {kind === 'booked' ? 'Your time is held' : reference ? 'Request received' : 'Almost done'}
       </h2>
       <p className="mt-3 text-muted">
-        {reference ? (
+        {kind === 'booked' ? (
+          <>
+            Your reference is <strong className="text-neutral-950">{reference}</strong>. Our front
+            desk will confirm your appointment on WhatsApp or by phone, usually within clinic hours.
+          </>
+        ) : reference ? (
           <>
             Your reference is <strong className="text-neutral-950">{reference}</strong>. Send it on
             WhatsApp so our front desk can confirm your time faster.
@@ -288,7 +548,7 @@ function Confirmation({
         {[
           ['Visit for', summary.reason],
           ['Clinic', summary.branch],
-          ['Preferred', summary.when],
+          [kind === 'booked' ? 'Time' : 'Preferred', summary.when],
           ['Name', summary.name],
         ].map(([term, value]) => (
           <div key={term} className="flex justify-between gap-4">
@@ -299,9 +559,15 @@ function Confirmation({
       </dl>
 
       <div className="mt-6 grid gap-3">
+        {portal && (
+          <ButtonLink href="/portal/login" size="lg">
+            <CalendarCheck size={20} />
+            Manage your booking
+          </ButtonLink>
+        )}
         <ButtonLink href={whatsappUrl} external variant="whatsapp" size="lg">
           <WhatsAppIcon size={22} />
-          Send on WhatsApp
+          {kind === 'booked' ? 'Message us on WhatsApp' : 'Send on WhatsApp'}
         </ButtonLink>
         <ButtonLink href={primaryPhone.href} variant="secondary" size="lg">
           <Phone size={18} className="text-primary-600" />
@@ -333,24 +599,70 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
   const [step, setStep] = useState(0);
   const [branch, setBranch] = useState(values.branch ?? '');
   const [date, setDate] = useState(values.preferredDate ?? '');
+  const [refresh, setRefresh] = useState(0);
+  const [pickHint, setPickHint] = useState('');
+  const [live, setLive] = useState<
+    | { branch: string; state: 'loading' }
+    | { branch: string; state: 'ready'; days: AvailabilityDay[] }
+    | { branch: string; state: 'off' }
+    | null
+  >(null);
   const sections = useRef<Array<HTMLFieldSetElement | null>>([]);
 
   useEffect(() => setEnhanced(true), []);
+
+  // Branches with online booking show live slots; others (or an unreachable API) keep the
+  // request form, which the front desk handles the same way as before.
+  useEffect(() => {
+    if (!enhanced || !branch) return;
+    let cancelled = false;
+    // A refresh of the same branch keeps the picker (and the chosen day) on screen.
+    setLive((previous) =>
+      previous?.branch === branch && previous.state === 'ready'
+        ? previous
+        : { branch, state: 'loading' },
+    );
+    fetch(`/api/v1/public/availability/${branch}?days=14`)
+      .then((response) => (response.ok ? response.json() : Promise.reject(response)))
+      .then((days: AvailabilityDay[]) => {
+        if (cancelled) return;
+        const anyFree = days.some((day) => day.availableCount > 0);
+        setLive(anyFree ? { branch, state: 'ready', days } : { branch, state: 'off' });
+      })
+      .catch(() => {
+        if (!cancelled) setLive({ branch, state: 'off' });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [enhanced, branch, refresh]);
+
   useEffect(() => {
     // After a server-side validation error, jump to the first step that has one.
     if (!actionData || actionData.ok) return;
     const failed = actionData.errors as FieldErrors;
+    if (failed.slotStart) setRefresh((value) => value + 1);
     const firstWithError = [
       ['reason', 'branch'],
-      ['preferredDate', 'timeOfDay'],
-      ['patientFor', 'name', 'phone', 'notes', 'consent'],
+      ['preferredDate', 'timeOfDay', 'slotStart'],
+      ['patientFor', 'name', 'phone', 'email', 'notes', 'consent'],
     ].findIndex((keys) => keys.some((key) => failed[key as keyof FieldErrors]));
     if (firstWithError >= 0) setStep(firstWithError);
   }, [actionData]);
 
+  const liveDays = live?.branch === branch && live.state === 'ready' ? live.days : null;
+  const checkingSlots = enhanced && live?.branch === branch && live.state === 'loading';
+
   const next = () => {
     if (step === 0) trackEvent('book_appointment_start');
+    if (step === 1 && checkingSlots) return;
     const current = sections.current[step];
+    if (step === 1 && liveDays && !current?.querySelector('input[name="slotStart"]:checked')) {
+      setPickHint('Choose a time to continue.');
+      current?.querySelector<HTMLInputElement>('input[name="slotStart"]:not(:disabled)')?.focus();
+      return;
+    }
+    setPickHint('');
     const invalid = current?.querySelector<HTMLInputElement | HTMLSelectElement>(':invalid');
     if (invalid) {
       invalid.reportValidity();
@@ -404,8 +716,10 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
       <section className={`${container} py-10 md:py-16`}>
         {actionData?.ok ? (
           <Confirmation
+            kind={actionData.kind}
             reference={actionData.reference}
             whatsappUrl={actionData.whatsappUrl}
+            portal={actionData.portal}
             summary={actionData.summary}
           />
         ) : (
@@ -426,7 +740,7 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
                   sections.current[0] = element;
                 }}
                 hidden={!show(0)}
-                className="space-y-8"
+                className="min-w-0 space-y-8"
               >
                 <legend className="sr-only">Step 1: What and where</legend>
                 <div>
@@ -484,53 +798,71 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
                   sections.current[1] = element;
                 }}
                 hidden={!show(1)}
-                className="space-y-8"
+                className="min-w-0 space-y-8"
               >
                 <legend className="sr-only">Step 2: When</legend>
-                <div>
-                  <label htmlFor="preferredDate" className="block font-semibold">
-                    Preferred date
-                  </label>
-                  <input
-                    id="preferredDate"
-                    name="preferredDate"
-                    type="date"
-                    required
-                    min={loaderData.minDate}
-                    max={loaderData.maxDate}
-                    defaultValue={values.preferredDate}
-                    onChange={(event) => setDate(event.target.value)}
-                    aria-invalid={errors.preferredDate ? true : undefined}
-                    aria-describedby={
-                      [
-                        errors.preferredDate && 'preferredDate-error',
-                        sundayAtDuler && 'sunday-note',
-                      ]
-                        .filter(Boolean)
-                        .join(' ') || undefined
-                    }
-                    className={inputClass}
+                {checkingSlots ? (
+                  <p className="flex items-center gap-2 text-muted">
+                    <Loader2 size={18} className="animate-spin motion-reduce:animate-none" />
+                    Checking free times…
+                  </p>
+                ) : liveDays ? (
+                  <SlotPicker
+                    key={branch}
+                    branch={branch}
+                    days={liveDays}
+                    initialSlot={errors.slotStart ? undefined : values.slotStart}
+                    error={errors.slotStart ?? (pickHint || undefined)}
+                    refresh={refresh}
                   />
-                  {sundayAtDuler && (
-                    <p
-                      id="sunday-note"
-                      className="mt-2 rounded-xl bg-[#FFF5EA] px-3 py-2 text-sm font-medium text-[#6A4100]"
-                    >
-                      Our Duler clinic is closed on Sundays. Please choose another day.
-                    </p>
-                  )}
-                  <FieldError id="preferredDate-error" message={errors.preferredDate} />
-                </div>
-                <ChoiceGroup
-                  name="timeOfDay"
-                  legend="Preferred time"
-                  defaultValue={values.timeOfDay}
-                  error={errors.timeOfDay}
-                  options={TIME_OF_DAY.map((value) => ({
-                    value,
-                    label: TIME_OF_DAY_LABELS[value],
-                  }))}
-                />
+                ) : (
+                  <>
+                    <div>
+                      <label htmlFor="preferredDate" className="block font-semibold">
+                        Preferred date
+                      </label>
+                      <input
+                        id="preferredDate"
+                        name="preferredDate"
+                        type="date"
+                        required
+                        min={loaderData.minDate}
+                        max={loaderData.maxDate}
+                        defaultValue={values.preferredDate}
+                        onChange={(event) => setDate(event.target.value)}
+                        aria-invalid={errors.preferredDate ? true : undefined}
+                        aria-describedby={
+                          [
+                            errors.preferredDate && 'preferredDate-error',
+                            sundayAtDuler && 'sunday-note',
+                          ]
+                            .filter(Boolean)
+                            .join(' ') || undefined
+                        }
+                        className={inputClass}
+                      />
+                      {sundayAtDuler && (
+                        <p
+                          id="sunday-note"
+                          className="mt-2 rounded-xl bg-[#FFF5EA] px-3 py-2 text-sm font-medium text-[#6A4100]"
+                        >
+                          Our Duler clinic is closed on Sundays. Please choose another day.
+                        </p>
+                      )}
+                      <FieldError id="preferredDate-error" message={errors.preferredDate} />
+                    </div>
+                    <ChoiceGroup
+                      name="timeOfDay"
+                      legend="Preferred time"
+                      defaultValue={values.timeOfDay}
+                      error={errors.timeOfDay}
+                      options={TIME_OF_DAY.map((value) => ({
+                        value,
+                        label: TIME_OF_DAY_LABELS[value],
+                      }))}
+                    />
+                  </>
+                )}
               </fieldset>
 
               <fieldset
@@ -538,7 +870,7 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
                   sections.current[2] = element;
                 }}
                 hidden={!show(2)}
-                className="space-y-8"
+                className="min-w-0 space-y-8"
               >
                 <legend className="sr-only">Step 3: Your details</legend>
                 <ChoiceGroup
@@ -591,6 +923,30 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
                   />
                   <FieldError id="phone-error" message={errors.phone} />
                 </div>
+                {liveDays && (
+                  <div>
+                    <label htmlFor="email" className="block font-semibold">
+                      Email <span className="font-normal text-muted">(optional)</span>
+                    </label>
+                    <p id="email-hint" className="mt-1 text-sm text-muted">
+                      Add it to see or cancel your booking online. We email a sign-in link, never
+                      marketing.
+                    </p>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      maxLength={254}
+                      defaultValue={values.email}
+                      aria-invalid={errors.email ? true : undefined}
+                      aria-describedby={errors.email ? 'email-hint email-error' : 'email-hint'}
+                      className={inputClass}
+                    />
+                    <FieldError id="email-error" message={errors.email} />
+                  </div>
+                )}
                 <div>
                   <label htmlFor="notes" className="block font-semibold">
                     Anything we should know?{' '}
@@ -650,7 +1006,7 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
                   </Button>
                 ) : (
                   <Button type="submit" disabled={submitting}>
-                    {submitting ? 'Sending…' : 'Request appointment'}
+                    {submitting ? 'Sending…' : liveDays ? 'Book this time' : 'Request appointment'}
                   </Button>
                 )}
               </div>

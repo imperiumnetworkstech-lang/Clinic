@@ -26,7 +26,8 @@ export default function PrivacyPolicy() {
         <li>
           <strong>Appointment requests:</strong> the patient’s name, your mobile number, who the
           appointment is for, the clinic, your preferred date and time, the reason for the visit and
-          any note you add.
+          any note you add. If you give an email address, we use it only to send you a sign-in link
+          for managing your appointments.
         </li>
         <li>
           <strong>Technical data:</strong> your IP address and basic device information, used to

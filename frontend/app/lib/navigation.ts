@@ -13,6 +13,7 @@ export const MORE_LINKS = [
   { href: '/blog', label: 'Dental care guides' },
   { href: '/international-patients', label: 'International patients' },
   { href: '/emergency-dentist-goa', label: 'Dental emergencies' },
+  { href: '/portal', label: 'My appointments' },
 ];
 
 export const LEGAL_LINKS = [
