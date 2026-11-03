@@ -37,6 +37,20 @@ Base: `/api/v1`. JSON only. Zod-validated (schemas in `packages/shared`). Errors
 
 ## Admin 🔒
 
+**Built so far (Phases 3–5a).** All under `/api/v1/admin`, staff bearer token, permission in brackets:
+
+| Area         | Endpoints                                                                                                                                                                                                                                |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dashboard    | GET `/dashboard` [dashboard.read]: today by status, to confirm, new enquiries, recalls due, new patients, no-show rate, bookings per day (counts only)                                                                                   |
+| Appointments | GET `/appointments?date&branch` · PATCH `/appointments/:id` {status} · POST `/appointments` (front desk, confirmed; `force` to double-book) · PATCH `/appointments/:id/time` (move) · GET `/calendar?from&days&branch` · GET `/dentists` |
+| Schedule     | GET `/schedules` · PUT `/schedules/:branch` [settings.write] · POST `/schedules/:branch/holidays` · DELETE `/holidays/:id`                                                                                                               |
+| Patients     | GET `/patients?q&recall=due&page` · POST `/patients` (409 `patient_exists` with its id) · GET `/patients/:id` (record + timeline; clinical part only with clinical.read, and audited) · PATCH `/patients/:id` (incl. recall)             |
+| Clinical     | PUT `/patients/:id/medical-history` · POST `/patients/:id/notes` · POST `/patients/:id/plans` · PATCH `/plans/:id` · PATCH `/plan-items/:id` [clinical.write]. Free text is AES-256-GCM encrypted at rest.                               |
+| Staff        | GET `/staff` · POST `/staff` · PATCH `/staff/:id` {name, phone, role, status} (owners only for owner accounts; no self role/status change; role change or deactivation ends sessions) · GET `/roles`                                     |
+| Leads        | GET `/leads?status` · PATCH `/leads/:id`                                                                                                                                                                                                 |
+
+The full target design follows.
+
 | Area         | Endpoints                                                                                                                                                                                                            |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Dashboard    | GET `/admin/analytics/kpis?from&to&compare` · `/admin/analytics/series/:metric` · `/admin/analytics/heatmap` · `/admin/analytics/funnel` · GET `/admin/analytics/export?format=csv                                   | pdf` |

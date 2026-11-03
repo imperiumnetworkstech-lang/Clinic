@@ -131,6 +131,17 @@ Delivered:
 
 Waiting on the clinic: Candolim's weekly hours, the number of chairs per branch, and a sender domain for portal emails (Resend).
 
+## 3d. Phase 5a status (2026-11-03): built
+
+- **Dashboard** (`/admin`): today's bookings, bookings to confirm, new enquiries, recalls due, new patients, no-show rate, and a 30-day bookings chart (online vs front desk).
+- **Calendar** (`/admin/calendar`): week view (day view on phones), overlapping visits side by side, drag to move with 15-minute snapping, and a details sheet with a move form as the non-drag alternative. Front-desk booking (phone, walk-in, WhatsApp) is confirmed straight away; a full time or busy dentist is refused unless staff choose "book anyway".
+- **Patients** (`/admin/patients`): search by name, mobile, email or code; recall-due filter; registration with duplicate detection. The record page has visits, recall, details and consents, a timeline, and, for doctors and owners only, medical history (allergies flagged at the top), clinical notes and treatment plans whose status follows their items.
+- **Staff** (`/admin/staff`): add staff, change roles, deactivate; owner accounts are managed only by owners.
+- **Security:** clinical text is encrypted at rest; opening a record's clinical part is audited; the dashboard returns counts only.
+- Migration `20261103-05-clinical` adds the new tables and columns (additive).
+
+Next: 5b billing (invoices with no GST, recorded payments, PDF receipts) and patient files (storage provider to be decided), then 5c CMS. The Phase 5 E2E (sign-in with 2FA → check-in → complete → invoice) lands with 5b.
+
 ## 4. Open questions (batched; answers unblock Phase 1–3)
 
 **Business facts (from the content audit — the clinic needs to answer these)**
