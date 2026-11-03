@@ -5,7 +5,7 @@
  * appended to an outbox file that the tests read instead of being sent. Test use only.
  */
 import { appendFileSync, writeFileSync } from 'node:fs';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -33,7 +33,10 @@ Object.assign(process.env, {
   EMAIL_DELIVERY: 'log',
 });
 
-const dataDir = path.join(await mkdtemp(path.join(tmpdir(), 'edc-e2e-')), 'pg');
+// A fixed folder inside the project (git-ignored), wiped at every start: a run that was
+// killed before it could clean up never leaves old databases piling up on the system drive.
+const dataDir = path.resolve('.data/e2e-pg');
+await rm(dataDir, { recursive: true, force: true });
 const { startLocalPostgres } = await import('../src/db/embeddedPostgres.js');
 const database = await startLocalPostgres({
   databaseUrl: process.env.DATABASE_URL ?? '',
@@ -64,7 +67,7 @@ const stop = async () => {
   server.close();
   await sequelize.close();
   await database.stop();
-  await rm(path.dirname(dataDir), { recursive: true, force: true });
+  await rm(dataDir, { recursive: true, force: true });
   process.exit(0);
 };
 process.on('SIGINT', () => void stop());
