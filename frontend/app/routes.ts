@@ -28,6 +28,7 @@ export default [
   route('admin/appointments', 'routes/admin.appointments.tsx'),
   route('admin/patients', 'routes/admin.patients.tsx'),
   route('admin/patients/:id', 'routes/admin.patient.tsx'),
+  route('admin/billing', 'routes/admin.billing.tsx'),
   route('admin/enquiries', 'routes/admin.enquiries.tsx'),
   route('admin/schedule', 'routes/admin.schedule.tsx'),
   route('admin/staff', 'routes/admin.staff.tsx'),

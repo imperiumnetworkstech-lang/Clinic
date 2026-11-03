@@ -400,3 +400,144 @@ export const crmApi = {
     body: { role?: string; status?: 'active' | 'disabled'; name?: string },
   ) => authed<{ id: string }>(`/api/v1/admin/staff/${id}`, json('PATCH', body)),
 };
+
+/* ------------------------------------------------------------------ Phase 5b: billing, files */
+
+export type PaymentMethod = 'cash' | 'upi' | 'card' | 'bank_transfer' | 'other';
+
+export interface PaymentRow {
+  id: string;
+  receiptNumber: string;
+  amountPaise: number;
+  method: PaymentMethod;
+  reference: string;
+  receivedAt: string;
+  voidedAt: string | null;
+  voidReason: string | null;
+  receiver?: { id: string; name: string } | null;
+}
+
+export interface InvoiceRow {
+  id: string;
+  number: string;
+  issuedOn: string;
+  status: 'issued' | 'void';
+  subtotalPaise: number;
+  discountPaise: number;
+  totalPaise: number;
+  paidPaise: number;
+  notes: string;
+  voidReason: string | null;
+  patient?: { id: string; code: string; name: string; phone: string } | null;
+  location?: { slug: string; name: string } | null;
+  items?: Array<{
+    id: string;
+    description: string;
+    tooth: string;
+    quantity: number;
+    unitPaise: number;
+    amountPaise: number;
+  }>;
+  payments?: PaymentRow[];
+}
+
+export interface PatientFileRow {
+  id: string;
+  kind: 'xray' | 'photo' | 'report' | 'document' | 'other';
+  name: string;
+  contentType: string;
+  sizeBytes: number;
+  uploadedBy: string;
+  createdAt: string;
+}
+
+/** Fetches a protected PDF with the session and opens it in a new tab. */
+async function openPdf(path: string) {
+  const tab = window.open('', '_blank');
+  const respond = async (retry: boolean): Promise<void> => {
+    if (!accessToken && !(await refreshSession()))
+      throw new ApiError(401, 'no_session', 'Please sign in.');
+    const response = await fetch(path, {
+      credentials: 'same-origin',
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (response.status === 401 && retry && (await refreshSession())) return respond(false);
+    if (!response.ok) await parse(response);
+    const url = URL.createObjectURL(await response.blob());
+    if (tab) tab.location.href = url;
+    else window.location.href = url;
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  };
+  try {
+    await respond(true);
+  } catch (error) {
+    tab?.close();
+    throw error;
+  }
+}
+
+export const billingApi = {
+  invoices: (params: { patientId?: string; due?: boolean; page?: number }) => {
+    const search = new URLSearchParams({ pageSize: '50', page: String(params.page ?? 1) });
+    if (params.patientId) search.set('patientId', params.patientId);
+    if (params.due) search.set('due', 'true');
+    return authed<{ total: number; outstanding?: number; items: InvoiceRow[] }>(
+      `/api/v1/admin/invoices?${search}`,
+    );
+  },
+  invoice: (id: string) => authed<InvoiceRow>(`/api/v1/admin/invoices/${id}`),
+  create: (body: {
+    patientId: string;
+    branch: string;
+    appointmentId?: string;
+    items: Array<{ description: string; tooth: string; quantity: number; unitPaise: number }>;
+    discountPaise: number;
+    notes: string;
+  }) => authed<{ id: string; number: string }>('/api/v1/admin/invoices', json('POST', body)),
+  pay: (id: string, body: { amountPaise: number; method: PaymentMethod; reference: string }) =>
+    authed<{ id: string; receiptNumber: string }>(
+      `/api/v1/admin/invoices/${id}/payments`,
+      json('POST', body),
+    ),
+  voidInvoice: (id: string, reason: string) =>
+    authed<{ id: string }>(`/api/v1/admin/invoices/${id}/void`, json('POST', { reason })),
+  voidPayment: (id: string, reason: string) =>
+    authed<{ id: string }>(`/api/v1/admin/payments/${id}/void`, json('POST', { reason })),
+  summary: (date: string) =>
+    authed<{
+      date: string;
+      count: number;
+      totalPaise: number;
+      byMethod: Partial<Record<PaymentMethod, number>>;
+    }>(`/api/v1/admin/billing/summary?date=${date}`),
+  openInvoicePdf: (id: string) => openPdf(`/api/v1/admin/invoices/${id}/pdf`),
+  openReceipt: (paymentId: string) => openPdf(`/api/v1/admin/payments/${paymentId}/receipt`),
+};
+
+export const filesApi = {
+  list: (patientId: string) =>
+    authed<{ available: boolean; items: PatientFileRow[] }>(
+      `/api/v1/admin/patients/${patientId}/files`,
+    ),
+  async upload(patientId: string, kind: PatientFileRow['kind'], file: File) {
+    const started = await authed<{ id: string; upload: { url: string; method: 'PUT' } }>(
+      `/api/v1/admin/patients/${patientId}/files`,
+      json('POST', { kind, fileName: file.name, contentType: file.type, sizeBytes: file.size }),
+    );
+    const put = await fetch(started.upload.url, {
+      method: 'PUT',
+      headers: { 'Content-Type': file.type },
+      body: file,
+    });
+    if (!put.ok) await parse(put);
+    return authed<{ id: string }>(`/api/v1/admin/files/${started.id}/complete`, { method: 'POST' });
+  },
+  viewUrl: (id: string) =>
+    authed<{ url: string; expiresAt: string }>(`/api/v1/admin/files/${id}/url`),
+  share: (id: string, hours: number) =>
+    authed<{ url: string; expiresAt: string }>(
+      `/api/v1/admin/files/${id}/share`,
+      json('POST', { hours }),
+    ),
+  remove: (id: string) => authed<undefined>(`/api/v1/admin/files/${id}`, { method: 'DELETE' }),
+};

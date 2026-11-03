@@ -19,6 +19,7 @@ const SECTIONS = [
   { to: '/admin/calendar', label: 'Calendar', permission: 'appointments.read' },
   { to: '/admin/appointments', label: 'Day list', permission: 'appointments.read' },
   { to: '/admin/patients', label: 'Patients', permission: 'patients.read' },
+  { to: '/admin/billing', label: 'Billing', permission: 'billing.read' },
   { to: '/admin/enquiries', label: 'Enquiries', permission: 'leads.read' },
   { to: '/admin/schedule', label: 'Schedule', permission: 'appointments.read' },
   { to: '/admin/staff', label: 'Staff', permission: 'staff.read' },

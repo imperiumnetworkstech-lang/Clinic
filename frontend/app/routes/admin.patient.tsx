@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import { Link, useParams } from 'react-router';
+import { BillingPanel } from '../components/admin/BillingPanel';
+import { FilesPanel } from '../components/admin/FilesPanel';
 import { AdminShell } from '../components/AdminShell';
 import { BookAppointmentSheet } from '../components/BookAppointmentSheet';
 import { WhatsAppIcon } from '../components/icons';
@@ -766,6 +768,10 @@ export default function AdminPatient() {
                   )}
                 </Section>
 
+                {can('billing.read') && (
+                  <BillingPanel record={record} canWrite={can('billing.write')} />
+                )}
+
                 {clinical ? (
                   <>
                     <Section title="Medical history">
@@ -801,6 +807,7 @@ export default function AdminPatient() {
                         </div>
                       )}
                     </Section>
+                    <FilesPanel patientId={patient.id} canWrite={can('clinical.write')} />
                     <Section title="Clinical notes">
                       <NotesPanel
                         patientId={patient.id}

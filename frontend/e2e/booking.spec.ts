@@ -1,15 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 import { OUTBOX } from '../playwright.config';
+import { DEMO_STAFF, goaDate } from './demo';
 
-/** Demo staff created by backend/scripts/e2e-stack.ts (fake data, throwaway database). */
-const RECEPTIONIST = {
-  email: 'demo.receptionist@expressions.test',
-  password: 'e2e-demo-password-0001',
-};
-
-const goaDate = (iso: string) =>
-  new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date(iso));
+const RECEPTIONIST = DEMO_STAFF.receptionist;
 
 const freeSlot = (page: Page, except?: string) =>
   page
