@@ -124,13 +124,16 @@ export function SiteHeader() {
           className="flex min-h-11 shrink-0 items-center"
           aria-label={`${CLINIC_NAME}, home`}
         >
-          <img
-            src="/images/brand/logo.png"
-            alt=""
-            width={458}
-            height={152}
-            className="h-10 w-auto lg:h-12"
-          />
+          <picture>
+            <source type="image/webp" srcSet="/images/brand/logo.webp" />
+            <img
+              src="/images/brand/logo.png"
+              alt=""
+              width={458}
+              height={152}
+              className="h-10 w-auto lg:h-12"
+            />
+          </picture>
         </Link>
 
         <NavigationMenu.Root

@@ -14,7 +14,7 @@ export const SITE_INDEXABLE = import.meta.env.VITE_SITE_INDEXABLE === 'true';
 
 export const absoluteUrl = (path: string) => `${SITE_URL}${path === '/' ? '' : path}`;
 
-const DEFAULT_IMAGE = '/images/opt/about-img-800.webp';
+const DEFAULT_IMAGE = '/images/brand/og-default.jpg';
 
 interface PageMeta {
   title: string;
@@ -32,6 +32,9 @@ export function pageMeta({ title, description, path, image = DEFAULT_IMAGE, noin
     { title },
     { name: 'description', content: description },
     { tagName: 'link', rel: 'canonical', href: url },
+    // Language alternates: English (India) today; Hindi/Konkani versions slot in here later.
+    { tagName: 'link', rel: 'alternate', hrefLang: 'en-IN', href: url },
+    { tagName: 'link', rel: 'alternate', hrefLang: 'x-default', href: url },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: clinicData.clinic.name },
     { property: 'og:locale', content: 'en_IN' },
@@ -39,6 +42,9 @@ export function pageMeta({ title, description, path, image = DEFAULT_IMAGE, noin
     { property: 'og:description', content: description },
     { property: 'og:url', content: url },
     { property: 'og:image', content: imageUrl },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
+    { property: 'og:image:alt', content: clinicData.clinic.name },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
@@ -172,5 +178,26 @@ export function procedureSchema(treatment: { name: string; summary: string; slug
     description: treatment.summary,
     url: absoluteUrl(`/treatments/${treatment.slug}`),
     provider: { '@id': ORG_ID },
+  };
+}
+
+export function articleSchema(post: {
+  slug: string;
+  title: string;
+  metaDescription: string;
+  publishedAt: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.metaDescription,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    image: absoluteUrl(DEFAULT_IMAGE),
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+    inLanguage: 'en-IN',
   };
 }

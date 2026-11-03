@@ -1,5 +1,5 @@
-import '@fontsource-variable/inter';
 import '@fontsource-variable/plus-jakarta-sans';
+import jakartaLatin from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
 import { useEffect, type ReactNode } from 'react';
 import {
   isRouteErrorResponse,
@@ -19,8 +19,24 @@ import { SiteFooter } from './components/SiteFooter';
 import { SiteHeader } from './components/SiteHeader';
 import { ACCESSIBILITY_BOOT_SCRIPT } from './lib/accessibility';
 import { primaryPhone } from './lib/clinic';
+import { useAnalytics } from './lib/analytics';
 import { registerServiceWorker } from './lib/pwa';
 import { button, container } from './lib/ui';
+
+/**
+ * Preload the heading font so it downloads alongside the stylesheet instead of after it:
+ * the page heading is the largest paint and waits on it. Body text uses the device's own
+ * system font, which needs no download at all.
+ */
+export const links: Route.LinksFunction = () => [
+  {
+    rel: 'preload',
+    as: 'font',
+    type: 'font/woff2',
+    href: jakartaLatin,
+    crossOrigin: 'anonymous' as const,
+  },
+];
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -51,6 +67,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export default function App() {
   useEffect(registerServiceWorker, []);
+  useAnalytics();
   const { pathname } = useLocation();
 
   // The staff area has its own minimal layout: no public header, tab bar or prompts.

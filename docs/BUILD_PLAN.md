@@ -84,6 +84,32 @@ Deviations, with reasons:
 - **The Portal tab is replaced by Clinics** until the portal sign-in channel (B2) is decided.
 - **Treatment menu links go to rows on the home page** (`/#t-<slug>`) until Phase 3 adds treatment pages.
 
+## 3b. Phase 3 status (2026-11-03): done, except doctor pages
+
+Delivered:
+
+- **Pages:** 18 treatment pages and a treatments hub, About, Contact (weekly hours and a Goa-time "Open now" badge), FAQ, Emergency, Reviews, International patients, a symptom helper, a blog with 3 rewritten guides, and Privacy policy and Medical disclaimer drafts.
+- **Booking and admin:** the booking request form and the staff inbox.
+- **SEO:** canonical URLs, Open Graph tags with a branded share image, hreflang scaffolding, and JSON-LD (Organization, WebSite, Dentist per branch, MedicalProcedure, FAQPage, BlogPosting, BreadcrumbList); sitemap.xml (34 URLs); a robots.txt closed until `VITE_SITE_INDEXABLE=true`; 301s from every old-site URL; real 404s.
+- **Analytics:** GA4 loads only after consent, with conversion events `book_appointment_start`, `book_appointment_complete`, `click_to_call`, `whatsapp_click` and `directions_click`. It is dormant until `VITE_GA_MEASUREMENT_ID` is set.
+
+Lighthouse (mobile, simulated slow 4G, local production build):
+
+| Page         | Performance | Accessibility | Best practices | SEO |
+| ------------ | ----------- | ------------- | -------------- | --- |
+| Home         | 87          | 100           | 100            | 100 |
+| Treatment    | 90          | 100           | 100            | 100 |
+| Booking      | 89          | 100           | 100            | 100 |
+| Blog article | 91          | 100           | 100            | 100 |
+
+CLS ≈ 0 everywhere. LCP is 3.1–3.4 s simulated; it is text, waiting on about 200 KB of framework JavaScript plus the heading font. Reaching 95 or more is a Phase 8 task: lazy-load the sheets and menus, trim the root bundle, and re-measure on Vercel with PageSpeed Insights.
+
+Deviations:
+
+- **Body text uses the device's system font; Plus Jakarta Sans stays for headings** (updates D6). Inter was 48 KB on the critical path; the system font looks near-identical and needs no download.
+- **Doctor pages wait** for the client to confirm the team, registration numbers and photos.
+- **Blog articles are original rewrites** (needs-doctor-review). The old posts duplicated third-party text, so they were not republished.
+
 ## 4. Open questions (batched; answers unblock Phase 1–3)
 
 **Business facts (from the content audit — the clinic needs to answer these)**
