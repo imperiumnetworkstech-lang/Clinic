@@ -12,6 +12,7 @@ import { data, Form, Link, useNavigation } from 'react-router';
 import { WhatsAppIcon } from '../components/icons';
 import { PageHeader } from '../components/PageHeader';
 import { Button, ButtonLink } from '../components/ui/Button';
+import { trackEvent } from '../lib/analytics';
 import { apiOrigin } from '../lib/api.server';
 import { branches, phones, primaryPhone, whatsappLink } from '../lib/clinic';
 import { cn } from '../lib/cn';
@@ -44,7 +45,10 @@ export function loader({ request }: Route.LoaderArgs) {
   return {
     minDate: isoInIndia(0),
     maxDate: isoInIndia(MAX_DAYS_AHEAD),
-    preselect: getTreatment(treatment ?? undefined) ? treatment : null,
+    preselect:
+      getTreatment(treatment ?? undefined) || VISIT_REASONS.some((r) => r.value === treatment)
+        ? treatment
+        : null,
   };
 }
 
@@ -257,7 +261,10 @@ function Confirmation({
   summary: { reason: string; branch: string; when: string; name: string };
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => heading.current?.focus(), []);
+  useEffect(() => {
+    heading.current?.focus();
+    trackEvent('book_appointment_complete');
+  }, []);
   return (
     <div className="mx-auto max-w-xl rounded-[2rem] bg-white p-7 text-center shadow-[0_24px_60px_-28px_rgb(31_36_43/0.4)] ring-1 ring-neutral-200 sm:p-10">
       <span className="mx-auto grid size-16 place-items-center rounded-full bg-[#E8F7EE] text-[#128C4A]">
@@ -342,6 +349,7 @@ export default function Book({ loaderData, actionData }: Route.ComponentProps) {
   }, [actionData]);
 
   const next = () => {
+    if (step === 0) trackEvent('book_appointment_start');
     const current = sections.current[step];
     const invalid = current?.querySelector<HTMLInputElement | HTMLSelectElement>(':invalid');
     if (invalid) {

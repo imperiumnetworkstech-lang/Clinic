@@ -2,7 +2,7 @@ import { Accessibility, Mail, MapPin, Phone } from 'lucide-react';
 import { useState } from 'react';
 import { branches, CLINIC_NAME, email, phones, social } from '../lib/clinic';
 import { Link } from 'react-router';
-import { LEGAL_LINKS, NAV_LINKS } from '../lib/navigation';
+import { LEGAL_LINKS, MORE_LINKS, NAV_LINKS } from '../lib/navigation';
 import { container } from '../lib/ui';
 import { AccessibilityPanel } from './AccessibilityPanel';
 import { ConsentSettingsLink } from './ConsentBanner';
@@ -53,7 +53,7 @@ export function SiteFooter() {
         <div className="md:col-span-2">
           <h2 className="text-sm font-semibold tracking-wide text-white uppercase">Explore</h2>
           <ul className="mt-3 space-y-1">
-            {NAV_LINKS.map((link) => (
+            {[...NAV_LINKS, ...MORE_LINKS].map((link) => (
               <li key={link.href}>
                 <Link
                   to={link.href}

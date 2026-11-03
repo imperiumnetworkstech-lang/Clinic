@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { contactEventFor } from '../app/lib/analytics';
 import { openStatus, type WeeklyHours } from '../app/lib/hours';
 import { legacyRedirect } from '../app/lib/redirects';
 import { treatments } from '../app/lib/treatments';
@@ -10,7 +11,9 @@ describe('legacy URL redirects', () => {
     ['/service/view/19', '/treatments#cosmetic', 301],
     ['/service/view/7', '/treatments', 301],
     ['/photo-gallery', '/about', 301],
-    ['/news/view/4', '/', 302],
+    ['/news/view/4', '/blog/oral-cancer-signs-symptoms-risk-factors', 301],
+    ['/news/view/99', '/blog', 301],
+    ['/news', '/blog', 301],
     ['/index.php/service', '/treatments', 301],
     ['/treatments/dental-bleaching', '/treatments/teeth-whitening', 301],
   ])('%s → %s (%i)', (from, to, status) => {
@@ -64,5 +67,17 @@ describe('open-now status (Goa time)', () => {
   it('skips the closed Sunday', () => {
     // Saturday 7 Nov 2026, 9 pm in Goa → next opening is Monday.
     expect(at('2026-11-07T15:30:00Z').label).toBe('Closed · opens Monday 10 am');
+  });
+});
+
+describe('conversion tracking classification', () => {
+  it.each([
+    ['tel:+919657061122', 'click_to_call'],
+    ['https://wa.me/919657061122?text=Hi', 'whatsapp_click'],
+    ['https://www.google.com/maps/search/?api=1&query=1,2', 'directions_click'],
+    ['/treatments', null],
+    ['https://example.com/wa.me/123', null],
+  ])('%s → %s', (href, expected) => {
+    expect(contactEventFor(href)).toBe(expected);
   });
 });

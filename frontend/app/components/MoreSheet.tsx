@@ -1,7 +1,7 @@
 import { ChevronRight, Download, Mail, Navigation, Phone, Share } from 'lucide-react';
 import { branches, email, phones } from '../lib/clinic';
 import { Link } from 'react-router';
-import { NAV_LINKS } from '../lib/navigation';
+import { MORE_LINKS, NAV_LINKS } from '../lib/navigation';
 import { useInstallPrompt } from '../lib/pwa';
 import { AccessibilityPanel } from './AccessibilityPanel';
 import { Button } from './ui/Button';
@@ -24,7 +24,7 @@ export function MoreSheet({
   return (
     <Sheet open={open} onOpenChange={onOpenChange} title="More">
       <nav aria-label="More pages" className="mt-4 -mx-2">
-        {NAV_LINKS.map((link) => (
+        {[...NAV_LINKS, ...MORE_LINKS].map((link) => (
           <Link key={link.href} to={link.href} viewTransition onClick={close} className={row}>
             {link.label}
             <ChevronRight size={18} className="text-neutral-400" />

@@ -1,0 +1,171 @@
+{
+  "$comment": "Original articles written 2026-11-03 to replace the old site's three posts, which appeared to duplicate third-party text. They must be reviewed and approved by a clinic dentist before launch, and a reviewing doctor's name added once the team is confirmed.",
+  "reviewStatus": "needs-doctor-review",
+  "posts": [
+    {
+      "slug": "how-to-brush-your-teeth-properly",
+      "legacyPath": "/news/view/2",
+      "title": "How to brush your teeth properly",
+      "metaTitle": "How to Brush Your Teeth Properly | Expressions Dental",
+      "metaDescription": "A dentist-style guide to brushing: the right technique, how long, how often, and the spots most people miss.",
+      "excerpt": "Most of us brush every day, but few of us were ever shown how. A few small changes make a big difference to your teeth and gums.",
+      "category": "Everyday care",
+      "publishedAt": "2026-11-03",
+      "relatedTreatments": ["tooth-scaling", "dental-fillings"],
+      "sections": [
+        {
+          "heading": "Why technique matters",
+          "paragraphs": [
+            "Plaque is a soft, sticky film of bacteria that forms on teeth every day. Left in place it causes cavities and gum disease, and within a few days it can harden into tartar, which only a professional clean can remove.",
+            "Brushing well removes plaque before it does damage. Brushing hard does not: it wears enamel and pushes gums back."
+          ]
+        },
+        {
+          "heading": "The basics",
+          "list": [
+            "Brush twice a day, including last thing at night.",
+            "Use a soft-bristled brush with a small head.",
+            "Use a pea-sized amount of fluoride toothpaste.",
+            "Spend about two minutes each time."
+          ]
+        },
+        {
+          "heading": "Step by step",
+          "list": [
+            "Angle the bristles about 45° towards the gum line.",
+            "Use gentle, short strokes or small circles, a couple of teeth at a time.",
+            "Work around the mouth in order: outer surfaces, inner surfaces, then chewing surfaces.",
+            "Tilt the brush upright to clean behind the front teeth, top and bottom.",
+            "Finish by gently brushing your tongue to freshen your breath."
+          ]
+        },
+        {
+          "heading": "Spots people often miss",
+          "paragraphs": [
+            "The inner surfaces of the lower front teeth, the backs of the last molars and the gum line are where plaque and tartar build up most. Give them a little extra attention."
+          ]
+        },
+        {
+          "heading": "After you brush",
+          "paragraphs": [
+            "Spit out the toothpaste but avoid rinsing straight away with water, so the fluoride keeps working. Clean between your teeth once a day with floss or interdental brushes, and replace your toothbrush every three months or sooner if the bristles splay."
+          ]
+        }
+      ],
+      "references": [
+        {
+          "label": "World Health Organization: Oral health fact sheet",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/oral-health"
+        }
+      ]
+    },
+    {
+      "slug": "how-to-choose-the-right-toothbrush",
+      "legacyPath": "/news/view/6",
+      "title": "How to choose the right toothbrush",
+      "metaTitle": "How to Choose the Right Toothbrush | Expressions Dental",
+      "metaDescription": "Soft or medium? Manual or electric? How to pick a toothbrush that cleans well without harming your gums.",
+      "excerpt": "The best toothbrush is the one you use well, twice a day. Here's what to look for when you're standing in front of the shelf.",
+      "category": "Everyday care",
+      "publishedAt": "2026-11-03",
+      "relatedTreatments": ["tooth-scaling", "gum-surgery"],
+      "sections": [
+        {
+          "heading": "Choose soft bristles",
+          "paragraphs": [
+            "Soft bristles remove plaque effectively and are kind to gums and enamel. Hard bristles can make gums recede over time and leave teeth sensitive, especially if you brush firmly."
+          ]
+        },
+        {
+          "heading": "Pick a small head and a comfortable handle",
+          "paragraphs": [
+            "A smaller head reaches the back teeth more easily. The handle should feel comfortable in your hand, because a brush that is awkward to hold leads to rushed brushing."
+          ]
+        },
+        {
+          "heading": "Manual or electric?",
+          "paragraphs": [
+            "Both work well when used properly. Electric brushes can help people who find it hard to brush thoroughly, such as people with arthritis, children or anyone wearing braces. A manual brush used with good technique is just as effective for most people."
+          ]
+        },
+        {
+          "heading": "Extras worth considering",
+          "list": [
+            "A tongue cleaner on the back of the head, if bad breath is a concern.",
+            "Interdental brushes for gaps, bridges or braces.",
+            "A child-sized brush with a chunky handle for young children."
+          ]
+        },
+        {
+          "heading": "When to replace it",
+          "paragraphs": [
+            "Replace your brush every three months, or sooner if the bristles splay or after an illness. Splayed bristles clean far less well."
+          ]
+        }
+      ],
+      "references": [
+        {
+          "label": "World Health Organization: Oral health fact sheet",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/oral-health"
+        }
+      ]
+    },
+    {
+      "slug": "oral-cancer-signs-symptoms-risk-factors",
+      "legacyPath": "/news/view/4",
+      "title": "Mouth cancer: signs to watch for and how to lower your risk",
+      "metaTitle": "Mouth Cancer: Signs, Symptoms and Risk Factors | Expressions",
+      "metaDescription": "Know the early signs of mouth cancer, what increases your risk, and why regular dental check-ups help catch problems early.",
+      "excerpt": "Mouth cancer is much easier to treat when it is found early. Knowing the warning signs, and having regular check-ups, makes a real difference.",
+      "category": "Health",
+      "publishedAt": "2026-11-03",
+      "relatedTreatments": ["tooth-scaling"],
+      "sections": [
+        {
+          "heading": "Signs to watch for",
+          "paragraphs": [
+            "Mouth cancer can affect the lips, tongue, cheeks, gums, floor or roof of the mouth. See a dentist or doctor if any of these lasts more than two weeks:"
+          ],
+          "list": [
+            "A mouth ulcer or sore that does not heal",
+            "A red or white patch inside the mouth",
+            "A lump or thickening in the mouth, lip or neck",
+            "Pain or difficulty chewing or swallowing",
+            "A loose tooth with no obvious cause, or dentures that suddenly stop fitting"
+          ]
+        },
+        {
+          "heading": "What increases the risk",
+          "list": [
+            "Smoking, and chewing tobacco, gutka, paan or areca nut",
+            "Drinking alcohol, especially together with tobacco",
+            "Infection with certain types of human papillomavirus (HPV)",
+            "Too much sun on the lips"
+          ]
+        },
+        {
+          "heading": "Lowering your risk",
+          "paragraphs": [
+            "Stopping tobacco in every form is the single most important step, and it is never too late to benefit. Keep alcohol within recommended limits, eat plenty of fruit and vegetables, and protect your lips from the sun."
+          ]
+        },
+        {
+          "heading": "Why check-ups matter",
+          "paragraphs": [
+            "At a routine check-up your dentist looks at the whole mouth, not just the teeth. Many changes are harmless, but anything unusual can be referred for tests early, when treatment is most likely to succeed."
+          ]
+        }
+      ],
+      "references": [
+        {
+          "label": "NHS: Mouth cancer",
+          "url": "https://www.nhs.uk/conditions/mouth-cancer/"
+        },
+        {
+          "label": "World Health Organization: Oral health fact sheet",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/oral-health"
+        }
+      ]
+    }
+  ]
+}
