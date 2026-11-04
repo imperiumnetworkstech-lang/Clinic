@@ -14,6 +14,7 @@ import type { ComponentType } from 'react';
 import { Link } from 'react-router';
 import { WhatsAppIcon } from '../components/icons';
 import { Picture, type ImageName } from '../components/Picture';
+import { HeroSlider } from '../components/HeroSlider';
 import { TreatmentCategoryGrid } from '../components/TreatmentCategoryGrid';
 import { JsonLd } from '../components/JsonLd';
 import { SectionHeading } from '../components/ui/primitives';
@@ -26,8 +27,7 @@ import {
   whatsappLink,
 } from '../lib/clinic';
 import { dentistSchemas, organizationSchema, pageMeta, websiteSchema } from '../lib/seo';
-import { treatmentCount } from '../lib/treatments';
-import { button, container, eyebrow } from '../lib/ui';
+import { button, container } from '../lib/ui';
 import type { Route } from './+types/home';
 
 export function meta(_: Route.MetaArgs) {
@@ -39,8 +39,6 @@ export function meta(_: Route.MetaArgs) {
   });
 }
 
-const GENERAL_ENQUIRY = 'Hello Expressions Dental Clinic, I would like to book an appointment.';
-
 function Stars({ className = '' }: { className?: string }) {
   return (
     <span className={`flex text-amber-400 ${className}`} aria-hidden="true">
@@ -48,112 +46,6 @@ function Stars({ className = '' }: { className?: string }) {
         <Star key={i} size={16} fill="currentColor" strokeWidth={0} />
       ))}
     </span>
-  );
-}
-
-/* ---------------------------------------------------------------- hero */
-
-function Hero() {
-  return (
-    <section id="top" aria-labelledby="hero-title" className="relative overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_40rem_at_85%_-10%,var(--color-primary-50),transparent_60%),radial-gradient(50rem_30rem_at_-10%_30%,var(--color-secondary-50),transparent_60%)]"
-      />
-      <div
-        className={`${container} relative grid items-center gap-12 pt-8 pb-16 md:pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-24`}
-      >
-        <div>
-          <p className={eyebrow}>
-            <MapPin size={15} />
-            Duler, Mapusa · Candolim, Goa
-          </p>
-          <h1
-            id="hero-title"
-            className="mt-6 text-[clamp(2.4rem,1.6rem+3.6vw,4.25rem)] leading-[1.04] font-extrabold tracking-[-0.035em]"
-          >
-            Gentle, modern dentistry for{' '}
-            <span className="bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent">
-              the whole family
-            </span>
-          </h1>
-          <p className="mt-6 max-w-xl text-[clamp(1.075rem,1rem+0.35vw,1.25rem)] leading-relaxed text-muted">
-            From check-ups and root canals to implants and smile makeovers, we explain every option
-            clearly and treat you comfortably at our two clinics in North Goa.
-          </p>
-
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Link to="/book" prefetch="intent" viewTransition className={button.primary}>
-              Book an appointment
-              <ArrowRight size={18} />
-            </Link>
-            <a
-              href={whatsappLink(GENERAL_ENQUIRY)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={button.secondary}
-            >
-              <WhatsAppIcon size={20} className="text-[#128C4A]" />
-              WhatsApp us
-            </a>
-          </div>
-
-          <dl className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-neutral-200 pt-8">
-            <div>
-              <dt className="text-sm text-muted">Google rating</dt>
-              <dd className="mt-1 flex items-center gap-1.5 font-display text-2xl font-bold">
-                {googleRating.rating}
-                <Star size={18} className="text-amber-400" fill="currentColor" strokeWidth={0} />
-              </dd>
-            </div>
-            <div>
-              <dt className="text-sm text-muted">Treatments</dt>
-              <dd className="mt-1 font-display text-2xl font-bold">{treatmentCount}</dd>
-            </div>
-            <div>
-              <dt className="text-sm text-muted">Clinics in Goa</dt>
-              <dd className="mt-1 font-display text-2xl font-bold">{branches.length}</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-          <div className="absolute -inset-4 -z-10 rotate-3 rounded-[2.5rem] bg-gradient-to-br from-primary-100 via-white to-secondary-100" />
-          <Picture
-            name="about-img"
-            alt="Dentist at Expressions Dental Clinic in the treatment room"
-            sizes="(min-width: 1024px) 520px, (min-width: 640px) 448px, 92vw"
-            priority
-            imgClassName="aspect-[4/4.3] w-full rounded-[2rem] object-cover object-top shadow-[0_30px_60px_-30px_rgb(31_36_43/0.45)]"
-          />
-          <a
-            href={googleRating.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute -bottom-6 left-4 flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-[0_18px_40px_-18px_rgb(31_36_43/0.45)] ring-1 ring-neutral-200 backdrop-blur sm:-left-6"
-          >
-            <span className="grid size-11 place-items-center rounded-xl bg-primary-50 font-display text-lg font-bold text-primary-700">
-              {googleRating.rating}
-            </span>
-            <span>
-              <Stars />
-              <span className="mt-0.5 block text-sm font-medium text-neutral-700">
-                {googleRating.count} Google reviews
-              </span>
-            </span>
-          </a>
-          <div className="absolute top-6 -right-2 hidden items-center gap-2.5 rounded-2xl bg-white/95 px-4 py-3 shadow-[0_18px_40px_-18px_rgb(31_36_43/0.45)] ring-1 ring-neutral-200 backdrop-blur sm:flex lg:-right-6">
-            <span className="grid size-9 place-items-center rounded-full bg-secondary-50 text-secondary-700">
-              <HeartHandshake size={18} />
-            </span>
-            <span className="text-sm leading-tight font-semibold">
-              “Pain-free experience”
-              <span className="block font-normal text-muted">top theme in our reviews</span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -461,7 +353,7 @@ export default function Home() {
   return (
     <>
       <JsonLd data={[organizationSchema(), websiteSchema(), ...dentistSchemas()]} />
-      <Hero />
+      <HeroSlider />
       <ReviewThemes />
       <Treatments />
       <ClinicPhotos />
