@@ -229,14 +229,14 @@ html[data-contrast='high'] footer {
   /* Slow zoom on the visible photo; a hidden photo resets only after its fade-out ends. */
   .hero-photo {
     transform: scale(1);
-    transition: transform 0s linear 1.4s;
+    transition: transform 0s linear 0.9s;
   }
   .hero-photo.is-active {
-    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
-    transition: transform 9s linear;
+    transform: scale(1.1) translate3d(-1.5%, -1%, 0);
+    transition: transform 5s linear;
   }
   .hero-photo-alt.is-active {
-    transform: scale(1.12) translate3d(1.5%, 1%, 0);
+    transform: scale(1.1) translate3d(1.5%, 1%, 0);
   }
 
   /* Text rises in once on load. The heading moves without fading so it never delays LCP. */
@@ -283,5 +283,46 @@ html[data-contrast='high'] footer {
 @keyframes hero-glow {
   to {
     transform: translate3d(30vw, 12rem, 0) scale(1.2);
+  }
+}
+
+/* Scroll reveals (see useScrollReveal) and ambient motion for the rest of the page. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal]:not([data-reveal-done]) {
+    transition:
+      opacity 750ms var(--ease-out-soft),
+      transform 750ms var(--ease-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal-pending {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  [data-reveal='left'].reveal-pending {
+    transform: translateX(-48px);
+  }
+  [data-reveal='right'].reveal-pending {
+    transform: translateX(48px);
+  }
+  [data-reveal='zoom'].reveal-pending {
+    transform: scale(0.9);
+  }
+
+  .marquee-track {
+    animation: marquee 45s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  .float-slow {
+    animation: hero-float 6s ease-in-out infinite;
+  }
+  .float-slower {
+    animation: hero-float 9s ease-in-out infinite reverse;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }

@@ -15,6 +15,7 @@ import { Link } from 'react-router';
 import { WhatsAppIcon } from '../components/icons';
 import { Picture, type ImageName } from '../components/Picture';
 import { HeroSlider } from '../components/HeroSlider';
+import { TreatmentMarquee } from '../components/TreatmentMarquee';
 import { TreatmentCategoryGrid } from '../components/TreatmentCategoryGrid';
 import { JsonLd } from '../components/JsonLd';
 import { SectionHeading } from '../components/ui/primitives';
@@ -26,7 +27,9 @@ import {
   testimonials,
   whatsappLink,
 } from '../lib/clinic';
+import { revealDelay } from '../lib/reveal';
 import { dentistSchemas, organizationSchema, pageMeta, websiteSchema } from '../lib/seo';
+import { useScrollReveal } from '../lib/useScrollReveal';
 import { button, container } from '../lib/ui';
 import type { Route } from './+types/home';
 
@@ -78,19 +81,23 @@ function ReviewThemes() {
   return (
     <section aria-labelledby="why-title" className="bg-surface py-20 md:py-28">
       <div className={container}>
-        <SectionHeading
-          id="why-title"
-          kicker="Why patients choose us"
-          title="What people mention most in their reviews"
-          intro="These are the themes that come up again and again in our Google reviews."
-        />
+        <div data-reveal>
+          <SectionHeading
+            id="why-title"
+            kicker="Why patients choose us"
+            title="What people mention most in their reviews"
+            intro="These are the themes that come up again and again in our Google reviews."
+          />
+        </div>
         <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {THEMES.map(({ icon: Icon, title, text }) => (
+          {THEMES.map(({ icon: Icon, title, text }, index) => (
             <li
               key={title}
-              className="rounded-3xl bg-white p-7 shadow-[0_1px_2px_rgb(31_36_43/0.04),0_12px_32px_-20px_rgb(31_36_43/0.25)] ring-1 ring-neutral-200/70"
+              data-reveal
+              style={revealDelay(index)}
+              className="group rounded-3xl bg-white p-7 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(31_36_43/0.3)] shadow-[0_1px_2px_rgb(31_36_43/0.04),0_12px_32px_-20px_rgb(31_36_43/0.25)] ring-1 ring-neutral-200/70"
             >
-              <span className="grid size-12 place-items-center rounded-2xl bg-primary-50 text-primary-600">
+              <span className="grid size-12 place-items-center rounded-2xl bg-primary-50 text-primary-600 transition duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-primary-600 group-hover:text-white">
                 <Icon size={24} />
               </span>
               <h3 className="mt-5 text-lg font-bold">{title}</h3>
@@ -109,7 +116,7 @@ function Treatments() {
   return (
     <section id="treatments" aria-labelledby="treatments-title" className="py-20 md:py-28">
       <div className={container}>
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div data-reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading
             id="treatments-title"
             kicker="Treatments"
@@ -167,16 +174,20 @@ function ClinicPhotos() {
   return (
     <section id="clinic" aria-labelledby="clinic-title" className="bg-surface py-20 md:py-28">
       <div className={container}>
-        <SectionHeading
-          id="clinic-title"
-          kicker="Our clinic"
-          title="A calm, modern space to look after your smile"
-          intro="Real photos from our clinic: no stock images, no actors."
-        />
+        <div data-reveal>
+          <SectionHeading
+            id="clinic-title"
+            kicker="Our clinic"
+            title="A calm, modern space to look after your smile"
+            intro="Real photos from our clinic: no stock images, no actors."
+          />
+        </div>
         <div className="mt-12 grid auto-rows-[11rem] grid-cols-2 gap-4 sm:auto-rows-[14rem] md:grid-cols-3 md:gap-5">
-          {PHOTOS.map((photo) => (
+          {PHOTOS.map((photo, index) => (
             <figure
               key={photo.name}
+              data-reveal="zoom"
+              style={revealDelay(index, 110)}
               className={`group relative overflow-hidden rounded-3xl bg-neutral-200 ${photo.className}`}
             >
               <Picture
@@ -184,9 +195,9 @@ function ClinicPhotos() {
                 alt={photo.alt}
                 sizes="(min-width: 768px) 33vw, 50vw"
                 className="block h-full"
-                imgClassName="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                imgClassName="h-full w-full object-cover transition duration-700 group-hover:scale-110"
               />
-              <figcaption className="absolute inset-x-3 bottom-3 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold backdrop-blur sm:inset-x-auto sm:left-3">
+              <figcaption className="absolute inset-x-3 bottom-3 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold backdrop-blur transition duration-300 group-hover:-translate-y-1 group-hover:bg-white sm:inset-x-auto sm:left-3">
                 {photo.caption}
               </figcaption>
             </figure>
@@ -203,7 +214,7 @@ function Testimonials() {
   return (
     <section id="reviews" aria-labelledby="reviews-title" className="py-20 md:py-28">
       <div className={container}>
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div data-reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading
             id="reviews-title"
             kicker="Patient stories"
@@ -214,7 +225,7 @@ function Testimonials() {
             href={googleRating.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex shrink-0 items-center gap-3 rounded-2xl bg-white px-5 py-3 ring-1 ring-neutral-200 transition hover:ring-neutral-300"
+            className="flex shrink-0 items-center gap-3 rounded-2xl bg-white px-5 py-3 ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-neutral-300"
           >
             <span className="font-display text-3xl font-bold">{googleRating.rating}</span>
             <span>
@@ -227,12 +238,19 @@ function Testimonials() {
         </div>
 
         <ul className="mt-12 grid gap-5 md:grid-cols-2">
-          {testimonials.map((testimonial) => (
+          {testimonials.map((testimonial, index) => (
             <li
               key={testimonial.name}
-              className="flex flex-col rounded-3xl bg-white p-7 ring-1 ring-neutral-200/80 sm:p-8"
+              data-reveal={index % 2 === 0 ? 'left' : 'right'}
+              style={revealDelay(Math.floor(index / 2), 120)}
+              className="group flex flex-col rounded-3xl bg-white p-7 ring-1 ring-neutral-200/80 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(31_36_43/0.3)] hover:ring-primary-200 sm:p-8"
             >
-              <Quote size={28} className="text-primary-200" fill="currentColor" strokeWidth={0} />
+              <Quote
+                size={28}
+                className="text-primary-200 transition duration-300 group-hover:scale-125 group-hover:text-primary-400"
+                fill="currentColor"
+                strokeWidth={0}
+              />
               <blockquote className="mt-4 flex-1 text-[1.05rem] leading-relaxed text-neutral-800">
                 {testimonial.quote}
               </blockquote>
@@ -259,19 +277,22 @@ function Locations() {
   return (
     <section id="locations" aria-labelledby="locations-title" className="bg-surface py-20 md:py-28">
       <div className={container}>
-        <SectionHeading
-          id="locations-title"
-          kicker="Visit us"
-          title="Two clinics in North Goa"
-          intro="Choose the clinic closest to you. Call or WhatsApp before you visit."
-        />
+        <div data-reveal>
+          <SectionHeading
+            id="locations-title"
+            kicker="Visit us"
+            title="Two clinics in North Goa"
+            intro="Choose the clinic closest to you. Call or WhatsApp before you visit."
+          />
+        </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {branches.map((branch) => (
+          {branches.map((branch, index) => (
             <article
               key={branch.id}
-              className="flex flex-col rounded-3xl bg-white p-7 ring-1 ring-neutral-200/80 sm:p-8"
+              data-reveal={index % 2 === 0 ? 'left' : 'right'}
+              className="group flex flex-col rounded-3xl bg-white p-7 ring-1 ring-neutral-200/80 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-24px_rgb(31_36_43/0.3)] sm:p-8"
             >
-              <span className="grid size-12 place-items-center rounded-2xl bg-primary-50 text-primary-600">
+              <span className="grid size-12 place-items-center rounded-2xl bg-primary-50 text-primary-600 transition duration-300 group-hover:-translate-y-1 group-hover:bg-primary-600 group-hover:text-white">
                 <MapPin size={24} />
               </span>
               <h3 className="mt-5 text-xl font-bold">{branch.shortName}</h3>
@@ -316,14 +337,17 @@ function FinalCta() {
   return (
     <section aria-labelledby="cta-title" className="py-20 md:py-28">
       <div className={container}>
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary-600 via-primary-600 to-primary-800 px-6 py-14 text-center text-white sm:px-12 md:py-20">
+        <div
+          data-reveal="zoom"
+          className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary-600 via-primary-600 to-primary-800 px-6 py-14 text-center text-white sm:px-12 md:py-20"
+        >
           <div
             aria-hidden="true"
-            className="absolute -top-24 -right-24 size-72 rounded-full bg-white/10 blur-2xl"
+            className="float-slow absolute -top-24 -right-24 size-72 rounded-full bg-white/10 blur-2xl"
           />
           <div
             aria-hidden="true"
-            className="absolute -bottom-28 -left-16 size-72 rounded-full bg-secondary-400/20 blur-2xl"
+            className="float-slower absolute -bottom-28 -left-16 size-72 rounded-full bg-secondary-400/20 blur-2xl"
           />
           <h2
             id="cta-title"
@@ -350,10 +374,12 @@ function FinalCta() {
 }
 
 export default function Home() {
+  useScrollReveal();
   return (
     <>
       <JsonLd data={[organizationSchema(), websiteSchema(), ...dentistSchemas()]} />
       <HeroSlider />
+      <TreatmentMarquee />
       <ReviewThemes />
       <Treatments />
       <ClinicPhotos />

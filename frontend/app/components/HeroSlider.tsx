@@ -8,7 +8,7 @@ import { treatmentCount } from '../lib/treatments';
 import { button, container } from '../lib/ui';
 
 /** How long each photo stays up; the progress bar's CSS animation is the single clock. */
-const SLIDE_MS = 6500;
+const SLIDE_MS = 4000;
 
 const GENERAL_ENQUIRY = 'Hello Expressions Dental Clinic, I would like to book an appointment.';
 
@@ -76,7 +76,7 @@ export function HeroSlider() {
           <div
             key={slide.image}
             aria-hidden={index !== active}
-            className={`absolute inset-0 -z-20 transition-opacity duration-[1400ms] ease-[var(--ease-out-soft)] ${
+            className={`absolute inset-0 -z-20 transition-opacity duration-[900ms] ease-[var(--ease-out-soft)] ${
               index === active ? 'opacity-100' : 'opacity-0'
             }`}
           >
